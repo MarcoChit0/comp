@@ -1,0 +1,22 @@
+#ifndef HASHHEADER
+#define HASHHEADER
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#define HASHSIZE 997
+
+typedef struct hashnode
+{
+    char* text;
+    struct hashnode* next;
+    int type;
+} HashNode;
+
+void hashInit();
+HashNode* hashInsert(char* text, int type);
+int hashAddress(char* text);
+void hashPrint();
+HashNode* hashFind(char* text);
+
+#endif
