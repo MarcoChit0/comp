@@ -1,0 +1,48 @@
+12345   \\ integer 12345
+2.7     \\ real 2.7
+.9      \\ identifier '.' and integer 9
+1.      \\ identifier '.' and integer 1
+int real bool char 
+\\\ 
+    KW_INT
+    KW_REAL
+    KW_BOOL
+    KW_CHAR
+///
+if then else input output return loop
+\\\ 
+    KW_IF
+    KW_THEN
+    KW_ELSE
+    KW_INPUT
+    KW_OUTPUT
+    KW_RETURN
+///
+>= == <= !=
+\\\
+    OPERATOR_GE
+    OPERATOR_EQ
+    OPERATOR_LE
+    OPERATOR_DIF
+
+\\ single line comment to be ignored
+/// seven identifiers must be found here .
+"a string has been found!"
+'c' 'h' 'a''r'
+"a string has been found! with some ' ' ' ' ' init"
+- , ; ( ) [ ] { } = + * / % < > & | ~
+.
+..
+...
+_
+__
+___
+SAO_oiIt8.exemplos_de.identificadores_E_um.inteiro
+'token_error'
+"maisUmaString"
+2. 9 \\ 2 inteiros e 1 identificador
+"uma string
+de multiplas
+linhas que vai gerar
+erro de entrada"
+\\ mais um comentário de linha única!!

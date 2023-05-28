@@ -36,7 +36,7 @@ int hashAddress(char* text){
 void hashPrint(){
     for (int i = 0; i < HASHSIZE; i++){
         for (HashNode* node = Table[i]; node; node = node->next){
-            printf("Table[ %d ] = %s\n",i, node->text);
+            printf("Table[ %d ] = %s, with type = %d\n",i, node->text, node->type);
         }
     }
 }
@@ -49,4 +49,42 @@ HashNode* hashFind(char* text){
             return node;
     }
     return NULL;
+}
+
+
+void manager(int token){
+    switch (token)
+    {
+    case KW_INT:        break;   
+    case KW_REAL:       break;   
+    case KW_BOOL:       break;   
+    case KW_CHAR:       break;   
+    case KW_IF:         break;  
+    case KW_THEN:       break;   
+    case KW_ELSE:       break;   
+    case KW_RETURN:     break;
+    case KW_INPUT:      break;    
+    case KW_OUTPUT:     break;
+    case KW_LOOP:       break;    
+    case OPERATOR_DIF:  break;
+    case OPERATOR_EQ:   break;
+    case OPERATOR_GE:   break;
+    case OPERATOR_LE:   break;
+    case TOKEN_ERROR:   fprintf(stderr, "\nWARNING: invalid Token at line %d!!\n",getLineNumber());
+    default:            break;
+    }
+}
+
+int isRunning(void){
+    return running;
+}
+
+void initMe(){
+    hashInit();
+    lineNumber = 1;
+    running = 1;
+}
+
+int getLineNumber(){
+    return lineNumber;
 }

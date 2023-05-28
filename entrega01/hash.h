@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "tokens.h"
 #define HASHSIZE 997
 
 typedef struct hashnode
@@ -13,10 +14,17 @@ typedef struct hashnode
     int type;
 } HashNode;
 
-void hashInit();
-HashNode* hashInsert(char* text, int type);
-int hashAddress(char* text);
-void hashPrint();
-HashNode* hashFind(char* text);
+void        hashInit();
+HashNode*   hashInsert(char* text, int type);
+int         hashAddress(char* text);
+void        hashPrint();
+HashNode*   hashFind(char* text);
+int         isRunning(void);
+void        initMe(void);
+int         getLineNumber(void);
+void        manager(int token);
+void        eofFound();
 
+int     lineNumber = 1;
+int     running = 1;
 #endif

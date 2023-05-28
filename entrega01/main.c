@@ -1,17 +1,21 @@
-#include "hash.h"
+#ifndef MAIN
+#define MAIN
 #include <stdio.h>
+#include <stdlib.h>
+#include "hash.h"
 
 int main(){
-    hashInit();
-    hashPrint();
-    hashInsert("Robson", 1);
-    hashInsert("Roberto", 1);
-    hashInsert("Amanada", 1);
-    hashInsert("Henrique", 1);
-    hashInsert("Cleber", 1);
-    hashInsert("Rodolfo", 1);
-    hashInsert("Rocambole", 1);
-    hashInsert("Rogério", 1);
+    int tok;
+    // initialize global variables and data structures that will be used through the program.
+    initMe();
+    while(isRunning()){
+        // read token
+        tok = yylex();
+        // pass token to manager
+        manager(tok);
+    }
+    // print data base
     hashPrint();
     return 0;
 }
+#endif
