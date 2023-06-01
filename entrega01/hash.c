@@ -36,7 +36,7 @@ int hashAddress(char* text){
 void hashPrint(){
     for (int i = 0; i < HASHSIZE; i++){
         for (HashNode* node = Table[i]; node; node = node->next){
-            printf("Table[ %d ] = %s, with type = %d\n",i, node->text, node->type);
+            printf("Table[%d] = {%s}, with type = {%d}.\n",i, node->text, node->type);
         }
     }
 }
@@ -87,4 +87,25 @@ void initMe(){
 
 int getLineNumber(){
     return lineNumber;
+}
+
+void removeChar(char* str, char c){
+    int existsChar = 1, charPos = -1;
+    while(existsChar){
+        existsChar = 0;
+        for(int i = 0; i < strlen(str); ++i){
+            if (str[i] == c){
+                existsChar = 1;
+                charPos = i;
+                break;
+            }
+        }
+        if (existsChar){
+            memmove(
+                &str[charPos], 
+                &str[charPos+1], 
+                strlen(str) - charPos
+            );
+        }
+    }
 }

@@ -5,9 +5,13 @@
 
 %x COMMENT
 
+DIGIT   [0-9]
+ID      [a-zA-Z._]
+
+
 %%
-[0-9]+[.][0-9]+             {hashInsert(yytext, LIT_REAL);}
-[0-9]+                      {hashInsert(yytext, LIT_INT);}
+{DIGIT}+                    {hashInsert(yytext, LIT_INT);}
+{DIGIT}+[.]{DIGIT}+         {hashInsert(yytext, LIT_REAL);}
 [-,;\(\)\[\]\{\}=+*/%<>&|~] {return yytext[0];}
 "int"                       {return KW_INT;}
 "real"                      {return KW_REAL;}
@@ -20,15 +24,16 @@
 "input"                     {return KW_INPUT;}
 "output"                    {return KW_OUTPUT;}
 "loop"                      {return KW_LOOP;}
-[a-zA-Z._]+                 {hashInsert(yytext, TK_IDENTIFIER); return TK_IDENTIFIER;}    
+{ID}+                       {hashInsert(yytext, TK_IDENTIFIER); return TK_IDENTIFIER;}    
 ">="                        {return OPERATOR_GE;}
 "<="                        {return OPERATOR_LE;}
 "=="                        {return OPERATOR_EQ;}
 "!="                        {return OPERATOR_DIF;}
 "\n"                        {++lineNumber;} 
 [ \t]                       {}
-(\')(.)(\')                 {hashInsert(yytext, LIT_CHAR);}
-(\")(.)+(\")                {hashInsert(yytext, LIT_STRING);}
+(\')(.)(\')                 {removeChar(yytext, '\'');hashInsert(yytext, LIT_CHAR);}
+(\')(\\)[ tn\"](\')         {removeChar(yytext, '\'');hashInsert(yytext, LIT_CHAR);}
+(\")(.)+(\")                {removeChar(yytext, '\"');hashInsert(yytext, LIT_STRING);}
 (\\\\\\)(.)*                {BEGIN(COMMENT);}
 (\\\\)(.)*                  {}
 .                           {return TOKEN_ERROR;}
@@ -41,7 +46,7 @@
 %%
 #include "hash.c"
 #include "main.c"
-// #include "johann.c", compila c:
+// #include "johann.c", compila :D
 
 int yywrap(){
     // eof found -> stop running the program

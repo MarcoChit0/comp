@@ -24,6 +24,7 @@ void        initMe(void);
 int         getLineNumber(void);
 void        manager(int token);
 void        eofFound();
+void        removeChar(char* str, char c);
 
 int     lineNumber = 1;
 int     running = 1;

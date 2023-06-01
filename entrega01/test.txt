@@ -29,7 +29,7 @@ if then else input output return loop
 /// seven identifiers must be found here .
 "a string has been found!"
 'c' 'h' 'a''r'
-"a string has been found! with some ' ' ' ' ' init"
+"a string has been found! with some ' ' ' ' '. That's right innit?"
 - , ; ( ) [ ] { } = + * / % < > & | ~
 .
 ..
@@ -46,3 +46,10 @@ de multiplas
 linhas que vai gerar
 erro de entrada"
 \\ mais um comentário de linha única!!
+'
+'       \\ erro de leitura
+'\n'    \\ caracter de quebra de linha 
+'\t'    \\ caracter de tab
+' '     \\ caracter de espaço
+'"'     \\ caracter de aspas duplas
+"uma \n string \n de \n multiplas \n linhas"
