@@ -53,3 +53,4 @@ erro de entrada"
 ' '     \\ caracter de espaço
 '"'     \\ caracter de aspas duplas
 "uma \n string \n de \n multiplas \n linhas"
+ 2inte

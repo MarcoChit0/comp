@@ -10,8 +10,8 @@ ID      [a-zA-Z._]
 
 
 %%
-{DIGIT}+                    {hashInsert(yytext, LIT_INT);}
-{DIGIT}+[.]{DIGIT}+         {hashInsert(yytext, LIT_REAL);}
+{DIGIT}+                    {hashInsert(yytext, LIT_INT); return LIT_INT;}
+{DIGIT}+[.]{DIGIT}+         {hashInsert(yytext, LIT_REAL); return LIT_REAL;}
 [-,;\(\)\[\]\{\}=+*/%<>&|~] {return yytext[0];}
 "int"                       {return KW_INT;}
 "real"                      {return KW_REAL;}
@@ -31,9 +31,9 @@ ID      [a-zA-Z._]
 "!="                        {return OPERATOR_DIF;}
 "\n"                        {++lineNumber;} 
 [ \t]                       {}
-(\')(.)(\')                 {removeChar(yytext, '\'');hashInsert(yytext, LIT_CHAR);}
-(\')(\\)[ tn\"](\')         {removeChar(yytext, '\'');hashInsert(yytext, LIT_CHAR);}
-(\")(.)+(\")                {removeChar(yytext, '\"');hashInsert(yytext, LIT_STRING);}
+(\')(.)(\')                 {removeChar(yytext, '\'');hashInsert(yytext, LIT_CHAR); return LIT_CHAR;}
+(\')(\\)[ tn\"](\')         {removeChar(yytext, '\'');hashInsert(yytext, LIT_CHAR); return LIT_CHAR;}
+(\")(.)+(\")                {removeChar(yytext, '\"');hashInsert(yytext, LIT_STRING); return LIT_STRING;}
 (\\\\\\)(.)*                {BEGIN(COMMENT);}
 (\\\\)(.)*                  {}
 .                           {return TOKEN_ERROR;}

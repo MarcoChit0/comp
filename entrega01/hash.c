@@ -71,6 +71,10 @@ void manager(int token){
     case OPERATOR_GE:   break;
     case OPERATOR_LE:   break;
     case TOKEN_ERROR:   fprintf(stderr, "\nWARNING: invalid Token at line %d!!\n",getLineNumber());
+    case LIT_INT:       break;
+    case LIT_REAL:      break;
+    case LIT_CHAR:      break;
+    case LIT_STRING:    break;
     default:            break;
     }
 }
