@@ -37,6 +37,8 @@ if then else input output return loop
 _
 __
 ___
+"
+"
 SAO_oiIt8.exemplos_de.identificadores_E_um.inteiro
 'token_error'
 "maisUmaString"
