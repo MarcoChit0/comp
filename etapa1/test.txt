@@ -28,7 +28,7 @@ if then else input output return loop
 \\ single line comment to be ignored
 /// seven identifiers must be found here .
 "a string has been found!"
-'c' 'h' 'a''r'
+'h' 'a''r'
 "a string has been found! with some ' ' ' ' '. That's right innit?"
 - , ; ( ) [ ] { } = + * / % < > & | ~
 .
@@ -39,6 +39,8 @@ __
 ___
 "
 "
+"" \\ string vazia
+"s" \\ string com um caracter único
 SAO_oiIt8.exemplos_de.identificadores_E_um.inteiro
 'token_error'
 "maisUmaString"

@@ -8,6 +8,7 @@
 DIGIT   [0-9]
 ID      [a-zA-Z._]
 SYMBOLS [-,;\(\)\[\]\{\}=+*/%<>&|~]
+STRING  [-,;\(\)\[\]\{\}=+*/%<>&|~a-zA-Z0-9\!\?\@\#\%\&\*\\\/ ]
 
 
 %%
@@ -34,7 +35,7 @@ SYMBOLS [-,;\(\)\[\]\{\}=+*/%<>&|~]
 [ \t]                       {}
 (\')(.)(\')                 {removeChar(yytext, '\'');hashInsert(yytext, LIT_CHAR); return LIT_CHAR;}
 (\')(\\)[ tn\"](\')         {removeChar(yytext, '\'');hashInsert(yytext, LIT_CHAR); return LIT_CHAR;}
-(\")((.)[^\n][^\'])*(\")       {removeChar(yytext, '\"');hashInsert(yytext, LIT_STRING); return LIT_STRING;}
+(\"){STRING}*(\")           {removeChar(yytext, '\"');hashInsert(yytext, LIT_STRING); return LIT_STRING;}
 (\\\\\\)(.)*                {BEGIN(COMMENT);}
 (\\\\)(.)*                  {}
 .                           {return TOKEN_ERROR;}
