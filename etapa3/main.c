@@ -6,6 +6,7 @@
 
 extern FILE* yyin;
 extern char* yytext;
+int yyparse();
 
 int main(int argc, char** argv){
     int tok;
@@ -33,4 +34,5 @@ int main(int argc, char** argv){
     fprintf(stderr, "\n200 - Ok!\n"); exit(0); // Compilation Ok
     return 0;
 }
+
 #endif

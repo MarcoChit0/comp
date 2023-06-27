@@ -18,6 +18,7 @@ HashNode*   hashInsert(char* text, int type);
 int         hashAddress(char* text);
 void        hashPrint();
 HashNode*   hashFind(char* text);
+
 int         isRunning(void);
 void        initMe(void);
 int         getLineNumber(void);
@@ -25,6 +26,6 @@ void        manager(int token);
 void        eofFound();
 void        removeChar(char* str, char c);
 
-int     lineNumber = 1;
-int     running = 1;
+extern int lineNumber;
+extern int running;
 #endif
