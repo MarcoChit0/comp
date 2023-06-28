@@ -43,7 +43,25 @@
 %type<ast> passagemListaParametros
 %type<ast> literais
 %type<ast> literal
-
+%type<ast> tipo
+%type<ast> comando
+%type<ast> comandos
+%type<ast> bloco
+%type<ast> atribuicao
+%type<ast> controleFluxo
+%type<ast> outputComando
+%type<ast> returnComando
+%type<ast> outputElementos
+%type<ast> virgulaOutputElementosOuVazio
+%type<ast> funcao
+%type<ast> cabecalho
+%type<ast> definicaoParametros
+%type<ast> virgulaDefinicaoParametrosOuVazio
+%type<ast> definicaoListaParametros
+%type<ast> variavel
+%type<ast> declaracao
+%type<ast> listaDeclaracoes
+%type<ast> programa
 
 %left '&' '~' '|'
 %left '<' '>' OPERATOR_GE  OPERATOR_LE OPERATOR_EQ OPERATOR_DIF  
@@ -52,23 +70,30 @@
 
 
 %%
-programa: listaDeclaracoes
+programa: listaDeclaracoes {$$ = $1;}
         ;
 
-listaDeclaracoes: declaracao listaDeclaracoes
-                |
+listaDeclaracoes: declaracao listaDeclaracoes   {$$ = astCreate(DECLIST, NULL, $1, $2);}
+                |                               {$$ = NULL;}
                 ;
 
-declaracao      : variavel
-                | funcao
+declaracao      : variavel {$$ = $1;}
+                | funcao   {$$ = $1;}
                 ;
 
 // variável =
 //      tipo TK_IDENTIFIER = valor;
 //      tipo nomeVetor[tamanhoVetor];
 //      tipo nomeVetor[tamanhoVetor] vetor;
-variavel: tipo TK_IDENTIFIER '=' literal ';'
-        | tipo TK_IDENTIFIER '[' LIT_INT ']' literais ';'
+variavel: tipo TK_IDENTIFIER '=' literal ';' {
+        AST* typename = astCreate(TYPENAME, NULL, $1, $2);
+        $$ = astCreate(VARDEF, NULL, typename, $4);
+}
+        | tipo TK_IDENTIFIER '[' LIT_INT ']' literais ';' {
+        AST* typename = astCreate(TYPENAME, NULL, $1, $2);
+        AST* vecsizevalue = astCreate(VECSIZEVALUE, NULL, $4, $6);
+        $$ = astCreate(VECDEF, NULL, typename, vecsizevalue);
+}
         ;
 
 literal : LIT_INT       {$$ = astCreate(SYMBOL, $1, NULL, NULL);}
@@ -82,67 +107,85 @@ literais: literal literais      {$$ = astCreate(LITERAIS, NULL, $1, $2);}
         ;
 
 // tipos = {int, real, bool, char}
-tipo: KW_BOOL
-    | KW_CHAR
-    | KW_INT
-    | KW_REAL
+tipo: KW_BOOL {$$ = astCreate(BOOL, NULL, NULL, NULL);}
+    | KW_CHAR {$$ = astCreate(CHAR, NULL, NULL, NULL);}
+    | KW_INT  {$$ = astCreate(INT, NULL, NULL, NULL);}
+    | KW_REAL {$$ = astCreate(REAL, NULL, NULL, NULL);} 
     ;
 
 // função = cabeçalho corpo
 // cabeçalho = tipo TK_IDENTIFIER (lista de parametros)
 // corpo = bloco de comandos 
-funcao  : cabecalho bloco
+funcao  : cabecalho bloco {$$ = astCreate(FUNCDEF, NULL, $1, $2);}
         ;
 
-cabecalho   : tipo TK_IDENTIFIER '(' definicaoListaParametros ')'
+cabecalho   : tipo TK_IDENTIFIER '(' definicaoListaParametros ')' {
+        AST* typename = astCreate(TYPENAME, NULL, $1, $2);
+        $$ = astCreate(HEADER, NULL, typename, $4);
+}
             ;
 
-definicaoParametros : tipo TK_IDENTIFIER virgulaDefinicaoParametrosOuVazio
+definicaoParametros : tipo TK_IDENTIFIER virgulaDefinicaoParametrosOuVazio {
+        AST* typename = astCreate(TYPENAME, NULL, $1, $2);
+        $$ = astCreate(LIST, NULL, typename, $3);
+}
                     ;
 
-virgulaDefinicaoParametrosOuVazio   : ',' definicaoParametros
-                                    |
+virgulaDefinicaoParametrosOuVazio   : ',' definicaoParametros   {$$ = $2;}
+                                    |                           {$$ = NULL;}
                                     ;
 
-definicaoListaParametros: definicaoParametros
-                        |
+definicaoListaParametros: definicaoParametros   {$$ = $1;}
+                        |                       {$$ = NULL;}
                         ;
 
-bloco   : '{' comandos '}'
+bloco   : '{' comandos '}'      {$$ = astCreate(BLOCK, NULL, $2, NULL);}
         ;
 
-comandos: comando comandos
-        |
+comandos: comando comandos      {$$ = astCreate(COMMANDS, NULL, $1, $3);}
+        |                       {$$ = NULL;}
         ;
 
-comando : bloco
-        | ';'
-        | atribuicao
-        | controleFluxo
-        | outputComando
-        | returnComando
+comando : ';'           {$$ = astCreate(EMPTYCMD, NULL, NULL, NULL);}
+        | bloco         {$$ = $1;}
+        | atribuicao    {$$ = $1;}
+        | controleFluxo {$$ = $1;}
+        | outputComando {$$ = $1;}
+        | returnComando {$$ = $1;}
         ;
-
-atribuicao  : TK_IDENTIFIER '=' expressao ';' {astPrint($3, 0);}                  // atribuição de variável
-            | TK_IDENTIFIER '[' expressao ']' '=' expressao ';'  // atribuição de vetor
+                // atribuição de variável
+atribuicao  : TK_IDENTIFIER '=' expressao ';' {$$ = astCreate(VARATTCMD, NULL, $1, $3);}
+                // atribuição de vetor
+            | TK_IDENTIFIER '[' expressao ']' '=' expressao ';' {
+                AST* index = astCreate(VECATTCMD, NULL, $3, $6); 
+                $$ = astCreate(VECACC, NULL, $1, index);
+                }
             ;
 
-controleFluxo   : KW_IF '(' expressao ')' comando
-                | KW_IF '(' expressao ')' comando KW_ELSE comando
-                | KW_IF '(' expressao ')' KW_LOOP comando
+controleFluxo   : KW_IF '(' expressao ')' comando {$$ = astCreate(IF, NULL, $3, $5);}
+                | KW_IF '(' expressao ')' comando KW_ELSE comando {
+                        AST* thenElse = astCreate(THENELSE, NULL, $5, $7);
+                        $$ = astCreate(IF, NULL, $3, thenElse);
+                }
+                | KW_IF '(' expressao ')' KW_LOOP comando  {
+                        AST* loop = astCreate(LOOP, NULL, $6, NULL);
+                        $$ = astCreate(IF, NULL, $3, loop);
+                }
                 ;
 
-outputComando   : KW_OUTPUT outputElementos ';'
+outputComando   : KW_OUTPUT outputElementos ';' {$$ = astCreate(OUTPUTCMD, NULL, $2, NULL);}
 
-returnComando   : KW_RETURN expressao ';'
+returnComando   : KW_RETURN expressao ';' {$$ = astCreate(RETURNCMD, NULL, $2, NULL);}
 
 
-outputElementos : expressao virgulaOutputElementosOuVazio
-                | LIT_STRING virgulaOutputElementosOuVazio
+outputElementos : expressao virgulaOutputElementosOuVazio       {$$ = astCreate(LIST, NULL, $1, $2);}
+                | LIT_STRING virgulaOutputElementosOuVazio      {
+                        AST* stringNode = astCreate(SYMBOL, $1, NULL, NULL);
+                        $$ = astCreate(LIST, NULL, stringNode, $2);}
                 ;
 
-virgulaOutputElementosOuVazio   : ',' outputElementos
-                                |
+virgulaOutputElementosOuVazio   : ',' outputElementos   {$$ = $2;}
+                                |                       {$$ = NULL;}
                                 ;
 
 expressao   : expressao '+' expressao {$$ = astCreate(ADD, NULL, $1, $3);}
@@ -166,7 +209,7 @@ expressao   : expressao '+' expressao {$$ = astCreate(ADD, NULL, $1, $3);}
             | TK_IDENTIFIER '(' passagemListaParametros ')' {AST* func = astCreate(SYMBOL, $1, NULL, NULL); $$ = astCreate(FUNCAPP, NULL, func, $3);} 
             // input(type)
             // TODO: perguntar como fazer
-            | KW_INPUT '(' tipo ')'   {$$ = NULL;}  
+            | KW_INPUT '(' tipo ')'   {$$ = astCreate(INPUT, NULL, $3, NULL);}  
             | TK_IDENTIFIER '[' expressao ']' {AST* vec = astCreate(SYMBOL, $1, NULL, NULL); $$ = astCreate(VECACC, NULL, vec, $3);}
             // TODO: perguntar se adiciono real e string 
             ;
