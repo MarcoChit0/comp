@@ -1,9 +1,28 @@
-int a = 1;
-int b = 2;
-int c = 3;
-int d = 4;
-int e = 0;
-int main()
-{
-    e = soma(a + b, c - d);
-}
+char c='x';
+char d='Z';
+int v[10] 'a' 0 0 0 0 0 0 0 0 0;
+int i=1;
+int a.a='A';
+char d=100;
+int matrix[100]; 
+real f=2.5;
+bool b = 0;
+
+\\\
+Este eh um comentario 
+de multiplas 
+linhas
+///
+
+int main ()
+  {
+  a.a = 0;
+  d = d - i;
+  d = 5;
+  v[d] = 55;
+  output v[5];
+  output d;
+  i = 2;
+  output "Digite mais um numero: \n";
+  d = input(int);
+  }

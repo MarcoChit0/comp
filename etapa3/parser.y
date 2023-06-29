@@ -14,7 +14,6 @@
 }
 
 
-
 %token KW_CHAR           
 %token KW_INT            
 %token KW_REAL           
@@ -62,6 +61,7 @@
 %type<ast> declaracao
 %type<ast> listaDeclaracoes
 %type<ast> programa
+%type<ast> nome
 
 %left '&' '~' '|'
 %left '<' '>' OPERATOR_GE  OPERATOR_LE OPERATOR_EQ OPERATOR_DIF  
@@ -70,7 +70,7 @@
 
 
 %%
-programa: listaDeclaracoes {$$ = $1;}
+programa: listaDeclaracoes {hashPrint();  AST* root = $1; astToFile(root); $$ = root;}
         ;
 
 listaDeclaracoes: declaracao listaDeclaracoes   {$$ = astCreate(DECLIST, NULL, $1, $2);}
@@ -81,17 +81,20 @@ declaracao      : variavel {$$ = $1;}
                 | funcao   {$$ = $1;}
                 ;
 
+nome    : TK_IDENTIFIER {$$ = astCreate(SYMBOL, $1, NULL, NULL);}
+
 // variável =
 //      tipo TK_IDENTIFIER = valor;
 //      tipo nomeVetor[tamanhoVetor];
 //      tipo nomeVetor[tamanhoVetor] vetor;
-variavel: tipo TK_IDENTIFIER '=' literal ';' {
+variavel: tipo nome '=' literal ';' {
         AST* typename = astCreate(TYPENAME, NULL, $1, $2);
         $$ = astCreate(VARDEF, NULL, typename, $4);
 }
-        | tipo TK_IDENTIFIER '[' LIT_INT ']' literais ';' {
+        | tipo nome '[' LIT_INT ']' literais ';' {
         AST* typename = astCreate(TYPENAME, NULL, $1, $2);
-        AST* vecsizevalue = astCreate(VECSIZEVALUE, NULL, $4, $6);
+        AST* size = astCreate(SYMBOL, $4, NULL, NULL);
+        AST* vecsizevalue = astCreate(VECSIZEVALUE, NULL, size, $6);
         $$ = astCreate(VECDEF, NULL, typename, vecsizevalue);
 }
         ;
@@ -119,13 +122,13 @@ tipo: KW_BOOL {$$ = astCreate(BOOL, NULL, NULL, NULL);}
 funcao  : cabecalho bloco {$$ = astCreate(FUNCDEF, NULL, $1, $2);}
         ;
 
-cabecalho   : tipo TK_IDENTIFIER '(' definicaoListaParametros ')' {
+cabecalho   : tipo nome '(' definicaoListaParametros ')' {
         AST* typename = astCreate(TYPENAME, NULL, $1, $2);
         $$ = astCreate(HEADER, NULL, typename, $4);
 }
             ;
 
-definicaoParametros : tipo TK_IDENTIFIER virgulaDefinicaoParametrosOuVazio {
+definicaoParametros : tipo nome virgulaDefinicaoParametrosOuVazio {
         AST* typename = astCreate(TYPENAME, NULL, $1, $2);
         $$ = astCreate(LIST, NULL, typename, $3);
 }
@@ -139,10 +142,10 @@ definicaoListaParametros: definicaoParametros   {$$ = $1;}
                         |                       {$$ = NULL;}
                         ;
 
-bloco   : '{' comandos '}'      {$$ = astCreate(BLOCK, NULL, $2, NULL);}
+bloco   : '{' comandos '}'      {$$ = astCreate(BLOCKCMD, NULL, NULL, $2);}
         ;
 
-comandos: comando comandos      {$$ = astCreate(COMMANDS, NULL, $1, $3);}
+comandos: comando comandos      {$$ = astCreate(COMMANDS, NULL, $1, $2);}
         |                       {$$ = NULL;}
         ;
 
@@ -154,9 +157,9 @@ comando : ';'           {$$ = astCreate(EMPTYCMD, NULL, NULL, NULL);}
         | returnComando {$$ = $1;}
         ;
                 // atribuição de variável
-atribuicao  : TK_IDENTIFIER '=' expressao ';' {$$ = astCreate(VARATTCMD, NULL, $1, $3);}
+atribuicao  : nome '=' expressao ';' {$$ = astCreate(VARATTCMD, NULL, $1, $3);}
                 // atribuição de vetor
-            | TK_IDENTIFIER '[' expressao ']' '=' expressao ';' {
+            | nome '[' expressao ']' '=' expressao ';' {
                 AST* index = astCreate(VECATTCMD, NULL, $3, $6); 
                 $$ = astCreate(VECACC, NULL, $1, index);
                 }
@@ -173,7 +176,7 @@ controleFluxo   : KW_IF '(' expressao ')' comando {$$ = astCreate(IF, NULL, $3, 
                 }
                 ;
 
-outputComando   : KW_OUTPUT outputElementos ';' {$$ = astCreate(OUTPUTCMD, NULL, $2, NULL);}
+outputComando   : KW_OUTPUT outputElementos ';' {$$ = astCreate(OUTPUTCMD, NULL, NULL, $2);}
 
 returnComando   : KW_RETURN expressao ';' {$$ = astCreate(RETURNCMD, NULL, $2, NULL);}
 
@@ -202,15 +205,15 @@ expressao   : expressao '+' expressao {$$ = astCreate(ADD, NULL, $1, $3);}
             | expressao OPERATOR_EQ   expressao {$$ = astCreate(EQ,  NULL, $1, $3);}
             | expressao OPERATOR_DIF  expressao {$$ = astCreate(DIF, NULL, $1, $3);}
             | '(' expressao ')' {$$ = $2;}
-            | TK_IDENTIFIER     {$$ = astCreate(SYMBOL, $1, NULL, NULL);}
+            | nome     {$$ = $1;}
             | LIT_INT           {$$ = astCreate(SYMBOL, $1, NULL, NULL);}
             | LIT_CHAR          {$$ = astCreate(SYMBOL, $1, NULL, NULL);}
             // function(params)
-            | TK_IDENTIFIER '(' passagemListaParametros ')' {AST* func = astCreate(SYMBOL, $1, NULL, NULL); $$ = astCreate(FUNCAPP, NULL, func, $3);} 
+            | nome '(' passagemListaParametros ')' {$$ = astCreate(FUNCAPP, NULL, $1, $3);} 
             // input(type)
             // TODO: perguntar como fazer
-            | KW_INPUT '(' tipo ')'   {$$ = astCreate(INPUT, NULL, $3, NULL);}  
-            | TK_IDENTIFIER '[' expressao ']' {AST* vec = astCreate(SYMBOL, $1, NULL, NULL); $$ = astCreate(VECACC, NULL, vec, $3);}
+            | KW_INPUT '(' tipo ')'   {$$ = astCreate(INPUT, NULL, NULL, $3);}  
+            | nome '[' expressao ']' { $$ = astCreate(VECACC, NULL, $1, $3);}
             // TODO: perguntar se adiciono real e string 
             ;
 

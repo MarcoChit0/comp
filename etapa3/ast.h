@@ -38,6 +38,12 @@ enum asttype{
         VEC     INDEX
     */
     VECACC          = 16,
+    /*
+            LITERAIS
+            /   \
+        LIT1     LIT2
+        OBS.: LIT2 PODE SER LITERAIS
+    */
     LITERAIS        = 17,
     /*
             TYPE
@@ -51,13 +57,13 @@ enum asttype{
     /*
             INPUT
             /   \
-        TYPE     NULL
+        NULL     TYPE
     */   
     INPUT           = 22,
     /*
             BLOCKCMD
             /   \
-        BLOCK    NULL
+        NULL    BLOCK
     */    
     BLOCKCMD        = 23,
     /*
@@ -73,7 +79,7 @@ enum asttype{
     */    
     VARATTCMD       = 25,
     /*
-            VECAPP
+            VECACC
             /   \
          VEC     VECATTCMD
                 /         \
@@ -95,7 +101,7 @@ enum asttype{
     /*
             OUTPUTCMD
             /       \
-         EXP         NULL
+         NULL        EXP
     */   
     OUTPUTCMD       = 29,
     /*
@@ -158,11 +164,13 @@ enum asttype{
             /   \
     TYPENAME     VECSIZEVALUE
                 /            \
-            LIT               LIST
+            LIT               LITERIAS
     */
     VECSIZEVALUE    = 38,
     DECLIST = 39,
 };
+
+extern char* filename;
 
 typedef struct astnode{
     int type;
@@ -173,5 +181,8 @@ typedef struct astnode{
 
 AST* astCreate(int type, HashNode* symbol, AST* left, AST* right);
 void astPrint(AST* root, int calls);
-
+void astToFile(AST* root);
+void astWrite(AST* root, FILE* file);
+void content(AST* node, char** printRightNow, char** printAfterRightRecursion);
+void allocAndSetData(char** destiny, char* source, int size);
 #endif
