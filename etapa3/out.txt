@@ -1,0 +1,36 @@
+char c = 'x';
+char d = 'Z';
+int v [10] 'a' 0 0 0 0 0 0 0 0 0 ;
+int i = 1;
+int a.a = 'A';
+char d = 100;
+int matrix [100] ;
+real f = 2.5;
+bool b = 0;
+int main (  ) {
+a.a = 0;
+d = d - i;
+d = 5;
+v[d] = 55;
+output v[5] ;
+output d;
+i = 2;
+output "Digite um numero: \n";
+d = intput(int);
+output "Digite mais um numero: \n";
+i > 10if ( {
+i = incn(i, 1);
+d = incn(d, d);
+}loop  ) output "Incrementado algumas vezes a fica ", 2 + x, a, "\n";
+a == 15if ( {
+a = a + 1;
+output "A era=15\n";
+} ) i == 100if ( {
+output "Nao tem como isso...\n";
+}output "OK!\n";
+else ) {
+{
+}}{
+}}int incn ( int x, int n ) {
+x + nreturn ;
+}

@@ -67,204 +67,201 @@ void content(AST* node, char** printRightNow, char** printAfterRightRecursion)
         case SYMBOL:
             if(node->symbol != NULL)
             {
-                allocAndSetData(&pNow, node->symbol->text, sizeof(node->symbol->text));
+                allocAndSetData(&pNow, node->symbol->text);
             }
             else
             {
-                allocAndSetData(&pNow, "", sizeof(""));
+                allocAndSetData(&pNow, "");
             }
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pAfter,  "");
             break;
         case ADD: 
-            allocAndSetData(  &pNow,  " + ",  sizeof(" + "));
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  " + ");
+            allocAndSetData(  &pAfter,  "");
             break;
         case SUB:
-            allocAndSetData(  &pNow,  " - ",  sizeof(" - "));
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  " - ");
+            allocAndSetData(  &pAfter,  "");
             break;
         case MUL:
-            allocAndSetData(  &pNow,  " * ",  sizeof(" * "));
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  " * ");
+            allocAndSetData(  &pAfter,  "");
             break;
         case DIV: 
-            allocAndSetData(  &pNow,  " / ",  sizeof(" / "));
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  " / ");
+            allocAndSetData(  &pAfter,  "");
             break;
         case LT:  
-            allocAndSetData(  &pNow,  " < ",  sizeof(" < "));
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  " < ");
+            allocAndSetData(  &pAfter,  "");
             break;
         case GT:  
-            allocAndSetData(  &pNow,  " > ",  sizeof(" > "));
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  " > ");
+            allocAndSetData(  &pAfter,  "");
             break;
         case AND: 
-            allocAndSetData(  &pNow,  " & ",  sizeof(" & "));
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  " & ");
+            allocAndSetData(  &pAfter,  "");
             break;
         case NOT: 
-            allocAndSetData(  &pNow,  " ~ ",  sizeof(" ~ "));
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  " ~ ");
+            allocAndSetData(  &pAfter,  "");
             break;
         case OR:  
-            allocAndSetData(  &pNow,  " | ",  sizeof(" | "));
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  " | ");
+            allocAndSetData(  &pAfter,  "");
             break;
         case GE:  
-            allocAndSetData(  &pNow,  " >= ", sizeof(" >= "));
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  " >= ");
+            allocAndSetData(  &pAfter,  "");
             break;
         case LE:  
-            allocAndSetData(  &pNow,  " <= ", sizeof(" <= "));
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  " <= ");
+            allocAndSetData(  &pAfter,  "");
             break;
         case EQ:  
-            allocAndSetData(  &pNow,  " == ", sizeof(" == "));
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  " == ");
+            allocAndSetData(  &pAfter,  "");
             break;
         case DIF: 
-            allocAndSetData(  &pNow,  " != ", sizeof(" != "));
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  " != ");
+            allocAndSetData(  &pAfter,  "");
             break;
         case LIST:
             if(node->right != NULL)
             {
-                allocAndSetData(  &pNow,  ", ", sizeof(", "));   
+                allocAndSetData(  &pNow,  ", ");   
             }
             else
             {
-                allocAndSetData( &pNow, "", sizeof(""));
+                allocAndSetData( &pNow, "");
             }
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pAfter,  "");
             break;
         case FUNCAPP:            
-            allocAndSetData(  &pNow,  "(", sizeof("("));   
-            allocAndSetData(  &pAfter,  ")",  sizeof(")"));
+            allocAndSetData(  &pNow,  "(");   
+            allocAndSetData(  &pAfter,  ")");
             break;
         case VECACC:            
-            allocAndSetData(  &pNow,  "[", sizeof("["));
+            allocAndSetData(  &pNow,  "[");
             if(node->right != NULL && node->right->type == VECATTCMD)
-            { allocAndSetData(  &pAfter,  "",  sizeof("")); }
-            else { allocAndSetData(  &pAfter,  "] ",  sizeof("] ")); }
+            { allocAndSetData(  &pAfter,  ""); }
+            else { allocAndSetData(  &pAfter,  "] "); }
             break;
         case LITERAIS:            
-            allocAndSetData(  &pNow,  " ", sizeof(" "));   
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  " ");   
+            allocAndSetData(  &pAfter,  "");
             break;
         case INT:   
-            allocAndSetData(  &pNow,  "int", sizeof("int"));        
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  "int");        
+            allocAndSetData(  &pAfter,  "");
             break;
         case CHAR:  
-            allocAndSetData(  &pNow,  "char", sizeof("char"));      
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  "char");      
+            allocAndSetData(  &pAfter,  "");
             break;
         case BOOL:  
-            allocAndSetData(  &pNow,  "bool", sizeof("bool"));      
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  "bool");      
+            allocAndSetData(  &pAfter,  "");
             break;
         case REAL:  
-            allocAndSetData(  &pNow,  "real", sizeof("real"));      
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  "real");      
+            allocAndSetData(  &pAfter,  "");
             break;
         case INPUT: 
-            allocAndSetData(  &pNow,  "intput(", sizeof("input("));   
-            allocAndSetData(  &pAfter,  ")",  sizeof(")"));
+            allocAndSetData(  &pNow,  "intput(");   
+            allocAndSetData(  &pAfter,  ")");
             break;
         case BLOCKCMD:            
-            allocAndSetData(  &pNow,  "{\n", sizeof("{\n"));   
-            allocAndSetData(  &pAfter,  "}",  sizeof("}"));
+            allocAndSetData(  &pNow,  "{\n");   
+            allocAndSetData(  &pAfter,  "}");
             break;
         case EMPTYCMD:            
-            allocAndSetData(  &pNow,  ";\n", sizeof(";\n"));   
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  ";\n");   
+            allocAndSetData(  &pAfter,  "");
             break;
         case VARATTCMD:             
-            allocAndSetData(  &pNow,  " = ", sizeof(" = "));   
-            allocAndSetData(  &pAfter,  ";\n",  sizeof(";\n"));
+            allocAndSetData(  &pNow,  " = ");   
+            allocAndSetData(  &pAfter,  ";\n");
             break;
         case VECATTCMD:             
-            allocAndSetData(  &pNow,  "] = ", sizeof("] = "));   
-            allocAndSetData(  &pAfter,  ";\n",  sizeof(";\n"));
+            allocAndSetData(  &pNow,  "] = ");   
+            allocAndSetData(  &pAfter,  ";\n");
             break;
         case RETURNCMD:             
-            allocAndSetData(  &pNow,  "return ", sizeof("return "));   
-            allocAndSetData(  &pAfter,  ";\n",  sizeof(";\n"));
+            allocAndSetData(  &pNow,  "return ");   
+            allocAndSetData(  &pAfter,  ";\n");
             break;
         case COMMANDS:            
-            allocAndSetData(  &pNow,  "", sizeof(""));   
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  "");   
+            allocAndSetData(  &pAfter,  "");
             break;
         case OUTPUTCMD:            
-            allocAndSetData(  &pNow,  "output ", sizeof("output "));   
-            allocAndSetData(  &pAfter,  ";\n",  sizeof(";\n"));
+            allocAndSetData(  &pNow,  "output ");   
+            allocAndSetData(  &pAfter,  ";\n");
             break;
         case IF:             
-            allocAndSetData(  &pNow,  "if ( ", sizeof("if ( "));   
-            allocAndSetData(  &pAfter,  " ) ",  sizeof(" ) "));
+            allocAndSetData(  &pNow,  "if ( ");   
+            allocAndSetData(  &pAfter,  " ) ");
             break;
         case THENELSE:             
-            allocAndSetData(  &pNow,  "", sizeof(""));   
-            allocAndSetData(  &pAfter,  "else",  sizeof("else"));
+            allocAndSetData(  &pNow,  "");   
+            allocAndSetData(  &pAfter,  "else");
             break;
         case LOOP:             
-            allocAndSetData(  &pNow,  "loop ", sizeof("loop "));   
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  "loop ");   
+            allocAndSetData(  &pAfter,  "");
             break;
         case FUNCDEF:             
-            allocAndSetData(  &pNow,  "", sizeof(""));   
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  "");   
+            allocAndSetData(  &pAfter,  "");
             break;
         case HEADER:             
-            allocAndSetData(  &pNow,  " ( ", sizeof(" ( "));   
-            allocAndSetData(  &pAfter,  " ) ",  sizeof(" ) "));
+            allocAndSetData(  &pNow,  " ( ");   
+            allocAndSetData(  &pAfter,  " ) ");
             break;
         case TYPENAME:             
-            allocAndSetData(  &pNow,  " ", sizeof(" "));   
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  " ");   
+            allocAndSetData(  &pAfter,  "");
             break;
         case VARDEF:             
-            allocAndSetData(  &pNow,  " = ", sizeof(" = "));   
-            allocAndSetData(  &pAfter,  ";\n",  sizeof(";\n"));
+            allocAndSetData(  &pNow,  " = ");   
+            allocAndSetData(  &pAfter,  ";\n");
             break;
         case VECDEF:             
-            allocAndSetData(  &pNow,  " [", sizeof(" ["));   
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  " [");   
+            allocAndSetData(  &pAfter,  "");
             break;
         case VECSIZEVALUE:             
-            allocAndSetData(  &pNow,  "] ", sizeof("] "));   
-            allocAndSetData(  &pAfter,  ";\n",  sizeof(";\n"));
+            allocAndSetData(  &pNow,  "] ");   
+            allocAndSetData(  &pAfter,  ";\n");
             break;
         case DECLIST:             
-            allocAndSetData(  &pNow,  "", sizeof(""));   
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  "");   
+            allocAndSetData(  &pAfter,  "");
             break;
         default: 
-            allocAndSetData(  &pNow,  "",  sizeof(""));
-            allocAndSetData(  &pAfter,  "",  sizeof(""));
+            allocAndSetData(  &pNow,  "");
+            allocAndSetData(  &pAfter,  "");
             break;
         }
         fprintf(stderr, "1/");
-        allocAndSetData(printRightNow, pNow, sizeof(pNow));
+        allocAndSetData(printRightNow, pNow);
         fprintf(stderr, "2/");
-        allocAndSetData(printAfterRightRecursion, pAfter, sizeof(pAfter));
+        allocAndSetData(printAfterRightRecursion, pAfter);
         fprintf(stderr, "3\n");
         fprintf(stderr, "now = [%s]\n", *printRightNow);
         fprintf(stderr, "after = [%s]\n", *printAfterRightRecursion);
     }
     else
     {
-        allocAndSetData(printRightNow, "", sizeof(""));
-        allocAndSetData(printAfterRightRecursion, "", sizeof(""));
+        allocAndSetData(printRightNow, "");
+        allocAndSetData(printAfterRightRecursion, "");
     }
 }
 
-void allocAndSetData(char** destiny, char* source, int size)
+void allocAndSetData(char** destiny, char* source)
 {
-    fprintf(stderr, "A/");
-    *destiny = (char*) calloc(1, size);
-    fprintf(stderr, "B/");
+    *destiny = (char*) calloc(1, strlen(source) + 1);
     strcpy(*destiny, source);
-    fprintf(stderr, "C\n");
 }

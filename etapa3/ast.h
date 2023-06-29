@@ -184,5 +184,5 @@ void astPrint(AST* root, int calls);
 void astToFile(AST* root);
 void astWrite(AST* root, FILE* file);
 void content(AST* node, char** printRightNow, char** printAfterRightRecursion);
-void allocAndSetData(char** destiny, char* source, int size);
+void allocAndSetData(char** destiny, char* source);
 #endif
