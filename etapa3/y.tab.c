@@ -1513,7 +1513,7 @@ yyreduce:
 
   case 27: /* bloco: '{' comandos '}'  */
 #line 145 "parser.y"
-                                {(yyval.ast) = astCreate(BLOCKCMD, NULL, NULL, (yyvsp[-1].ast));}
+                                {(yyval.ast) = astCreate(BLOCKCMD, NULL, (yyvsp[-1].ast), NULL);}
 #line 1518 "y.tab.c"
     break;
 
@@ -1606,7 +1606,7 @@ yyreduce:
 
   case 41: /* outputComando: KW_OUTPUT outputElementos ';'  */
 #line 179 "parser.y"
-                                                {(yyval.ast) = astCreate(OUTPUTCMD, NULL, NULL, (yyvsp[-1].ast));}
+                                                {(yyval.ast) = astCreate(OUTPUTCMD, NULL, (yyvsp[-1].ast), NULL);}
 #line 1611 "y.tab.c"
     break;
 
@@ -1668,13 +1668,13 @@ yyreduce:
 
   case 51: /* expressao: expressao '<' expressao  */
 #line 198 "parser.y"
-                                      {(yyval.ast) = astCreate(GT,  NULL, (yyvsp[-2].ast), (yyvsp[0].ast));}
+                                      {(yyval.ast) = astCreate(LT,  NULL, (yyvsp[-2].ast), (yyvsp[0].ast));}
 #line 1673 "y.tab.c"
     break;
 
   case 52: /* expressao: expressao '>' expressao  */
 #line 199 "parser.y"
-                                      {(yyval.ast) = astCreate(LT,  NULL, (yyvsp[-2].ast), (yyvsp[0].ast));}
+                                      {(yyval.ast) = astCreate(GT,  NULL, (yyvsp[-2].ast), (yyvsp[0].ast));}
 #line 1679 "y.tab.c"
     break;
 
@@ -1752,7 +1752,7 @@ yyreduce:
 
   case 65: /* expressao: KW_INPUT '(' tipo ')'  */
 #line 215 "parser.y"
-                                      {(yyval.ast) = astCreate(INPUT, NULL, NULL, (yyvsp[-1].ast));}
+                                      {(yyval.ast) = astCreate(INPUT, NULL, (yyvsp[-1].ast), NULL);}
 #line 1757 "y.tab.c"
     break;
 

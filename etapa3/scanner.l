@@ -37,9 +37,9 @@ STRING  [-,;\(\)\[\]\{\}=+*/%<>&|~a-zA-Z0-9\!\?\@\#\%\&\*\\\/: \.]
 "!="                        {return OPERATOR_DIF;}
 "\n"                        {++lineNumber;} 
 [ \t]                       {}
-(\')(.)(\')                 {/*removeChar(yytext, '\'');*/ yylval.symbol = hashInsert(yytext, LIT_CHAR); return LIT_CHAR;}
-(\')(\\)[ tn\"](\')         {/*removeChar(yytext, '\'');*/ yylval.symbol = hashInsert(yytext, LIT_CHAR); return LIT_CHAR;}
-(\"){STRING}*(\")           {/*removeChar(yytext, '\"');*/ yylval.symbol = hashInsert(yytext, LIT_STRING); return LIT_STRING;}
+(\')(.)(\')                 {yylval.symbol = hashInsert(yytext, LIT_CHAR); return LIT_CHAR;}
+(\')(\\)[ tn\"](\')         {yylval.symbol = hashInsert(yytext, LIT_CHAR); return LIT_CHAR;}
+(\"){STRING}*(\")           {yylval.symbol = hashInsert(yytext, LIT_STRING); return LIT_STRING;}
 (\\\\\\)(.)*                {BEGIN(COMMENT);}
 (\\\\)(.)*                  {}
 .                           {return TOKEN_ERROR;}

@@ -16,21 +16,37 @@ output v[5] ;
 output d;
 i = 2;
 output "Digite um numero: \n";
-d = intput(int);
+d = input(int);
 output "Digite mais um numero: \n";
-i > 10if ( {
+if ( i < 10 ) loop {
 i = incn(i, 1);
 d = incn(d, d);
-}loop  ) output "Incrementado algumas vezes a fica ", 2 + x, a, "\n";
-a == 15if ( {
+
+}
+output "Incrementado algumas vezes a fica ", 2 + x, a, "\n";
+if ( a == 15 ) {
 a = a + 1;
 output "A era=15\n";
-} ) i == 100if ( {
+
+}
+if ( i == 100 ) {
 output "Nao tem como isso...\n";
-}output "OK!\n";
-else ) {
+
+}
+
+else output "OK!\n";
 {
-}}{
-}}int incn ( int x, int n ) {
-x + nreturn ;
+{
+
+}
+
+}
+{
+
+}
+
+}
+int incn ( int x, int n ) {
+return x + n;
+
 }

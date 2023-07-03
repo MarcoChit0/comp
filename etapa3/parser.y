@@ -142,7 +142,7 @@ definicaoListaParametros: definicaoParametros   {$$ = $1;}
                         |                       {$$ = NULL;}
                         ;
 
-bloco   : '{' comandos '}'      {$$ = astCreate(BLOCKCMD, NULL, NULL, $2);}
+bloco   : '{' comandos '}'      {$$ = astCreate(BLOCKCMD, NULL, $2, NULL);}
         ;
 
 comandos: comando comandos      {$$ = astCreate(COMMANDS, NULL, $1, $2);}
@@ -176,7 +176,7 @@ controleFluxo   : KW_IF '(' expressao ')' comando {$$ = astCreate(IF, NULL, $3, 
                 }
                 ;
 
-outputComando   : KW_OUTPUT outputElementos ';' {$$ = astCreate(OUTPUTCMD, NULL, NULL, $2);}
+outputComando   : KW_OUTPUT outputElementos ';' {$$ = astCreate(OUTPUTCMD, NULL, $2, NULL);}
 
 returnComando   : KW_RETURN expressao ';' {$$ = astCreate(RETURNCMD, NULL, $2, NULL);}
 
@@ -195,8 +195,8 @@ expressao   : expressao '+' expressao {$$ = astCreate(ADD, NULL, $1, $3);}
             | expressao '-' expressao {$$ = astCreate(SUB, NULL, $1, $3);}
             | expressao '*' expressao {$$ = astCreate(MUL, NULL, $1, $3);}
             | expressao '/' expressao {$$ = astCreate(DIV, NULL, $1, $3);}
-            | expressao '<' expressao {$$ = astCreate(GT,  NULL, $1, $3);}
-            | expressao '>' expressao {$$ = astCreate(LT,  NULL, $1, $3);}
+            | expressao '<' expressao {$$ = astCreate(LT,  NULL, $1, $3);}
+            | expressao '>' expressao {$$ = astCreate(GT,  NULL, $1, $3);}
             | expressao '&' expressao {$$ = astCreate(AND, NULL, $1, $3);}
             | expressao '~' expressao {$$ = astCreate(NOT, NULL, $1, $3);}
             | expressao '|' expressao {$$ = astCreate(OR,  NULL, $1, $3);}
@@ -212,7 +212,7 @@ expressao   : expressao '+' expressao {$$ = astCreate(ADD, NULL, $1, $3);}
             | nome '(' passagemListaParametros ')' {$$ = astCreate(FUNCAPP, NULL, $1, $3);} 
             // input(type)
             // TODO: perguntar como fazer
-            | KW_INPUT '(' tipo ')'   {$$ = astCreate(INPUT, NULL, NULL, $3);}  
+            | KW_INPUT '(' tipo ')'   {$$ = astCreate(INPUT, NULL, $3, NULL);}  
             | nome '[' expressao ']' { $$ = astCreate(VECACC, NULL, $1, $3);}
             // TODO: perguntar se adiciono real e string 
             ;

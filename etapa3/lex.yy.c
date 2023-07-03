@@ -897,17 +897,17 @@ YY_RULE_SETUP
 case 22:
 YY_RULE_SETUP
 #line 40 "scanner.l"
-{/*removeChar(yytext, '\'');*/ yylval.symbol = hashInsert(yytext, LIT_CHAR); return LIT_CHAR;}
+{yylval.symbol = hashInsert(yytext, LIT_CHAR); return LIT_CHAR;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 41 "scanner.l"
-{/*removeChar(yytext, '\'');*/ yylval.symbol = hashInsert(yytext, LIT_CHAR); return LIT_CHAR;}
+{yylval.symbol = hashInsert(yytext, LIT_CHAR); return LIT_CHAR;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 42 "scanner.l"
-{/*removeChar(yytext, '\"');*/ yylval.symbol = hashInsert(yytext, LIT_STRING); return LIT_STRING;}
+{yylval.symbol = hashInsert(yytext, LIT_STRING); return LIT_STRING;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP

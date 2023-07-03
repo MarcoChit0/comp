@@ -57,13 +57,13 @@ enum asttype{
     /*
             INPUT
             /   \
-        NULL     TYPE
+        TYPE     NULL
     */   
     INPUT           = 22,
     /*
             BLOCKCMD
             /   \
-        NULL    BLOCK
+        BLOCK   NULL
     */    
     BLOCKCMD        = 23,
     /*
@@ -101,7 +101,7 @@ enum asttype{
     /*
             OUTPUTCMD
             /       \
-         NULL        EXP
+         EXP        NULL
     */   
     OUTPUTCMD       = 29,
     /*
@@ -183,6 +183,6 @@ AST* astCreate(int type, HashNode* symbol, AST* left, AST* right);
 void astPrint(AST* root, int calls);
 void astToFile(AST* root);
 void astWrite(AST* root, FILE* file);
-void content(AST* node, char** printRightNow, char** printAfterRightRecursion);
+void content(AST*, char**, char**, char**);
 void allocAndSetData(char** destiny, char* source);
 #endif
