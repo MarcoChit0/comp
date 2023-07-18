@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "hash.h"
 #include "ast.h"
+#include "semantic.h"
 
 extern FILE* yyin;
 extern char* yytext;
@@ -28,15 +29,22 @@ int main(int argc, char** argv){
     if(filename == NULL)
     {
         printf("\n\nWARNING: Could not open the output file!!!\n\n");
-        exit(4);
+        exit(2);
     }
     // initialize global variables and data structures that will be used through the program.
     initMe();
     // call parser, that will call many times yylex()
     // if syntax is ok, then nothing should happen
     // else, it will call yyerror and will exit the program with a warning message
-    yyparse();
     // and send a compilation successs message to the user
+    yyparse();
+    // check if there is no semantic errors
+    if(getSemanticErrors())
+    {
+        printf("\n\nWARNING: %d semantic errors found!!!\n\n", getSemanticErrors());
+        exit(4);
+    }
+
     fprintf(stderr, "\n200 - Ok!\n"); exit(0); // Compilation Ok
     return 0;
 }

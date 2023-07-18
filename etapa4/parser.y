@@ -3,6 +3,7 @@
     #include <stdlib.h>
     #include "hash.h"
     #include "ast.h"
+    #include "semantic.h"
     int yyerror(char *);
     int yylex();
 %}
@@ -70,7 +71,7 @@
 
 
 %%
-programa: listaDeclaracoes {hashPrint();  AST* root = $1; astToFile(root); $$ = root;}
+programa: listaDeclaracoes {AST* root = $1;  checkAndSetDeclarations(root); checkUndeclared(); checkOperands(root); hashPrint(); astToFile(root); $$ = root;}
         ;
 
 listaDeclaracoes: declaracao listaDeclaracoes   {$$ = astCreate(DECLIST, NULL, $1, $2);}
@@ -204,8 +205,8 @@ expressao   : expressao '+' expressao {$$ = astCreate(ADD, NULL, $1, $3);}
             | expressao OPERATOR_LE   expressao {$$ = astCreate(LE,  NULL, $1, $3);}
             | expressao OPERATOR_EQ   expressao {$$ = astCreate(EQ,  NULL, $1, $3);}
             | expressao OPERATOR_DIF  expressao {$$ = astCreate(DIF, NULL, $1, $3);}
-            | '(' expressao ')' {$$ = $2;}
-            | nome     {$$ = $1;}
+            | '(' expressao ')' {$$ = astCreate(PARENTHESIS, NULL, $2, NULL);}
+            | nome              {$$ = $1;}
             | LIT_INT           {$$ = astCreate(SYMBOL, $1, NULL, NULL);}
             | LIT_CHAR          {$$ = astCreate(SYMBOL, $1, NULL, NULL);}
             // function(params)

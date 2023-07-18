@@ -1,8 +1,11 @@
-etapa3: main.o y.tab.o lex.yy.o  hash.o ast.o
-	gcc main.o y.tab.o lex.yy.o  hash.o ast.o -o etapa3
+etapa4: main.o y.tab.o lex.yy.o  hash.o ast.o semantic.o 
+	gcc main.o y.tab.o lex.yy.o  hash.o ast.o semantic.o -o etapa4
 
 main.o: main.c
 	gcc -c main.c
+
+semantic.o: semantic.c
+	gcc -c semantic.c
 
 hash.o: hash.c
 	gcc -c hash.c
@@ -23,4 +26,4 @@ lex.yy.c: scanner.l
 	lex scanner.l
 
 clean:
-	rm *.o etapa3 lex.yy.c y.tab.c
+	rm *.o etapa4 lex.yy.c y.tab.c

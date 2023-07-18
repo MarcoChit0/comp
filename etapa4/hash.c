@@ -17,6 +17,24 @@ HashNode* hashInsert(char* text, int type){
     newnode = (HashNode*) calloc (1, sizeof(HashNode));
     int address = hashAddress(text);
     newnode->type = type;
+    newnode->datatype = NODATATYPE;
+    newnode->text = (char*) calloc (strlen(text)+1, sizeof(char));
+    strcpy(newnode->text, text);
+    newnode->next = Table[address];
+    Table[address] = newnode;
+    return newnode;
+}
+
+HashNode* hashInsertWithDataType(char* text, int type, int datatype){
+    HashNode* newnode;
+    newnode = hashFind(text);
+    if (newnode != NULL){
+        return newnode;
+    }
+    newnode = (HashNode*) calloc (1, sizeof(HashNode));
+    int address = hashAddress(text);
+    newnode->type = type;
+    newnode->datatype = datatype;
     newnode->text = (char*) calloc (strlen(text)+1, sizeof(char));
     strcpy(newnode->text, text);
     newnode->next = Table[address];
@@ -36,7 +54,7 @@ int hashAddress(char* text){
 void hashPrint(){
     for (int i = 0; i < HASHSIZE; i++){
         for (HashNode* node = Table[i]; node; node = node->next){
-            printf("Table[%d] = {%s}, with type = {%d}.\n",i, node->text, node->type);
+            printf("Table[%d] = {%s}, with type = {%d} and datatype = {%d}.\n",i, node->text, node->type, node->datatype);
         }
     }
 }
@@ -84,4 +102,19 @@ void removeChar(char* str, char c){
             );
         }
     }
+}
+
+int hashLookForSymbols(int symbolType)
+{
+    int symbols = 0;
+    for (int i = 0; i < HASHSIZE; i++){
+        for (HashNode* node = Table[i]; node; node = node->next){
+            if (node->type == symbolType)
+            {
+               symbols++;
+               fprintf(stderr, "Symbol [%s, %d] found!\n",node->text, node->type);
+            }
+        }
+    }  
+    return symbols;  
 }

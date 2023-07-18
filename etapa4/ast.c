@@ -46,9 +46,9 @@ void astWrite(AST* root, FILE* file)
 {
     if(root != NULL)
     {
-        char* printBetweenLeftAndRight;
-        char* printAfterRight;
-        char* printBeforeLeft;
+        char* printBetweenLeftAndRight = NULL;
+        char* printAfterRight = NULL;
+        char* printBeforeLeft = NULL;
 
         content(root, &printBeforeLeft, &printBetweenLeftAndRight, &printAfterRight);
         if(strcmp(printBeforeLeft, "") != 0) {fputs(printBeforeLeft, file);}
@@ -61,9 +61,6 @@ void astWrite(AST* root, FILE* file)
 
 void content(AST* node, char** printBeforeLeft, char** printBetweenLeftAndRight, char** printAfterRight)
 {
-    char* pBeforeLeft = NULL;
-    char* pBetweenLeftAndRight = NULL;
-    char* pAfterRight = NULL;
     if(node != NULL)
     {
         switch (node->type)
@@ -71,228 +68,230 @@ void content(AST* node, char** printBeforeLeft, char** printBetweenLeftAndRight,
         case SYMBOL:
             if(node->symbol != NULL)
             {
-                allocAndSetData(&pBetweenLeftAndRight, node->symbol->text);
+                allocAndSetData(printBetweenLeftAndRight, node->symbol->text);
             }
             else
             {
-                allocAndSetData(&pBetweenLeftAndRight, "");
+                allocAndSetData(printBetweenLeftAndRight, "");
             }
-            allocAndSetData(  &pBeforeLeft, "" );
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "" );
+            allocAndSetData(  printAfterRight,  "");
             break;
         case ADD:
-            allocAndSetData(  &pBeforeLeft, "" );
-            allocAndSetData(  &pBetweenLeftAndRight,  " + ");
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "" );
+            allocAndSetData(  printBetweenLeftAndRight,  " + ");
+            allocAndSetData(  printAfterRight,  "");
             break;
         case SUB:
-            allocAndSetData(  &pBeforeLeft, "" );
-            allocAndSetData(  &pBetweenLeftAndRight,  " - ");
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "" );
+            allocAndSetData(  printBetweenLeftAndRight,  " - ");
+            allocAndSetData(  printAfterRight,  "");
             break;
         case MUL:
-            allocAndSetData(  &pBeforeLeft, "" );
-            allocAndSetData(  &pBetweenLeftAndRight,  " * ");
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "" );
+            allocAndSetData(  printBetweenLeftAndRight,  " * ");
+            allocAndSetData(  printAfterRight,  "");
             break;
         case DIV: 
-            allocAndSetData(  &pBeforeLeft, "" );
-            allocAndSetData(  &pBetweenLeftAndRight,  " / ");
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "" );
+            allocAndSetData(  printBetweenLeftAndRight,  " / ");
+            allocAndSetData(  printAfterRight,  "");
             break;
         case LT:
-            allocAndSetData(  &pBeforeLeft, "" );
-            allocAndSetData(  &pBetweenLeftAndRight,  " < ");
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "" );
+            allocAndSetData(  printBetweenLeftAndRight,  " < ");
+            allocAndSetData(  printAfterRight,  "");
             break;
         case GT: 
-            allocAndSetData(  &pBeforeLeft, "" );
-            allocAndSetData(  &pBetweenLeftAndRight,  " > ");
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "" );
+            allocAndSetData(  printBetweenLeftAndRight,  " > ");
+            allocAndSetData(  printAfterRight,  "");
             break;
         case AND: 
-            allocAndSetData(  &pBeforeLeft, "" );
-            allocAndSetData(  &pBetweenLeftAndRight,  " & ");
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "" );
+            allocAndSetData(  printBetweenLeftAndRight,  " & ");
+            allocAndSetData(  printAfterRight,  "");
             break;
         case NOT: 
-            allocAndSetData(  &pBeforeLeft, "" );
-            allocAndSetData(  &pBetweenLeftAndRight,  " ~ ");
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "" );
+            allocAndSetData(  printBetweenLeftAndRight,  " ~ ");
+            allocAndSetData(  printAfterRight,  "");
             break;
         case OR: 
-            allocAndSetData(  &pBeforeLeft, "" );
-            allocAndSetData(  &pBetweenLeftAndRight,  " | ");
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "" );
+            allocAndSetData(  printBetweenLeftAndRight,  " | ");
+            allocAndSetData(  printAfterRight,  "");
             break;
         case GE:  
-            allocAndSetData(  &pBeforeLeft, "" );
-            allocAndSetData(  &pBetweenLeftAndRight,  " >= ");
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "" );
+            allocAndSetData(  printBetweenLeftAndRight,  " >= ");
+            allocAndSetData(  printAfterRight,  "");
             break;
         case LE:  
-            allocAndSetData(  &pBeforeLeft, "" );
-            allocAndSetData(  &pBetweenLeftAndRight,  " <= ");
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "" );
+            allocAndSetData(  printBetweenLeftAndRight,  " <= ");
+            allocAndSetData(  printAfterRight,  "");
             break;
         case EQ:  
-            allocAndSetData(  &pBeforeLeft, "" );
-            allocAndSetData(  &pBetweenLeftAndRight,  " == ");
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "" );
+            allocAndSetData(  printBetweenLeftAndRight,  " == ");
+            allocAndSetData(  printAfterRight,  "");
             break;
         case DIF: 
-            allocAndSetData(  &pBeforeLeft, "" );
-            allocAndSetData(  &pBetweenLeftAndRight,  " != ");
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "" );
+            allocAndSetData(  printBetweenLeftAndRight,  " != ");
+            allocAndSetData(  printAfterRight,  "");
             break;
         case LIST:
-            allocAndSetData(  &pBeforeLeft, "" );
+            allocAndSetData(  printBeforeLeft, "" );
             if(node->right != NULL)
             {
-                allocAndSetData(  &pBetweenLeftAndRight,  ", ");   
+                allocAndSetData(  printBetweenLeftAndRight,  ", ");   
             }
             else
             {
-                allocAndSetData( &pBetweenLeftAndRight, "");
+                allocAndSetData( printBetweenLeftAndRight, "");
             }
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printAfterRight,  "");
             break;
         case FUNCAPP:    
-            allocAndSetData(  &pBeforeLeft, "" );        
-            allocAndSetData(  &pBetweenLeftAndRight,  "(");   
-            allocAndSetData(  &pAfterRight,  ")");
+            allocAndSetData(  printBeforeLeft, "" );        
+            allocAndSetData(  printBetweenLeftAndRight,  "(");   
+            allocAndSetData(  printAfterRight,  ")");
             break;
         case VECACC:            
-            allocAndSetData(  &pBeforeLeft, "" );
-            allocAndSetData(  &pBetweenLeftAndRight,  "[");
+            allocAndSetData(  printBeforeLeft, "" );
+            allocAndSetData(  printBetweenLeftAndRight,  "[");
             if(node->right != NULL && node->right->type == VECATTCMD)
-            { allocAndSetData(  &pAfterRight,  ""); }
-            else { allocAndSetData(  &pAfterRight,  "] "); }
+            { allocAndSetData(  printAfterRight,  ""); }
+            else { allocAndSetData(  printAfterRight,  "] "); }
             break;
         case LITERAIS:            
-            allocAndSetData(  &pBeforeLeft, "" );
-            allocAndSetData(  &pBetweenLeftAndRight,  " ");   
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "" );
+            allocAndSetData(  printBetweenLeftAndRight,  " ");   
+            allocAndSetData(  printAfterRight,  "");
             break;
         case INT:   
-            allocAndSetData(  &pBeforeLeft, "" );
-            allocAndSetData(  &pBetweenLeftAndRight,  "int");        
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "" );
+            allocAndSetData(  printBetweenLeftAndRight,  "int");        
+            allocAndSetData(  printAfterRight,  "");
             break;
         case CHAR:  
-            allocAndSetData(  &pBeforeLeft, "" );
-            allocAndSetData(  &pBetweenLeftAndRight,  "char");      
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "" );
+            allocAndSetData(  printBetweenLeftAndRight,  "char");      
+            allocAndSetData(  printAfterRight,  "");
             break;
         case BOOL:  
-            allocAndSetData(  &pBeforeLeft, "" );
-            allocAndSetData(  &pBetweenLeftAndRight,  "bool");      
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "" );
+            allocAndSetData(  printBetweenLeftAndRight,  "bool");      
+            allocAndSetData(  printAfterRight,  "");
             break;
         case REAL:  
-            allocAndSetData(  &pBeforeLeft, "" );
-            allocAndSetData(  &pBetweenLeftAndRight,  "real");      
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "" );
+            allocAndSetData(  printBetweenLeftAndRight,  "real");      
+            allocAndSetData(  printAfterRight,  "");
             break;
         case INPUT: 
-            allocAndSetData(  &pBeforeLeft, "input(" );
-            allocAndSetData(  &pBetweenLeftAndRight,  ")");   
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "input(" );
+            allocAndSetData(  printBetweenLeftAndRight,  ")");   
+            allocAndSetData(  printAfterRight,  "");
             break;
         case BLOCKCMD:            
-            allocAndSetData(  &pBeforeLeft, "{\n" );
-            allocAndSetData(  &pBetweenLeftAndRight,  "\n}\n");   
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "{\n" );
+            allocAndSetData(  printBetweenLeftAndRight,  "\n}\n");   
+            allocAndSetData(  printAfterRight,  "");
             break;
         case EMPTYCMD:      
-            allocAndSetData(  &pBeforeLeft, "" );      
-            allocAndSetData(  &pBetweenLeftAndRight,  ";\n");   
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "" );      
+            allocAndSetData(  printBetweenLeftAndRight,  ";\n");   
+            allocAndSetData(  printAfterRight,  "");
             break;
         case VARATTCMD: 
-            allocAndSetData(  &pBeforeLeft, "" );                  
-            allocAndSetData(  &pBetweenLeftAndRight,  " = ");   
-            allocAndSetData(  &pAfterRight,  ";\n");
+            allocAndSetData(  printBeforeLeft, "" );                  
+            allocAndSetData(  printBetweenLeftAndRight,  " = ");   
+            allocAndSetData(  printAfterRight,  ";\n");
             break;
         case VECATTCMD:  
-            allocAndSetData(  &pBeforeLeft, "" );                 
-            allocAndSetData(  &pBetweenLeftAndRight,  "] = ");   
-            allocAndSetData(  &pAfterRight,  ";\n");
+            allocAndSetData(  printBeforeLeft, "" );                 
+            allocAndSetData(  printBetweenLeftAndRight,  "] = ");   
+            allocAndSetData(  printAfterRight,  ";\n");
             break;
         case RETURNCMD:     
-            allocAndSetData(  &pBeforeLeft, "return " );              
-            allocAndSetData(  &pBetweenLeftAndRight,  ";\n");   
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "return " );              
+            allocAndSetData(  printBetweenLeftAndRight,  ";\n");   
+            allocAndSetData(  printAfterRight,  "");
             break;
         case COMMANDS:            
-            allocAndSetData(  &pBeforeLeft, "" );
-            allocAndSetData(  &pBetweenLeftAndRight,  "");   
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "" );
+            allocAndSetData(  printBetweenLeftAndRight,  "");   
+            allocAndSetData(  printAfterRight,  "");
             break;
         case OUTPUTCMD:            
-            allocAndSetData(  &pBeforeLeft, "output " );              
-            allocAndSetData(  &pBetweenLeftAndRight,  ";\n");   
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "output " );              
+            allocAndSetData(  printBetweenLeftAndRight,  ";\n");   
+            allocAndSetData(  printAfterRight,  "");
             break;
         case IF:             
-            allocAndSetData(  &pBeforeLeft, "if ( " );              
-            allocAndSetData(  &pBetweenLeftAndRight,  " ) ");   
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "if ( " );              
+            allocAndSetData(  printBetweenLeftAndRight,  " ) ");   
+            allocAndSetData(  printAfterRight,  "");
             break;
         case THENELSE:             
-            allocAndSetData(  &pBeforeLeft, "" );              
-            allocAndSetData(  &pBetweenLeftAndRight,  "\nelse ");   
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "" );              
+            allocAndSetData(  printBetweenLeftAndRight,  "\nelse ");   
+            allocAndSetData(  printAfterRight,  "");
             break;
         case LOOP:             
-            allocAndSetData(  &pBeforeLeft, "loop " );              
-            allocAndSetData(  &pBetweenLeftAndRight,  "");   
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft, "loop " );              
+            allocAndSetData(  printBetweenLeftAndRight,  "");   
+            allocAndSetData(  printAfterRight,  "");
             break;
         case FUNCDEF: 
-            allocAndSetData(  &pBeforeLeft,  "");           
-            allocAndSetData(  &pBetweenLeftAndRight,  "");   
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft,  "");           
+            allocAndSetData(  printBetweenLeftAndRight,  "");   
+            allocAndSetData(  printAfterRight,  "");
             break;
         case HEADER:             
-            allocAndSetData(  &pBeforeLeft,  "");    
-            allocAndSetData(  &pBetweenLeftAndRight,  " ( ");   
-            allocAndSetData(  &pAfterRight,  " ) ");
+            allocAndSetData(  printBeforeLeft,  "");    
+            allocAndSetData(  printBetweenLeftAndRight,  " ( ");   
+            allocAndSetData(  printAfterRight,  " ) ");
             break;
         case TYPENAME:  
-            allocAndSetData(  &pBeforeLeft,  "");               
-            allocAndSetData(  &pBetweenLeftAndRight,  " ");   
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft,  "");               
+            allocAndSetData(  printBetweenLeftAndRight,  " ");   
+            allocAndSetData(  printAfterRight,  "");
             break;
         case VARDEF:             
-            allocAndSetData(  &pBeforeLeft,  "");    
-            allocAndSetData(  &pBetweenLeftAndRight,  " = ");   
-            allocAndSetData(  &pAfterRight,  ";\n");
+            allocAndSetData(  printBeforeLeft,  "");    
+            allocAndSetData(  printBetweenLeftAndRight,  " = ");   
+            allocAndSetData(  printAfterRight,  ";\n");
             break;
         case VECDEF:     
-            allocAndSetData(  &pBeforeLeft,  "");            
-            allocAndSetData(  &pBetweenLeftAndRight,  " [");   
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft,  "");            
+            allocAndSetData(  printBetweenLeftAndRight,  " [");   
+            allocAndSetData(  printAfterRight,  "");
             break;
         case VECSIZEVALUE:   
-            allocAndSetData(  &pBeforeLeft,  "");              
-            allocAndSetData(  &pBetweenLeftAndRight,  "] ");   
-            allocAndSetData(  &pAfterRight,  ";\n");
+            allocAndSetData(  printBeforeLeft,  "");              
+            allocAndSetData(  printBetweenLeftAndRight,  "] ");   
+            allocAndSetData(  printAfterRight,  ";\n");
             break;
         case DECLIST:          
-            allocAndSetData(  &pBeforeLeft,  "");       
-            allocAndSetData(  &pBetweenLeftAndRight,  "");   
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft,  "");       
+            allocAndSetData(  printBetweenLeftAndRight,  "");   
+            allocAndSetData(  printAfterRight,  "");
+            break;
+        case PARENTHESIS:
+            allocAndSetData(  printBeforeLeft,  " (");      
+            allocAndSetData(  printBetweenLeftAndRight,  ") ");   
+            allocAndSetData(  printAfterRight,  "");
             break;
         default: 
-            allocAndSetData(  &pBeforeLeft,  "");    
-            allocAndSetData(  &pBetweenLeftAndRight,  "");
-            allocAndSetData(  &pAfterRight,  "");
+            allocAndSetData(  printBeforeLeft,  "");    
+            allocAndSetData(  printBetweenLeftAndRight,  "");
+            allocAndSetData(  printAfterRight,  "");
             break;
         }
-        allocAndSetData(printBeforeLeft, pBeforeLeft);
-        allocAndSetData(printBetweenLeftAndRight, pBetweenLeftAndRight);
-        allocAndSetData(printAfterRight, pAfterRight);
     }
     else
     {

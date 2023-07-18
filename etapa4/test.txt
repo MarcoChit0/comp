@@ -1,14 +1,13 @@
 \\ UFRGS - Compiladores - Marcelo Johann - 2023/1
 
 char c='x';
-char d='Z';
-int v[10] 'a' 0 0 0 0 0 0 0 0 0;
 int i=1;
 int a.a='A';
 char d=100;
 int matrix[100]; 
 real f=2.5;
 bool b = 0;
+int v[10] 'a' 0 0 0 0 0 0 0 0 0 2.75;
 
 \\\
 Este eh um comentario 
@@ -16,7 +15,7 @@ de multiplas
 linhas
 ///
 
-int main ()
+int main (char a)
   {
   a.a = 0;
   d = d - i;
@@ -24,7 +23,8 @@ int main ()
   v[d] = 55;
   output v[5];
   output d;
-  i = 2;
+\\  i = f;
+\\ f= incn();
 
   output "Digite um numero: \n";
   d = input(int);
@@ -55,7 +55,8 @@ int main ()
 
 int incn (int x, int n )
   {
-  return x + n;
+  return (x+n)*2;
   }
+
 
 \\ end of file

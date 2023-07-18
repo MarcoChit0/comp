@@ -167,7 +167,14 @@ enum asttype{
             LIT               LITERIAS
     */
     VECSIZEVALUE    = 38,
-    DECLIST = 39,
+    DECLIST         = 39,
+    /*
+        PARENTHESIS
+            |
+           EXP
+
+    */
+    PARENTHESIS     = 40,
 };
 
 extern char* filename;
