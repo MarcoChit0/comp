@@ -177,6 +177,49 @@ enum asttype{
     PARENTHESIS     = 40,
 };
 
+static char map[41][256] = {
+    "SYMBOL",
+    "ADD",
+    "SUB",
+    "MUL",
+    "DIV",
+    "LT",
+    "GT",
+    "AND",
+    "NOT",
+    "OR",
+    "GE", 
+    "LE", 
+    "EQ", 
+    "DIF",
+    "LIST",
+    "FUNCAPP",
+    "VECACC",
+    "LITERAIS",
+    "INT",
+    "CHAR",
+    "BOOL",
+    "REAL",
+    "INPUT",
+    "BLOCKCMD",
+    "EMPTYCMD",
+    "VARATTCMD",
+    "VECATTCMD",
+    "RETURNCMD",
+    "COMMANDS",
+    "OUTPUTCMD",
+    "IF",
+    "THENELSE",
+    "LOOP",
+    "FUNCDEF",
+    "HEADER",
+    "TYPENAME",
+    "VARDEF",          
+    "VECDEF",          
+    "VECSIZEVALUE",    
+    "DECLIST",         
+    "PARENTHESIS"};
+
 extern char* filename;
 
 typedef struct astnode{
@@ -184,12 +227,16 @@ typedef struct astnode{
     HashNode* symbol;
     struct astnode* left;
     struct astnode* right;
+    struct astnode* top;
 } AST;
 
-AST* astCreate(int type, HashNode* symbol, AST* left, AST* right);
-void astPrint(AST* root, int calls);
-void astToFile(AST* root);
-void astWrite(AST* root, FILE* file);
-void content(AST*, char**, char**, char**);
-void allocAndSetData(char** destiny, char* source);
+AST*    astCreate(int type, HashNode* symbol, AST* left, AST* right);
+void    astPrint(AST* root, int calls);
+void    astToFile(AST* root);
+void    astWrite(AST* root, FILE* file);
+void    content(AST*, char**, char**, char**);
+void    allocAndSetData(char** destiny, char* source);
+void    astTopMatch(AST* node, AST* top);
+char*   astTypeToString(int type);
+
 #endif

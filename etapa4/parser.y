@@ -71,7 +71,7 @@
 
 
 %%
-programa: listaDeclaracoes {AST* root = $1;  checkAndSetDeclarations(root); checkUndeclared(); checkOperands(root); hashPrint(); astToFile(root); $$ = root;}
+programa: listaDeclaracoes {AST* root = $1;  checkAndSetDeclarations(root, NULL); checkUndeclared(); checkOperands(root); hashPrint(); astToFile(root); $$ = root;}
         ;
 
 listaDeclaracoes: declaracao listaDeclaracoes   {$$ = astCreate(DECLIST, NULL, $1, $2);}

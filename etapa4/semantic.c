@@ -2,11 +2,13 @@
 
 int semanticErrors = 0;
 
-void checkAndSetDeclarations(AST *node)
+void checkAndSetDeclarations(AST *node, AST *top)
 {
     if (!node)
         return;
-    checkAndSetDeclarations(node->left);
+    if (top)
+        astTopMatch(node, top);
+    checkAndSetDeclarations(node->left, node);
     switch (node->type)
     {
         case VARDEF: 
@@ -37,7 +39,7 @@ void checkAndSetDeclarations(AST *node)
         default: 
             break;
     }
-    checkAndSetDeclarations(node->right);
+    checkAndSetDeclarations(node->right, node);
 }
 
 void checkUndeclared()
@@ -104,37 +106,37 @@ void checkOperands(AST* node)
         checkOperands(node->left);
     switch (node->type)
     {
-    case INPUT:                 
-    case PARENTHESIS:           
-    case ADD:                   
-    case SUB:                   
-    case MUL:                   
-    case DIV:                   
-    case LT:                    
-    case GT:                    
-    case GE :                   
-    case LE :                   
-    case EQ :                   
-    case DIF:                   
-    case AND:                   
-    case NOT:                   
-    case OR:                    
-    case VECACC:
-    case FUNCAPP:
+    case INPUT:                
+    case PARENTHESIS:          
+    case ADD:                  
+    case SUB:                  
+    case MUL:                  
+    case DIV:                  
+    case LT:                   
+    case GT:                   
+    case GE :                  
+    case LE :                  
+    case EQ :                  
+    case DIF:                  
+    case AND:                  
+    case NOT:                  
+    case OR:                   
+    case VECACC:               
+    case FUNCAPP:              
         if(checkExpressionType(node) == DATATYPE_ERROR || checkExpressionType(node) == DATATYPE_STRING)
         {
-            fprintf(stderr, "Semantic Error: invalid data type!\n");
+            fprintf(stderr, "Semantic Error: invalid data type %s!\n",astTypeToString(node->type));
             semanticErrors++;
         }
         break;
     case VARATTCMD:
         int left = checkExpressionType(node->left);
         int right = checkExpressionType(node->right);
-        if(checkCompatibilityBetweenDataTypes(left, right) == DATATYPE_ERROR
-        || checkCompatibilityBetweenDataTypes(left, right) == DATATYPE_STRING
-        || node->left->symbol->type != SYMBOL_VARIABLE)
+        if(!checkCompatibilityBetweenDataTypes(left, right)
+        || node->left->symbol->type != SYMBOL_VARIABLE
+        || left == DATATYPE_STRING)
         {
-            fprintf(stderr, "Semantic Error: invalid data type!\n");
+            fprintf(stderr, "Semantic Error: invalid data type %s!\n",astTypeToString(node->type));
             semanticErrors++;  
         }
         break;
@@ -145,7 +147,7 @@ void checkOperands(AST* node)
                 int outputType = checkExpressionType(outputList->left);
                 if(outputType == DATATYPE_ERROR)
                 {
-                    fprintf(stderr, "Semantic Error: invalid data type!\n");
+                    fprintf(stderr, "Semantic Error: invalid data type %s!\n",astTypeToString(node->type));
                     semanticErrors++;                    
                 }
             }
@@ -153,7 +155,17 @@ void checkOperands(AST* node)
     case VECDEF:
         if(checkExpressionType(node) == DATATYPE_ERROR || checkExpressionType(node) == DATATYPE_STRING)
         {
-            fprintf(stderr, "Semantic Error: invalid vector definition!\n");
+            fprintf(stderr, "Semantic Error: invalid data type %s!\n",astTypeToString(node->type));
+            semanticErrors++;  
+        }
+        break;
+    case RETURNCMD:
+        AST* fundef = node;
+        while(fundef!=NULL && fundef->type!=FUNCDEF)
+            fundef = fundef->top;
+        if(!fundef || !checkCompatibilityBetweenDataTypes(checkExpressionType(fundef), checkExpressionType(node->left)))
+        {
+            fprintf(stderr, "Semantic Error: invalid data type %s!\n",astTypeToString(node->type));
             semanticErrors++;  
         }
         break;
@@ -186,6 +198,13 @@ int checkExpressionType(AST* node)
     case PARENTHESIS:
         return checkExpressionType(node->left);
         break;
+    case VARATTCMD:
+        left = checkExpressionType(node->left);
+        right = checkExpressionType(node->right);
+        if(checkCompatibilityBetweenDataTypes(left, right))
+            return left;
+        else
+            return DATATYPE_ERROR;
     // arithmetic operators
     case ADD:
     case SUB: 
@@ -245,18 +264,15 @@ int checkExpressionType(AST* node)
         if(node->left && node->right)
         {
             int vectorType = checkExpressionType(node->left);
-            printf("vector type: %d\n",vectorType);
             if(node->right->left && checkCompatibilityBetweenDataTypes(checkExpressionType(node->right->left), DATATYPE_INT))
             {
                 int vectorSize = atoi(node->right->left->symbol->text);
-                fprintf(stderr, "\n\nvecsize = %d\n\n",vectorSize);
                 if(node->right->right)
                 {
                     int numberOfElements = 0;
                     for(AST* aux = node->right->right; aux != NULL; aux = aux->right)
                     {
                         numberOfElements++;
-                        printf("-> %d\n", checkExpressionType(aux->left));
                         if(!checkCompatibilityBetweenDataTypes(vectorType, checkExpressionType(aux->left)))
                             return DATATYPE_ERROR;                        
                     }
@@ -272,6 +288,25 @@ int checkExpressionType(AST* node)
             return DATATYPE_ERROR;
         break;
     case FUNCAPP:
+        if(node->left && node->left->symbol)
+        {
+            AST* header = findFunctionDefinition(node, node->left->symbol->text);
+            if(!header)
+                return DATATYPE_ERROR;
+            AST* aux = node->right;
+            AST* params = header->right;
+            for(; params != NULL && aux != NULL; params = params->right, aux = aux->right)
+                if(!checkCompatibilityBetweenDataTypes(checkExpressionType(aux->left), checkExpressionType(params->left)))
+                    return DATATYPE_ERROR;
+            if(!params && !aux)
+                return checkExpressionType(node->left);
+            return DATATYPE_ERROR;
+        }
+        else
+            return DATATYPE_ERROR;
+        break;
+    case FUNCDEF:
+    case HEADER:
         return checkExpressionType(node->left);
         break;
     default:
@@ -327,7 +362,6 @@ int     checkCompatibilityBetweenComparationOperatorsDataTypes(int dataType1, in
 
 int     checkCompatibilityBetweenDataTypes(int dataType1, int dataType2) 
 {
-    printf("[%d, %d]\n", dataType1, dataType2);
     if((dataType1 == DATATYPE_INT || dataType1 == DATATYPE_CHAR) && (dataType2 == DATATYPE_INT || dataType2 == DATATYPE_CHAR))
         return TRUE;
     if(dataType1 == DATATYPE_REAL && dataType2 == DATATYPE_REAL)
@@ -337,4 +371,38 @@ int     checkCompatibilityBetweenDataTypes(int dataType1, int dataType2)
     if(dataType1 == DATATYPE_STRING && dataType2 == DATATYPE_STRING)
         return TRUE;
     return FALSE;
+}
+
+AST* findFunctionDefinition(AST* node, char* function)
+{
+    if(!node)
+        return NULL;
+    AST* aux = node;
+    while(aux->top != NULL)
+        aux = aux->top;
+    return findFunctionHeader(aux, function);
+}
+
+int checkFunctionHeader(AST* header, char* function)
+{
+    if(!header)
+        return FALSE;
+    if(header->type == HEADER && header->left && header->left->right && strcmp(header->left->right->symbol->text, function) == 0)
+        return TRUE;
+    return FALSE;
+}
+
+AST* findFunctionHeader(AST* node, char* function)
+{
+    if(!node)
+        return NULL;
+    if(checkFunctionHeader(node, function))
+        return node;
+    AST* left = findFunctionHeader(node->left, function);
+    if(left != NULL)
+        return left;
+    AST* right = findFunctionHeader(node->right, function);
+    if(right != NULL)
+        return right;
+    return NULL;
 }

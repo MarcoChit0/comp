@@ -18,7 +18,7 @@ enum symbolsEnum
 
 extern int semanticErrors;
 
-void    checkAndSetDeclarations(AST* node);
+void    checkAndSetDeclarations(AST *node, AST *top);
 void    checkUndeclared();
 void    setHashSymbol(AST *node, int symbol);
 int     getSemanticErrors();
@@ -29,4 +29,7 @@ int     checkCompatibilityBetweenArithmeticOperatorsDataTypes(int dataType1, int
 int     checkCompatibilityBetweenComparationOperatorsDataTypes(int dataType1, int dataType2);
 int     checkCompatibilityBetweenLogicOperatorsDataTypes(int dataType1, int dataType2);
 int     checkCompatibilityBetweenDataTypes(int dataType1, int dataType2); 
+AST*    findFunctionDefinition(AST* node, char* function);
+int     checkFunctionHeader(AST* header, char* function);
+AST*    findFunctionHeader(AST* node, char* function);
 #endif

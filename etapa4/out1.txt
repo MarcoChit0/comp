@@ -5,7 +5,7 @@ char d = 100;
 int matrix [100] ;
 real f = 2.5;
 bool b = 0;
-int v [10] 'a' 0 0 0 0 0 0 0 0 0 2.75 ;
+int v [10] 'a' 0 0 0 0 0 0 0 0 2 ;
 int main ( char a ) {
 a.a = 0;
 d = d - i;
@@ -17,13 +17,12 @@ output "Digite um numero: \n";
 d = input(int);
 output "Digite mais um numero: \n";
 if ( i < 10 ) loop {
-i = incn(i, 1);
+i = incn(i, i);
 d = incn(d, d);
 
 }
 output "Incrementado algumas vezes a fica ",  (2 + x) , a, "\n";
 if ( a == 15 ) {
-a = a + 1;
 output "A era=15\n";
 
 }
@@ -45,6 +44,6 @@ else output "OK!\n";
 
 }
 int incn ( int x, int n ) {
-return  (x + n)  * 2;
+return x + n;
 
 }

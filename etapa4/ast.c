@@ -7,6 +7,7 @@ AST* astCreate(int type, HashNode* symbol, AST* left, AST* right)
     newnode->left = left;
     newnode->right = right;
     newnode->symbol = symbol;
+    newnode->top = NULL;
     return newnode;
 }
 
@@ -20,7 +21,7 @@ void astPrint(AST* root, int calls)
         astPrint(root->left, calls+1);
         astPrint(root->right, calls+1);
         for(int i = 0; i < calls; i++)
-            fprintf(stderr, "\t");
+            fprintf(stderr, " ");
         fprintf(stderr, ")\n");        
     }
 
@@ -305,4 +306,14 @@ void allocAndSetData(char** destiny, char* source)
 {
     *destiny = (char*) calloc(1, strlen(source) + 1);
     strcpy(*destiny, source);
+}
+
+void astTopMatch(AST* node, AST* top)
+{
+    node->top = top;
+}
+
+char* astTypeToString(int type)
+{   
+    return map[type];
 }

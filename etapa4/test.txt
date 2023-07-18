@@ -7,7 +7,7 @@ char d=100;
 int matrix[100]; 
 real f=2.5;
 bool b = 0;
-int v[10] 'a' 0 0 0 0 0 0 0 0 0 2.75;
+int v[10] 'a' 0 0 0 0 0 0 0 0 2;
 
 \\\
 Este eh um comentario 
@@ -32,15 +32,13 @@ int main (char a)
 
   if (i<10) loop
     {
-    i = incn(i,1);
+    i = incn(i, i);
     d = incn(d,d);
     }
 
   output "Incrementado algumas vezes a fica ",(2+x),a,"\n";
-
   if (a==15)
     {
-    a = a + 1;
     output "A era=15\n";
     }  
     
@@ -53,9 +51,9 @@ int main (char a)
   {{}} {}
   }
 
-int incn (int x, int n )
+int incn (int x, int n)
   {
-  return (x+n)*2;
+  return x+n;
   }
 
 
