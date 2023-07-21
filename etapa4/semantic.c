@@ -125,7 +125,7 @@ void checkOperands(AST* node)
     case FUNCAPP:              
         if(checkExpressionType(node) == DATATYPE_ERROR || checkExpressionType(node) == DATATYPE_STRING)
         {
-            fprintf(stderr, "Semantic Error: invalid data type %s!\n",astTypeToString(node->type));
+            fprintf(stderr, "Semantic Error: command %s with data type error at line #%d!\n",astTypeToString(node->type), node->line);
             semanticErrors++;
         }
         break;
@@ -136,7 +136,7 @@ void checkOperands(AST* node)
         || node->left->symbol->type != SYMBOL_VARIABLE
         || left == DATATYPE_STRING)
         {
-            fprintf(stderr, "Semantic Error: invalid data type %s!\n",astTypeToString(node->type));
+            fprintf(stderr, "Semantic Error: command %s with data type error at line #%d!\n",astTypeToString(node->type), node->line);
             semanticErrors++;  
         }
         break;
@@ -147,7 +147,7 @@ void checkOperands(AST* node)
                 int outputType = checkExpressionType(outputList->left);
                 if(outputType == DATATYPE_ERROR)
                 {
-                    fprintf(stderr, "Semantic Error: invalid data type %s!\n",astTypeToString(node->type));
+                    fprintf(stderr, "Semantic Error: command %s with data type error at line #%d!\n",astTypeToString(node->type), node->line);
                     semanticErrors++;                    
                 }
             }
@@ -155,7 +155,7 @@ void checkOperands(AST* node)
     case VECDEF:
         if(checkExpressionType(node) == DATATYPE_ERROR || checkExpressionType(node) == DATATYPE_STRING)
         {
-            fprintf(stderr, "Semantic Error: invalid data type %s!\n",astTypeToString(node->type));
+            fprintf(stderr, "Semantic Error: command %s with data type error at line #%d!\n",astTypeToString(node->type), node->line);
             semanticErrors++;  
         }
         break;
@@ -165,7 +165,7 @@ void checkOperands(AST* node)
             fundef = fundef->top;
         if(!fundef || !checkCompatibilityBetweenDataTypes(checkExpressionType(fundef), checkExpressionType(node->left)))
         {
-            fprintf(stderr, "Semantic Error: invalid data type %s!\n",astTypeToString(node->type));
+            fprintf(stderr, "Semantic Error: command %s with data type error at line #%d!\n",astTypeToString(node->type), node->line);
             semanticErrors++;  
         }
         break;
@@ -184,7 +184,13 @@ int checkExpressionType(AST* node)
     switch (node->type)
     {
     case SYMBOL:
-        return node->symbol->datatype;
+        if(node->symbol && node->symbol->type != SYMBOL_FUNCTION && node->symbol->type != SYMBOL_VECTOR)
+            return node->symbol->datatype;
+        else
+        {
+            fprintf(stderr, "Semantic Error: trying to use a symbols that is not a varible as a variable!\n");
+            return DATATYPE_ERROR;
+        }
         break;
     case TYPENAME: 
         return checkExpressionType(node->right);
@@ -237,34 +243,43 @@ int checkExpressionType(AST* node)
         break;
     //////////////////
     case VECACC:
-        if(node->right && node->right->type == VECATTCMD)
+        if(node->left && node->left->symbol && node->left->symbol->type == SYMBOL_VECTOR)
         {
-            int vecType = checkExpressionType(node->left);
-            int indexType = checkExpressionType(node->right->left);
-            int valueType = checkExpressionType(node->right->right);
-            if(
-                (indexType == DATATYPE_INT || indexType == DATATYPE_CHAR)&&         
-                (checkCompatibilityBetweenDataTypes(vecType, valueType))&&
-                (vecType != DATATYPE_STRING)
-            )
-                return vecType;
+            int vecType = node->left->symbol->datatype;
+            if(node->right && node->right->type == VECATTCMD)
+            {
+                int indexType = node->right->left->symbol->datatype;
+                int valueType = node->right->right->symbol->datatype;
+                if(
+                    (indexType == DATATYPE_INT || indexType == DATATYPE_CHAR)&&         
+                    (checkCompatibilityBetweenDataTypes(vecType, valueType))&&
+                    (vecType != DATATYPE_STRING)
+                )
+                    return vecType;
+                else
+                    return DATATYPE_ERROR;
+            }
             else
-                return DATATYPE_ERROR;
+            {
+                right = node->right->symbol->datatype;
+                if(right == DATATYPE_INT || right == DATATYPE_CHAR)
+                    return vecType;
+                else
+                    return DATATYPE_ERROR;            
+            }            
         }
         else
         {
-            right = checkExpressionType(node->right);
-            if(right == DATATYPE_INT || right == DATATYPE_CHAR)
-                return checkExpressionType(node->left);
-            else
-                return DATATYPE_ERROR;            
+            fprintf(stderr, "Semantic Error: using a nonvector variable as vector!\n");
+            return DATATYPE_ERROR;
         }
+
         break;
     case VECDEF:
-        if(node->left && node->right)
+        if(node->left && node->left && node->left->right && node->left->right->symbol && node->left->right->symbol->type == SYMBOL_VECTOR )
         {
-            int vectorType = checkExpressionType(node->left);
-            if(node->right->left && checkCompatibilityBetweenDataTypes(checkExpressionType(node->right->left), DATATYPE_INT))
+            int vectorType = node->left->right->symbol->datatype;
+            if(node->right && node->right->left && node->right->left->symbol && checkCompatibilityBetweenDataTypes(node->right->left->symbol->datatype, DATATYPE_INT))
             {
                 int vectorSize = atoi(node->right->left->symbol->text);
                 if(node->right->right)
@@ -273,11 +288,17 @@ int checkExpressionType(AST* node)
                     for(AST* aux = node->right->right; aux != NULL; aux = aux->right)
                     {
                         numberOfElements++;
-                        if(!checkCompatibilityBetweenDataTypes(vectorType, checkExpressionType(aux->left)))
+                        if(!aux->left->symbol || !checkCompatibilityBetweenDataTypes(vectorType, aux->left->symbol->datatype))
+                        {
+                            fprintf(stderr, "Semantic Error: incompatible types of vector and parameters on vector definition\n");
                             return DATATYPE_ERROR;                        
+                        }
                     }
                     if(numberOfElements != vectorSize)
+                    {
+                        fprintf(stderr, "Semantic Error: incompatible size of vector and parameters on vector definition\n");
                         return DATATYPE_ERROR;
+                    }
                 }
                 return vectorType;
             }
@@ -285,31 +306,50 @@ int checkExpressionType(AST* node)
                 return DATATYPE_ERROR;
         }
         else
+        {
+            fprintf(stderr, "Semantic Error: using a nonvector variable as vector!\n");
             return DATATYPE_ERROR;
+        }
         break;
     case FUNCAPP:
-        if(node->left && node->left->symbol)
+        if(node->left && node->left->symbol && node->left->symbol->type == SYMBOL_FUNCTION)
         {
+            int functionType = node->left->symbol->datatype;
             AST* header = findFunctionDefinition(node, node->left->symbol->text);
             if(!header)
+            {
+                fprintf(stderr, "Semantic Error: did not find function definition!\n");
                 return DATATYPE_ERROR;
+            }
             AST* aux = node->right;
             AST* params = header->right;
             for(; params != NULL && aux != NULL; params = params->right, aux = aux->right)
                 if(!checkCompatibilityBetweenDataTypes(checkExpressionType(aux->left), checkExpressionType(params->left)))
+                {
+                    fprintf(stderr, "Semantic Error: incompatile types between function parameters and function definition!\n");
                     return DATATYPE_ERROR;
+                }
             if(!params && !aux)
-                return checkExpressionType(node->left);
+                return functionType;
+            fprintf(stderr, "Semantic Error: different sizes between #parameters in function call and #parameters in function definition!\n");
             return DATATYPE_ERROR;
         }
         else
-            return DATATYPE_ERROR;
+        {
+            fprintf(stderr, "Semantic Error: trying to call a symbol that is not function as a function!\n");
+        }
         break;
     case FUNCDEF:
-    case HEADER:
         return checkExpressionType(node->left);
         break;
+    case HEADER:
+        if (node->left && node->left->right && node->left->right->symbol && node->left->right->symbol->type == SYMBOL_FUNCTION)
+            return node->left->right->symbol->datatype;
+        else
+            return DATATYPE_ERROR;
+        break;
     default:
+        return DATATYPE_ERROR;
         break;
     }
 }

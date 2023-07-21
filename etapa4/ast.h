@@ -228,9 +228,10 @@ typedef struct astnode{
     struct astnode* left;
     struct astnode* right;
     struct astnode* top;
+    int line;
 } AST;
 
-AST*    astCreate(int type, HashNode* symbol, AST* left, AST* right);
+AST*    astCreate(int type, HashNode* symbol, AST* left, AST* right, int line);
 void    astPrint(AST* root, int calls);
 void    astToFile(AST* root);
 void    astWrite(AST* root, FILE* file);

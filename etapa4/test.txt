@@ -27,7 +27,7 @@ int main (char a)
 \\ f= incn();
 
   output "Digite um numero: \n";
-  d = input(int);
+  d = input(char);
   output "Digite mais um numero: \n";
 
   if (i<10) loop

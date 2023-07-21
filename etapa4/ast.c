@@ -1,5 +1,5 @@
 #include "ast.h"
-AST* astCreate(int type, HashNode* symbol, AST* left, AST* right)
+AST* astCreate(int type, HashNode* symbol, AST* left, AST* right, int line)
 {
     AST* newnode;
     newnode = (AST*) calloc(1, sizeof(AST));
@@ -8,6 +8,7 @@ AST* astCreate(int type, HashNode* symbol, AST* left, AST* right)
     newnode->right = right;
     newnode->symbol = symbol;
     newnode->top = NULL;
+    newnode->line = line;
     return newnode;
 }
 
