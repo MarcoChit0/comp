@@ -21,9 +21,10 @@ enum datatypesEnum
 #define SYMBOLS
 enum symbolsEnum
 {
-    SYMBOL_VARIABLE = 0,
-    SYMBOL_VECTOR = 1,
-    SYMBOL_FUNCTION = 2,
+    SYMBOL_VARIABLE=0,
+    SYMBOL_VECTOR=1,
+    SYMBOL_FUNCTION=2,
+    SYMBOL_LABEL=3,
 };
 
 typedef struct hashnode
@@ -42,6 +43,7 @@ HashNode*   hashFind(char* text);
 int         hashLookForSymbols(int);
 HashNode*   hashInsertWithDataType(char* text, int type, int datatype);
 HashNode*   makeTemp();
+HashNode*   makeLabel();
 
 int         isRunning(void);
 void        initMe(void);

@@ -11,13 +11,13 @@ void checkAndSetDeclarations(AST *node, AST *top)
     checkAndSetDeclarations(node->left, node);
     switch (node->type)
     {
-        case VARDEF: 
+        case AST_VARDEF: 
             setHashSymbol(node, SYMBOL_VARIABLE); 
             break;
-        case VECDEF: 
+        case AST_VECDEF: 
             setHashSymbol(node, SYMBOL_VECTOR); 
             break;
-        case FUNCDEF:
+        case AST_FUNCDEF:
             /*
             node = FUNDEF
             node->left = HEADER
@@ -75,16 +75,16 @@ void setHashSymbol(AST *node, int symbol)
         // updates datatype of hash node
         switch (node->left->left->type)
         {
-            case INT:
+            case AST_INT:
                 node->left->right->symbol->datatype = DATATYPE_INT;
                 break;
-            case CHAR:
+            case AST_CHAR:
                 node->left->right->symbol->datatype = DATATYPE_CHAR;
                 break;
-            case BOOL:
+            case AST_BOOL:
                 node->left->right->symbol->datatype = DATATYPE_BOOL;
                 break;
-            case REAL:
+            case AST_REAL:
                 node->left->right->symbol->datatype = DATATYPE_REAL;
                 break;
             default:
@@ -106,30 +106,30 @@ void checkOperands(AST* node)
         checkOperands(node->left);
     switch (node->type)
     {
-    case INPUT:                
-    case PARENTHESIS:          
-    case ADD:                  
-    case SUB:                  
-    case MUL:                  
-    case DIV:                  
-    case LT:                   
-    case GT:                   
-    case GE :                  
-    case LE :                  
-    case EQ :                  
-    case DIF:                  
-    case AND:                  
-    case NOT:                  
-    case OR:                   
-    case VECACC:               
-    case FUNCAPP:              
+    case AST_INPUT:                
+    case AST_PARENTHESIS:          
+    case AST_ADD:                  
+    case AST_SUB:                  
+    case AST_MUL:                  
+    case AST_DIV:                  
+    case AST_LT:                   
+    case AST_GT:                   
+    case AST_GE :                  
+    case AST_LE :                  
+    case AST_EQ :                  
+    case AST_DIF:                  
+    case AST_AND:                  
+    case AST_NOT:                  
+    case AST_OR:                   
+    case AST_VECACC:               
+    case AST_FUNCAPP:              
         if(checkExpressionType(node) == DATATYPE_ERROR || checkExpressionType(node) == DATATYPE_STRING)
         {
             fprintf(stderr, "Semantic Error: command %s with data type error at line #%d!\n",astTypeToString(node->type), node->line);
             semanticErrors++;
         }
         break;
-    case VARATTCMD:
+    case AST_VARATTCMD:
         {
             int left = checkExpressionType(node->left);
             int right = checkExpressionType(node->right);
@@ -142,7 +142,7 @@ void checkOperands(AST* node)
             }
         }
         break;
-    case OUTPUTCMD:
+    case AST_OUTPUTCMD:
         if(node->left)
             for(AST* outputList = node->left; outputList != NULL; outputList = outputList->right)
             {
@@ -154,17 +154,17 @@ void checkOperands(AST* node)
                 }
             }
         break;
-    case VECDEF:
+    case AST_VECDEF:
         if(checkExpressionType(node) == DATATYPE_ERROR || checkExpressionType(node) == DATATYPE_STRING)
         {
             fprintf(stderr, "Semantic Error: command %s with data type error at line #%d!\n",astTypeToString(node->type), node->line);
             semanticErrors++;  
         }
         break;
-    case RETURNCMD:
+    case AST_RETURNCMD:
         {
             AST* fundef = node;
-            while(fundef!=NULL && fundef->type!=FUNCDEF)
+            while(fundef!=NULL && fundef->type!=AST_FUNCDEF)
                 fundef = fundef->top;
             if(!fundef || !checkCompatibilityBetweenDataTypes(checkExpressionType(fundef), checkExpressionType(node->left)))
             {
@@ -187,7 +187,7 @@ int checkExpressionType(AST* node)
     int left, right;
     switch (node->type)
     {
-    case SYMBOL:
+    case AST_SYMBOL:
         if(node->symbol && node->symbol->type != SYMBOL_FUNCTION && node->symbol->type != SYMBOL_VECTOR)
             return node->symbol->datatype;
         else
@@ -196,19 +196,19 @@ int checkExpressionType(AST* node)
             return DATATYPE_ERROR;
         }
         break;
-    case TYPENAME: 
+    case AST_TYPENAME: 
         return checkExpressionType(node->right);
         break;
-    case INPUT:
+    case AST_INPUT:
         if(node->left)
             return astTypeToDataType(node->left->type);
         else
             return DATATYPE_ERROR;
         break;
-    case PARENTHESIS:
+    case AST_PARENTHESIS:
         return checkExpressionType(node->left);
         break;
-    case VARATTCMD:
+    case AST_VARATTCMD:
         left = checkExpressionType(node->left);
         right = checkExpressionType(node->right);
         if(checkCompatibilityBetweenDataTypes(left, right))
@@ -216,41 +216,41 @@ int checkExpressionType(AST* node)
         else
             return DATATYPE_ERROR;
     // arithmetic operators
-    case ADD:
-    case SUB: 
-    case MUL: 
-    case DIV:
+    case AST_ADD:
+    case AST_SUB: 
+    case AST_MUL: 
+    case AST_DIV:
         left = checkExpressionType(node->left);
         right = checkExpressionType(node->right);
         return checkCompatibilityBetweenArithmeticOperatorsDataTypes(left, right);
         break;
     ///////////////////////
     // comparation operators
-    case LT:
-    case GT:
-    case GE :
-    case LE :
-    case EQ :
-    case DIF:
+    case AST_LT:
+    case AST_GT:
+    case AST_GE :
+    case AST_LE :
+    case AST_EQ :
+    case AST_DIF:
         left = checkExpressionType(node->left);
         right = checkExpressionType(node->right);
         return checkCompatibilityBetweenComparationOperatorsDataTypes(left, right);
         break;
     ////////////////////////
     // logic operators
-    case AND:
-    case NOT:
-    case OR:
+    case AST_AND:
+    case AST_NOT:
+    case AST_OR:
         left = checkExpressionType(node->left);
         right = checkExpressionType(node->right);
         return checkCompatibilityBetweenLogicOperatorsDataTypes(left, right);
         break;
     //////////////////
-    case VECACC:
+    case AST_VECACC:
         if(node->left && node->left->symbol && node->left->symbol->type == SYMBOL_VECTOR)
         {
             int vecType = node->left->symbol->datatype;
-            if(node->right && node->right->type == VECATTCMD)
+            if(node->right && node->right->type == AST_VECATTCMD)
             {
                 int indexType = checkExpressionType(node->right->left);
                 int valueType = checkExpressionType(node->right->right);
@@ -279,7 +279,7 @@ int checkExpressionType(AST* node)
         }
 
         break;
-    case VECDEF:
+    case AST_VECDEF:
         if(node->left && node->left && node->left->right && node->left->right->symbol && node->left->right->symbol->type == SYMBOL_VECTOR )
         {
             int vectorType = node->left->right->symbol->datatype;
@@ -315,7 +315,7 @@ int checkExpressionType(AST* node)
             return DATATYPE_ERROR;
         }
         break;
-    case FUNCAPP:
+    case AST_FUNCAPP:
         if(node->left && node->left->symbol && node->left->symbol->type == SYMBOL_FUNCTION)
         {
             int functionType = node->left->symbol->datatype;
@@ -343,10 +343,10 @@ int checkExpressionType(AST* node)
             fprintf(stderr, "Semantic Error: trying to call a symbol that is not function as a function!\n");
         }
         break;
-    case FUNCDEF:
+    case AST_FUNCDEF:
         return checkExpressionType(node->left);
         break;
-    case HEADER:
+    case AST_HEADER:
         if (node->left && node->left->right && node->left->right->symbol && node->left->right->symbol->type == SYMBOL_FUNCTION)
             return node->left->right->symbol->datatype;
         else
@@ -363,16 +363,16 @@ int astTypeToDataType(int astType)
 {
     switch (astType)
     {
-    case INT:
+    case AST_INT:
         return DATATYPE_INT;
         break;
-    case CHAR:
+    case AST_CHAR:
         return DATATYPE_CHAR;
         break;
-    case REAL:
+    case AST_REAL:
         return DATATYPE_REAL;
         break;
-    case BOOL:
+    case AST_BOOL:
         return DATATYPE_BOOL;
         break;
     default:    
@@ -432,7 +432,7 @@ int checkFunctionHeader(AST* header, char* function)
 {
     if(!header)
         return FALSE;
-    if(header->type == HEADER && header->left && header->left->right && strcmp(header->left->right->symbol->text, function) == 0)
+    if(header->type == AST_HEADER && header->left && header->left->right && strcmp(header->left->right->symbol->text, function) == 0)
         return TRUE;
     return FALSE;
 }

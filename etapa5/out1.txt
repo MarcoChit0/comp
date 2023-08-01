@@ -1,0 +1,33 @@
+int i = 2;
+i = input(char);
+i = 1 + 1;
+int v [3] 'a' 'b' 'c' ;
+i = v[2] ;
+v[3] = operation(v[1] , v[2] );
+int main (  ) {
+{
+
+}
+{
+{
+
+}
+
+}
+output "robson", "cleber", "rodolfo", v[2]  + i;
+;
+return 3 + i + v[2]  - v[1] ;
+
+}
+int operation ( int n, int m ) {
+if ( m == 0 | n <= 0 ) return 1;
+if ( n > 0 ) loop {
+m = m * 2;
+n = n - 1;
+
+}
+if ( m >= n ) return n + m + 1;
+
+else return 0;
+
+}

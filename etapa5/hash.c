@@ -121,8 +121,16 @@ int hashLookForSymbols(int symbolType)
 
 HashNode*   makeTemp()
 {
-    static int serial = 0;
+    static int temps = 0;
     char buffer[255] = "";
-    sprintf(buffer, "@@@@@@@@@@@@@@@@@@@jvfbnviwofnhui2hwhwchfhienhnvhwhvhewiw0w0wuwhvbw-h-whvhvw-vhfhwvfuhw-hvw____%d", serial++);
+    sprintf(buffer, "@@temp@@%d@@", temps++);
     hashInsert(buffer, SYMBOL_VARIABLE);
+}
+
+HashNode*   makeLabel()
+{
+    static int labels = 0;
+    char buffer[255] = "";
+    sprintf(buffer, "@@label@@%d@@", labels++);
+    hashInsert(buffer, SYMBOL_LABEL);
 }

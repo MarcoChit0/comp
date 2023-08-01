@@ -67,7 +67,7 @@ void content(AST* node, char** printBeforeLeft, char** printBetweenLeftAndRight,
     {
         switch (node->type)
         {
-        case SYMBOL:
+        case AST_SYMBOL:
             if(node->symbol != NULL)
             {
                 allocAndSetData(printBetweenLeftAndRight, node->symbol->text);
@@ -79,72 +79,72 @@ void content(AST* node, char** printBeforeLeft, char** printBetweenLeftAndRight,
             allocAndSetData(  printBeforeLeft, "" );
             allocAndSetData(  printAfterRight,  "");
             break;
-        case ADD:
+        case AST_ADD:
             allocAndSetData(  printBeforeLeft, "" );
             allocAndSetData(  printBetweenLeftAndRight,  " + ");
             allocAndSetData(  printAfterRight,  "");
             break;
-        case SUB:
+        case AST_SUB:
             allocAndSetData(  printBeforeLeft, "" );
             allocAndSetData(  printBetweenLeftAndRight,  " - ");
             allocAndSetData(  printAfterRight,  "");
             break;
-        case MUL:
+        case AST_MUL:
             allocAndSetData(  printBeforeLeft, "" );
             allocAndSetData(  printBetweenLeftAndRight,  " * ");
             allocAndSetData(  printAfterRight,  "");
             break;
-        case DIV: 
+        case AST_DIV: 
             allocAndSetData(  printBeforeLeft, "" );
             allocAndSetData(  printBetweenLeftAndRight,  " / ");
             allocAndSetData(  printAfterRight,  "");
             break;
-        case LT:
+        case AST_LT:
             allocAndSetData(  printBeforeLeft, "" );
             allocAndSetData(  printBetweenLeftAndRight,  " < ");
             allocAndSetData(  printAfterRight,  "");
             break;
-        case GT: 
+        case AST_GT: 
             allocAndSetData(  printBeforeLeft, "" );
             allocAndSetData(  printBetweenLeftAndRight,  " > ");
             allocAndSetData(  printAfterRight,  "");
             break;
-        case AND: 
+        case AST_AND: 
             allocAndSetData(  printBeforeLeft, "" );
             allocAndSetData(  printBetweenLeftAndRight,  " & ");
             allocAndSetData(  printAfterRight,  "");
             break;
-        case NOT: 
+        case AST_NOT: 
             allocAndSetData(  printBeforeLeft, "" );
             allocAndSetData(  printBetweenLeftAndRight,  " ~ ");
             allocAndSetData(  printAfterRight,  "");
             break;
-        case OR: 
+        case AST_OR: 
             allocAndSetData(  printBeforeLeft, "" );
             allocAndSetData(  printBetweenLeftAndRight,  " | ");
             allocAndSetData(  printAfterRight,  "");
             break;
-        case GE:  
+        case AST_GE:  
             allocAndSetData(  printBeforeLeft, "" );
             allocAndSetData(  printBetweenLeftAndRight,  " >= ");
             allocAndSetData(  printAfterRight,  "");
             break;
-        case LE:  
+        case AST_LE:  
             allocAndSetData(  printBeforeLeft, "" );
             allocAndSetData(  printBetweenLeftAndRight,  " <= ");
             allocAndSetData(  printAfterRight,  "");
             break;
-        case EQ:  
+        case AST_EQ:  
             allocAndSetData(  printBeforeLeft, "" );
             allocAndSetData(  printBetweenLeftAndRight,  " == ");
             allocAndSetData(  printAfterRight,  "");
             break;
-        case DIF: 
+        case AST_DIF: 
             allocAndSetData(  printBeforeLeft, "" );
             allocAndSetData(  printBetweenLeftAndRight,  " != ");
             allocAndSetData(  printAfterRight,  "");
             break;
-        case LIST:
+        case AST_LIST:
             allocAndSetData(  printBeforeLeft, "" );
             if(node->right != NULL)
             {
@@ -156,49 +156,49 @@ void content(AST* node, char** printBeforeLeft, char** printBetweenLeftAndRight,
             }
             allocAndSetData(  printAfterRight,  "");
             break;
-        case FUNCAPP:    
+        case AST_FUNCAPP:    
             allocAndSetData(  printBeforeLeft, "" );        
             allocAndSetData(  printBetweenLeftAndRight,  "(");   
             allocAndSetData(  printAfterRight,  ")");
             break;
-        case VECACC:            
+        case AST_VECACC:            
             allocAndSetData(  printBeforeLeft, "" );
             allocAndSetData(  printBetweenLeftAndRight,  "[");
-            if(node->right != NULL && node->right->type == VECATTCMD)
+            if(node->right != NULL && node->right->type == AST_VECATTCMD)
             { allocAndSetData(  printAfterRight,  ""); }
             else { allocAndSetData(  printAfterRight,  "] "); }
             break;
-        case LITERAIS:            
+        case AST_LITERAIS:            
             allocAndSetData(  printBeforeLeft, "" );
             allocAndSetData(  printBetweenLeftAndRight,  " ");   
             allocAndSetData(  printAfterRight,  "");
             break;
-        case INT:   
+        case AST_INT:   
             allocAndSetData(  printBeforeLeft, "" );
             allocAndSetData(  printBetweenLeftAndRight,  "int");        
             allocAndSetData(  printAfterRight,  "");
             break;
-        case CHAR:  
+        case AST_CHAR:  
             allocAndSetData(  printBeforeLeft, "" );
             allocAndSetData(  printBetweenLeftAndRight,  "char");      
             allocAndSetData(  printAfterRight,  "");
             break;
-        case BOOL:  
+        case AST_BOOL:  
             allocAndSetData(  printBeforeLeft, "" );
             allocAndSetData(  printBetweenLeftAndRight,  "bool");      
             allocAndSetData(  printAfterRight,  "");
             break;
-        case REAL:  
+        case AST_REAL:  
             allocAndSetData(  printBeforeLeft, "" );
             allocAndSetData(  printBetweenLeftAndRight,  "real");      
             allocAndSetData(  printAfterRight,  "");
             break;
-        case INPUT: 
+        case AST_INPUT: 
             allocAndSetData(  printBeforeLeft, "input(" );
             allocAndSetData(  printBetweenLeftAndRight,  ")");   
             allocAndSetData(  printAfterRight,  "");
             break;
-        case BLOCKCMD:            
+        case AST_BLOCKCMD:            
             allocAndSetData(  printBeforeLeft, "{\n" );
             allocAndSetData(  printBetweenLeftAndRight,  "\n}\n");   
             allocAndSetData(  printAfterRight,  "");
@@ -208,82 +208,82 @@ void content(AST* node, char** printBeforeLeft, char** printBetweenLeftAndRight,
             allocAndSetData(  printBetweenLeftAndRight,  ";\n");   
             allocAndSetData(  printAfterRight,  "");
             break;
-        case VARATTCMD: 
+        case AST_VARATTCMD: 
             allocAndSetData(  printBeforeLeft, "" );                  
             allocAndSetData(  printBetweenLeftAndRight,  " = ");   
             allocAndSetData(  printAfterRight,  ";\n");
             break;
-        case VECATTCMD:  
+        case AST_VECATTCMD:  
             allocAndSetData(  printBeforeLeft, "" );                 
             allocAndSetData(  printBetweenLeftAndRight,  "] = ");   
             allocAndSetData(  printAfterRight,  ";\n");
             break;
-        case RETURNCMD:     
+        case AST_RETURNCMD:     
             allocAndSetData(  printBeforeLeft, "return " );              
             allocAndSetData(  printBetweenLeftAndRight,  ";\n");   
             allocAndSetData(  printAfterRight,  "");
             break;
-        case COMMANDS:            
+        case AST_COMMANDS:            
             allocAndSetData(  printBeforeLeft, "" );
             allocAndSetData(  printBetweenLeftAndRight,  "");   
             allocAndSetData(  printAfterRight,  "");
             break;
-        case OUTPUTCMD:            
+        case AST_OUTPUTCMD:            
             allocAndSetData(  printBeforeLeft, "output " );              
             allocAndSetData(  printBetweenLeftAndRight,  ";\n");   
             allocAndSetData(  printAfterRight,  "");
             break;
-        case IF:             
+        case AST_IF:             
             allocAndSetData(  printBeforeLeft, "if ( " );              
             allocAndSetData(  printBetweenLeftAndRight,  " ) ");   
             allocAndSetData(  printAfterRight,  "");
             break;
-        case THENELSE:             
+        case AST_THENELSE:             
             allocAndSetData(  printBeforeLeft, "" );              
             allocAndSetData(  printBetweenLeftAndRight,  "\nelse ");   
             allocAndSetData(  printAfterRight,  "");
             break;
-        case LOOP:             
+        case AST_LOOP:             
             allocAndSetData(  printBeforeLeft, "loop " );              
             allocAndSetData(  printBetweenLeftAndRight,  "");   
             allocAndSetData(  printAfterRight,  "");
             break;
-        case FUNCDEF: 
+        case AST_FUNCDEF: 
             allocAndSetData(  printBeforeLeft,  "");           
             allocAndSetData(  printBetweenLeftAndRight,  "");   
             allocAndSetData(  printAfterRight,  "");
             break;
-        case HEADER:             
+        case AST_HEADER:             
             allocAndSetData(  printBeforeLeft,  "");    
             allocAndSetData(  printBetweenLeftAndRight,  " ( ");   
             allocAndSetData(  printAfterRight,  " ) ");
             break;
-        case TYPENAME:  
+        case AST_TYPENAME:  
             allocAndSetData(  printBeforeLeft,  "");               
             allocAndSetData(  printBetweenLeftAndRight,  " ");   
             allocAndSetData(  printAfterRight,  "");
             break;
-        case VARDEF:             
+        case AST_VARDEF:             
             allocAndSetData(  printBeforeLeft,  "");    
             allocAndSetData(  printBetweenLeftAndRight,  " = ");   
             allocAndSetData(  printAfterRight,  ";\n");
             break;
-        case VECDEF:     
+        case AST_VECDEF:     
             allocAndSetData(  printBeforeLeft,  "");            
             allocAndSetData(  printBetweenLeftAndRight,  " [");   
             allocAndSetData(  printAfterRight,  "");
             break;
-        case VECSIZEVALUE:   
+        case AST_VECSIZEVALUE:   
             allocAndSetData(  printBeforeLeft,  "");              
             allocAndSetData(  printBetweenLeftAndRight,  "] ");   
             allocAndSetData(  printAfterRight,  ";\n");
             break;
-        case DECLIST:          
+        case AST_DECLIST:          
             allocAndSetData(  printBeforeLeft,  "");       
             allocAndSetData(  printBetweenLeftAndRight,  "");   
             allocAndSetData(  printAfterRight,  "");
             break;
-        case PARENTHESIS:
+        case AST_PARENTHESIS:
             allocAndSetData(  printBeforeLeft,  " (");      
             allocAndSetData(  printBetweenLeftAndRight,  ") ");   
             allocAndSetData(  printAfterRight,  "");

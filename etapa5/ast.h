@@ -5,79 +5,79 @@
 #include <stdlib.h>
 #define ASTTYPE 
 enum asttype{
-    SYMBOL          = 0, 
-    ADD             = 1, 
-    SUB             = 2, 
-    MUL             = 3, 
-    DIV             = 4, 
-    LT              = 5, 
-    GT              = 6, 
-    AND             = 7, 
-    NOT             = 8, 
-    OR              = 9, 
-    GE              = 10, 
-    LE              = 11, 
-    EQ              = 12, 
-    DIF             = 13,
+    AST_SYMBOL          = 0, 
+    AST_ADD             = 1, 
+    AST_SUB             = 2, 
+    AST_MUL             = 3, 
+    AST_DIV             = 4, 
+    AST_LT              = 5, 
+    AST_GT              = 6, 
+    AST_AND             = 7, 
+    AST_NOT             = 8, 
+    AST_OR              = 9, 
+    AST_GE              = 10, 
+    AST_LE              = 11, 
+    AST_EQ              = 12, 
+    AST_DIF             = 13,
     /*
             LIST
             /   \
         ELEM1    ELEM2
     OBS.: ELEM2 PODE SER LIST
     */    
-    LIST            = 14,
+    AST_LIST            = 14,
     /*
             FUNCAPP
             /   \
         FUNC     PARAM
     */    
-    FUNCAPP         = 15, 
+    AST_FUNCAPP         = 15, 
     /*
             VECACC
             /   \
         VEC     INDEX
     */
-    VECACC          = 16,
+    AST_VECACC          = 16,
     /*
             LITERAIS
             /   \
         LIT1     LIT2
         OBS.: LIT2 PODE SER LITERAIS
     */
-    LITERAIS        = 17,
+    AST_LITERAIS        = 17,
     /*
             TYPE
             /   \
         NULL     NULL
     */
-    INT             = 18,
-    CHAR            = 19,
-    BOOL            = 20,
-    REAL            = 21,
+    AST_INT             = 18,
+    AST_CHAR            = 19,
+    AST_BOOL            = 20,
+    AST_REAL            = 21,
     /*
             INPUT
             /   \
         TYPE     NULL
     */   
-    INPUT           = 22,
+    AST_INPUT           = 22,
     /*
             BLOCKCMD
             /   \
         BLOCK   NULL
     */    
-    BLOCKCMD        = 23,
+    AST_BLOCKCMD        = 23,
     /*
             EMPTYCMD
             /   \
         NULL     NULL
     */    
-    EMPTYCMD        = 24,
+    AST_EMPTYCMD        = 24,
     /*
             VARATTCMD
             /       \
          VAR         ATT
     */    
-    VARATTCMD       = 25,
+    AST_VARATTCMD       = 25,
     /*
             VECACC
             /   \
@@ -85,31 +85,31 @@ enum asttype{
                 /         \
            INDEX           ATT
     */    
-    VECATTCMD       = 26,
+    AST_VECATTCMD       = 26,
     /*
             RETURNCMD
             /       \
          EXP         NULL
     */   
-    RETURNCMD       = 27,
+    AST_RETURNCMD       = 27,
     /*
             COMMANDS
             /   \
          CMD     CMD
     */
-    COMMANDS        = 28,
+    AST_COMMANDS        = 28,
     /*
             OUTPUTCMD
             /       \
          EXP        NULL
     */   
-    OUTPUTCMD       = 29,
+    AST_OUTPUTCMD       = 29,
     /*
               IF
             /   \
          EXP     CMD
     */    
-    IF              = 30,
+    AST_IF              = 30,
     /*
               IF 
             /   \
@@ -117,7 +117,7 @@ enum asttype{
                 /        \
              CMD          CMD
     */    
-    THENELSE        = 31,
+    AST_THENELSE        = 31,
     /*
               IF 
             /   \
@@ -125,13 +125,13 @@ enum asttype{
                 /    \
              CMD      NULL
     */    
-    LOOP            = 32,
+    AST_LOOP            = 32,
     /*
             FUNCDEF
             /   \
          HEADER  BLOCK
     */
-    FUNCDEF         = 33,
+    AST_FUNCDEF         = 33,
     /*
             FUNCDEF
             /   \
@@ -140,25 +140,25 @@ enum asttype{
     TYPENAME    PARAMS
     OBS.: PARAMS = LIST OF TYPENAME
     */
-    HEADER          = 34,
+    AST_HEADER          = 34,
     /*
            TYPENAME
             /   \
         TYPE     NAME
     */
-    TYPENAME        = 35,
+    AST_TYPENAME        = 35,
     /*
            VARDEF
             /   \
     TYPENAME     LIT
     */
-    VARDEF          = 36,
+    AST_VARDEF          = 36,
     /*
            VECDEF
             /   \
     TYPENAME     VECSIZEVALUE
     */
-    VECDEF          = 37,
+    AST_VECDEF          = 37,
     /*
            VECDEF
             /   \
@@ -166,59 +166,59 @@ enum asttype{
                 /            \
             LIT               LITERIAS
     */
-    VECSIZEVALUE    = 38,
-    DECLIST         = 39,
+    AST_VECSIZEVALUE    = 38,
+    AST_DECLIST         = 39,
     /*
         PARENTHESIS
             |
            EXP
 
     */
-    PARENTHESIS     = 40,
+    AST_PARENTHESIS     = 40,
 };
 
 static char map[41][256] = {
-    "SYMBOL",
-    "ADD",
-    "SUB",
-    "MUL",
-    "DIV",
-    "LT",
-    "GT",
-    "AND",
-    "NOT",
-    "OR",
-    "GE", 
-    "LE", 
-    "EQ", 
-    "DIF",
-    "LIST",
-    "FUNCAPP",
-    "VECACC",
-    "LITERAIS",
-    "INT",
-    "CHAR",
-    "BOOL",
-    "REAL",
-    "INPUT",
-    "BLOCKCMD",
-    "EMPTYCMD",
-    "VARATTCMD",
-    "VECATTCMD",
-    "RETURNCMD",
-    "COMMANDS",
-    "OUTPUTCMD",
-    "IF",
-    "THENELSE",
-    "LOOP",
-    "FUNCDEF",
-    "HEADER",
-    "TYPENAME",
-    "VARDEF",          
-    "VECDEF",          
-    "VECSIZEVALUE",    
-    "DECLIST",         
-    "PARENTHESIS"};
+    "AST_SYMBOL",
+    "AST_ADD",
+    "AST_SUB",
+    "AST_MUL",
+    "AST_DIV",
+    "AST_LT",
+    "AST_GT",
+    "AST_AND",
+    "AST_NOT",
+    "AST_OR",
+    "AST_GE", 
+    "AST_LE", 
+    "AST_EQ", 
+    "AST_DIF",
+    "AST_LIST",
+    "AST_FUNCAPP",
+    "AST_VECACC",
+    "AST_LITERAIS",
+    "AST_INT",
+    "AST_CHAR",
+    "AST_BOOL",
+    "AST_REAL",
+    "AST_INPUT",
+    "AST_BLOCKCMD",
+    "AST_EMPTYCMD",
+    "AST_VARATTCMD",
+    "AST_VECATTCMD",
+    "AST_RETURNCMD",
+    "AST_COMMANDS",
+    "AST_OUTPUTCMD",
+    "AST_IF",
+    "AST_THENELSE",
+    "AST_LOOP",
+    "AST_FUNCDEF",
+    "AST_HEADER",
+    "AST_TYPENAME",
+    "AST_VARDEF",          
+    "AST_VECDEF",          
+    "AST_VECSIZEVALUE",    
+    "AST_DECLIST",         
+    "AST_PARENTHESIS"};
 
 extern char* filename;
 

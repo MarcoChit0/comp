@@ -34,8 +34,8 @@ int main (char a)
     {
     i = incn(i, i);
     d = incn(d,d);
-    i = v[f*f+f*f+f*f+f];
-    v[f*f+f*f+f] = i;
+    \\i = v[f*f+f*f+f*f+f];
+    \\ v[f*f+f*f+f] = i;
     }
     i = incn(i+i*i+i, i+i*i+i);
 

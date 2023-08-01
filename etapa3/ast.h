@@ -5,39 +5,39 @@
 #include <stdlib.h>
 #define ASTTYPE 
 enum asttype{
-    SYMBOL          = 0, 
-    ADD             = 1, 
-    SUB             = 2, 
-    MUL             = 3, 
-    DIV             = 4, 
-    LT              = 5, 
-    GT              = 6, 
-    AND             = 7, 
-    NOT             = 8, 
-    OR              = 9, 
-    GE              = 10, 
-    LE              = 11, 
-    EQ              = 12, 
-    DIF             = 13,
+    AST_SYMBOL          = 0, 
+    AST_ADD             = 1, 
+    AST_SUB             = 2, 
+    AST_MUL             = 3, 
+    AST_DIV             = 4, 
+    AST_LT              = 5, 
+    AST_GT              = 6, 
+    AST_AND             = 7, 
+    AST_NOT             = 8, 
+    AST_OR              = 9, 
+    AST_GE              = 10, 
+    AST_LE              = 11, 
+    AST_EQ              = 12, 
+    AST_DIF             = 13,
     /*
             LIST
             /   \
         ELEM1    ELEM2
     OBS.: ELEM2 PODE SER LIST
     */    
-    LIST            = 14,
+    AST_LIST            = 14,
     /*
             FUNCAPP
             /   \
         FUNC     PARAM
     */    
-    FUNCAPP         = 15, 
+    AST_FUNCAPP         = 15, 
     /*
             VECACC
             /   \
         VEC     INDEX
     */
-    VECACC          = 16,
+    AST_VECACC          = 16,
     /*
             LITERAIS
             /   \
