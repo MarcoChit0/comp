@@ -89,6 +89,7 @@ listaDeclaracoes: declaracao listaDeclaracoes   {$$ = astCreate(AST_DECLIST, NUL
                 ;
 
 declaracao      : variavel {$$ = $1;}
+                | atribuicao {$$ = $1;}
                 | funcao   {$$ = $1;}
                 ;
 

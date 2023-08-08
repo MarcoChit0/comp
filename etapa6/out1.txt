@@ -1,5 +1,9 @@
 int i = 2;
+i = input(char);
+i = 1 + 1;
 int v [3] 'a' 'b' 'c' ;
+i = v[2] ;
+v[3] = operation(v[1] , v[2] );
 int main (  ) {
 {
 
@@ -10,10 +14,6 @@ int main (  ) {
 }
 
 }
-i = v[2] ;
-i = input(char);
-i = 1 + 1;
-v[3] = operation(v[1] , v[2] );
 output "robson", "cleber", "rodolfo", v[2]  + i;
 ;
 return 3 + i + v[2]  - v[1] ;
