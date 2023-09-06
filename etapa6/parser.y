@@ -5,6 +5,7 @@
     #include "ast.h"
     #include "semantic.h"
     #include "tac.h"
+    #include "asm.h"
     int yyerror(char *);
     int yylex();
 %}
@@ -78,9 +79,8 @@ programa: listaDeclaracoes {
         checkUndeclared(); 
         checkOperands(root);
         TAC* tac = generateCode(root);
-        tacPrintBackwards(tac);
-        /*hashPrint();*/ 
-        astToFile(root); 
+        generateASM(tac);
+        astToFile(root);
         $$ = root;}
         ;
 
@@ -89,7 +89,6 @@ listaDeclaracoes: declaracao listaDeclaracoes   {$$ = astCreate(AST_DECLIST, NUL
                 ;
 
 declaracao      : variavel {$$ = $1;}
-                | atribuicao {$$ = $1;}
                 | funcao   {$$ = $1;}
                 ;
 
@@ -210,8 +209,8 @@ expressao   : expressao '+' expressao {$$ = astCreate(AST_ADD, NULL, $1, $3, get
             | expressao '<' expressao {$$ = astCreate(AST_LT,  NULL, $1, $3, getLineNumber());}
             | expressao '>' expressao {$$ = astCreate(AST_GT,  NULL, $1, $3, getLineNumber());}
             | expressao '&' expressao {$$ = astCreate(AST_AND, NULL, $1, $3, getLineNumber());}
-            | expressao '~' expressao {$$ = astCreate(AST_NOT, NULL, $1, $3, getLineNumber());}
             | expressao '|' expressao {$$ = astCreate(AST_OR,  NULL, $1, $3, getLineNumber());}
+            | '~' expressao {$$ = astCreate(AST_NOT, NULL, $2, NULL, getLineNumber());}
             | expressao OPERATOR_GE   expressao {$$ = astCreate(AST_GE,  NULL, $1, $3, getLineNumber());}
             | expressao OPERATOR_LE   expressao {$$ = astCreate(AST_LE,  NULL, $1, $3, getLineNumber());}
             | expressao OPERATOR_EQ   expressao {$$ = astCreate(AST_EQ,  NULL, $1, $3, getLineNumber());}

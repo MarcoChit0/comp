@@ -115,8 +115,8 @@ void content(AST* node, char** printBeforeLeft, char** printBetweenLeftAndRight,
             allocAndSetData(  printAfterRight,  "");
             break;
         case AST_NOT: 
-            allocAndSetData(  printBeforeLeft, "" );
-            allocAndSetData(  printBetweenLeftAndRight,  " ~ ");
+            allocAndSetData(  printBeforeLeft, " ~ " );
+            allocAndSetData(  printBetweenLeftAndRight,  "");
             allocAndSetData(  printAfterRight,  "");
             break;
         case AST_OR: 

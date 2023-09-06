@@ -1,0 +1,8 @@
+int vector[4] 1 2 3 4;
+int main()
+{
+    output vector[1], "\n";
+    vector[1] = vector[2] + vector[3];
+    output vector[1], "\n";
+    return 0;
+}

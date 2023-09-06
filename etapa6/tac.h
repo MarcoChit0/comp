@@ -6,6 +6,7 @@
 #define LISTAPPLY_DEFAULT 0
 #define LISTAPPLY_REVERSE_VALUE_OP1 1
 #define LISTAPPLY_REVERSE_VALUE_OP2 2
+#define DEFAULTPOSITION -1
 
 #define TACS
 enum tacEnum
@@ -86,6 +87,7 @@ static char tacMap[100][256] = {
 
 typedef struct tacNode
 {
+    int position;
     int type;
     HashNode* result;
     HashNode* operator1;
@@ -100,6 +102,6 @@ void tacPrintBackwards(TAC*);
 TAC* generateCode(AST*);
 TAC* tacJoin(TAC*, TAC*);
 TAC* makeBinaryOperation(int operation, TAC* left, TAC* right);
-
+TAC* tacReverse(TAC* tac);
 
 #endif

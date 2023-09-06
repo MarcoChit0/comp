@@ -90,6 +90,15 @@ void setHashSymbol(AST *node, int symbol)
             default:
                 break;
         }
+        // assign the hash node of the value to the hash node of the variable
+        // HashNode[variable].valueContent <- HashNode[value]
+        if(node->left->right->symbol->type == SYMBOL_VARIABLE && node->right && node->right->symbol)
+        {
+            node->left->right->symbol->variableContent = node->right->symbol;
+            fprintf(stderr, "LOG: %s <- %s\n", node->left->right->symbol->text, node->left->right->symbol->variableContent->text);
+
+        }
+        
     }
 }
 
@@ -239,11 +248,13 @@ int checkExpressionType(AST* node)
     ////////////////////////
     // logic operators
     case AST_AND:
-    case AST_NOT:
     case AST_OR:
         left = checkExpressionType(node->left);
         right = checkExpressionType(node->right);
         return checkCompatibilityBetweenLogicOperatorsDataTypes(left, right);
+        break;
+    case AST_NOT:
+        return checkExpressionType(node->left);
         break;
     //////////////////
     case AST_VECACC:

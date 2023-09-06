@@ -24,7 +24,8 @@ enum symbolsEnum
     SYMBOL_VARIABLE=0,
     SYMBOL_VECTOR=1,
     SYMBOL_FUNCTION=2,
-    SYMBOL_LABEL=3,
+    SYMBOL_TEMP=3,
+    SYMBOL_LABEL=4,
 };
 
 typedef struct hashnode
@@ -33,6 +34,7 @@ typedef struct hashnode
     struct hashnode* next;
     int type;
     int datatype;
+    struct hashnode* variableContent;
 } HashNode;
 
 void        hashInit();
@@ -44,12 +46,15 @@ int         hashLookForSymbols(int);
 HashNode*   hashInsertWithDataType(char* text, int type, int datatype);
 HashNode*   makeTemp();
 HashNode*   makeLabel();
+void        hashToASM(FILE* fp);
 
 int         isRunning(void);
 void        initMe(void);
 int         getLineNumber(void);
 void        manager(int token);
 void        removeChar(char* str, char c);
+char*       strRemove(char *str, const char *sub);
+char*       getLabel(char* str);
 
 extern int lineNumber;
 extern int running;

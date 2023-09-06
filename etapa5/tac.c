@@ -246,7 +246,7 @@ TAC* generateCode(AST* ast)
             );
         }
         break;
-    case AST_VARDEF:
+    case AST_VARDEF: break;
     case AST_VARATTCMD: 
         result = tacJoin(
             tacJoin(

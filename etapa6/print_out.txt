@@ -1,0 +1,254 @@
+Table[23] = {main}, with type = {2} and datatype = {0}.
+Table[33] = {temp_13}, with type = {3} and datatype = {-1}.
+Table[48] = {0}, with type = {274} and datatype = {0}.
+Table[49] = {1}, with type = {274} and datatype = {0}.
+Table[50] = {2}, with type = {274} and datatype = {0}.
+Table[53] = {5}, with type = {274} and datatype = {0}.
+Table[75] = {temp_8}, with type = {3} and datatype = {-1}.
+Table[80] = {"A era=15\n"}, with type = {277} and datatype = {4}.
+Table[91] = {temp_12}, with type = {3} and datatype = {-1}.
+Table[97] = {a}, with type = {0} and datatype = {0}.
+Table[98] = {b}, with type = {0} and datatype = {3}.
+Table[99] = {c}, with type = {0} and datatype = {2}.
+Table[100] = {d}, with type = {0} and datatype = {2}.
+Table[102] = {f}, with type = {0} and datatype = {1}.
+Table[105] = {i}, with type = {0} and datatype = {0}.
+Table[110] = {n}, with type = {0} and datatype = {0}.
+Table[118] = {v}, with type = {1} and datatype = {0}.
+Table[120] = {x}, with type = {0} and datatype = {0}.
+Table[141] = {label_3}, with type = {4} and datatype = {-1}.
+Table[149] = {temp_11}, with type = {3} and datatype = {-1}.
+Table[160] = {temp_5}, with type = {3} and datatype = {-1}.
+Table[171] = {matrix}, with type = {1} and datatype = {0}.
+Table[190] = {"Digite mais um numero: \n"}, with type = {277} and datatype = {4}.
+Table[207] = {temp_10}, with type = {3} and datatype = {-1}.
+Table[245] = {temp_2}, with type = {3} and datatype = {-1}.
+Table[250] = {label_0}, with type = {4} and datatype = {-1}.
+Table[378] = {'b'}, with type = {276} and datatype = {2}.
+Table[379] = {temp_9}, with type = {3} and datatype = {-1}.
+Table[381] = {"OK!\n"}, with type = {277} and datatype = {4}.
+Table[406] = {10}, with type = {274} and datatype = {0}.
+Table[437] = {label_4}, with type = {4} and datatype = {-1}.
+Table[464] = {temp_6}, with type = {3} and datatype = {-1}.
+Table[510] = {incn}, with type = {2} and datatype = {0}.
+Table[546] = {label_1}, with type = {4} and datatype = {-1}.
+Table[549] = {temp_3}, with type = {3} and datatype = {-1}.
+Table[593] = {100}, with type = {274} and datatype = {0}.
+Table[634] = {temp_0}, with type = {3} and datatype = {-1}.
+Table[656] = {15}, with type = {274} and datatype = {0}.
+Table[682] = {temp_19}, with type = {3} and datatype = {-1}.
+Table[715] = {"Digite um numero: \n"}, with type = {277} and datatype = {4}.
+Table[740] = {temp_18}, with type = {3} and datatype = {-1}.
+Table[742] = {'A'}, with type = {276} and datatype = {2}.
+Table[763] = {2.5}, with type = {275} and datatype = {1}.
+Table[768] = {temp_7}, with type = {3} and datatype = {-1}.
+Table[798] = {temp_17}, with type = {3} and datatype = {-1}.
+Table[800] = {'x'}, with type = {276} and datatype = {2}.
+Table[812] = {'a'}, with type = {276} and datatype = {2}.
+Table[818] = {"Nao tem como isso...\n"}, with type = {277} and datatype = {4}.
+Table[820] = {"\n"}, with type = {277} and datatype = {4}.
+Table[841] = {temp_20}, with type = {3} and datatype = {-1}.
+Table[842] = {label_2}, with type = {4} and datatype = {-1}.
+Table[853] = {temp_4}, with type = {3} and datatype = {-1}.
+Table[856] = {temp_16}, with type = {3} and datatype = {-1}.
+Table[868] = {55}, with type = {274} and datatype = {0}.
+Table[914] = {temp_15}, with type = {3} and datatype = {-1}.
+Table[938] = {temp_1}, with type = {3} and datatype = {-1}.
+Table[972] = {temp_14}, with type = {3} and datatype = {-1}.
+Table[987] = {"Incrementado algumas vezes a fica "}, with type = {277} and datatype = {4}.
+TAC[TAC_VECDEFBEGIN, v, 10, ]
+TAC[TAC_VECDEF, v, 'a', 0]
+TAC[TAC_VECDEF, v, 0, 1]
+TAC[TAC_VECDEF, v, 'b', 2]
+TAC[TAC_VECDEF, v, 0, 3]
+TAC[TAC_VECDEF, v, 0, 4]
+TAC[TAC_VECDEF, v, 0, 5]
+TAC[TAC_VECDEF, v, 0, 6]
+TAC[TAC_VECDEF, v, 0, 7]
+TAC[TAC_VECDEF, v, 0, 8]
+TAC[TAC_VECDEF, v, 0, 9]
+TAC[TAC_VECDEFEND, v, , ]
+TAC[TAC_VECDEFBEGIN, matrix, 100, ]
+TAC[TAC_VECDEFEND, matrix, , ]
+TAC[TAC_FUNCTIONBEGIN, main, , ]
+TAC[TAC_MOVE, a, 0, ]
+TAC[TAC_SUB, temp_20, d, i]
+TAC[TAC_MOVE, d, temp_20, ]
+TAC[TAC_MOVE, d, 5, ]
+TAC[TAC_VECATT, v, d, 55]
+TAC[TAC_ADD, temp_18, a, d]
+TAC[TAC_VECACC, temp_19, v, temp_18]
+TAC[TAC_PRINT, temp_19, , ]
+TAC[TAC_PRINT, d, , ]
+TAC[TAC_MOVE, i, 2, ]
+TAC[TAC_PRINT, "Digite um numero: \n", , ]
+TAC[TAC_READ, temp_15, , ]
+TAC[TAC_MOVE, d, temp_15, ]
+TAC[TAC_PRINT, "Digite mais um numero: \n", , ]
+TAC[TAC_LABEL, label_4, , ]
+TAC[TAC_LT, temp_12, i, 10]
+TAC[TAC_JFALSE, label_3, temp_12, ]
+TAC[TAC_BEGINBLOCK, , , ]
+TAC[TAC_FUNCTIONCALLBEGIN, incn, , ]
+TAC[TAC_FUNCTIONARGUMENT, incn, i, 0]
+TAC[TAC_FUNCTIONARGUMENT, incn, 1, 1]
+TAC[TAC_FUNCTIONCALLEND, temp_14, , ]
+TAC[TAC_MOVE, i, temp_14, ]
+TAC[TAC_FUNCTIONCALLBEGIN, incn, , ]
+TAC[TAC_FUNCTIONARGUMENT, incn, d, 0]
+TAC[TAC_FUNCTIONARGUMENT, incn, d, 1]
+TAC[TAC_FUNCTIONCALLEND, temp_13, , ]
+TAC[TAC_MOVE, d, temp_13, ]
+TAC[TAC_ENDBLOCK, , , ]
+TAC[TAC_JMP, label_4, , ]
+TAC[TAC_LABEL, label_3, , ]
+TAC[TAC_PRINT, "Incrementado algumas vezes a fica ", , ]
+TAC[TAC_ADD, temp_8, 2, x]
+TAC[TAC_PRINT, temp_8, , ]
+TAC[TAC_PRINT, a, , ]
+TAC[TAC_PRINT, "\n", , ]
+TAC[TAC_EQ, temp_5, a, 15]
+TAC[TAC_JFALSE, label_2, temp_5, ]
+TAC[TAC_BEGINBLOCK, , , ]
+TAC[TAC_ADD, temp_6, a, 1]
+TAC[TAC_MOVE, a, temp_6, ]
+TAC[TAC_PRINT, "A era=15\n", , ]
+TAC[TAC_ENDBLOCK, , , ]
+TAC[TAC_LABEL, label_2, , ]
+TAC[TAC_NOP, , , ]
+TAC[TAC_EQ, temp_2, i, 100]
+TAC[TAC_JFALSE, label_0, temp_2, ]
+TAC[TAC_BEGINBLOCK, , , ]
+TAC[TAC_PRINT, "Nao tem como isso...\n", , ]
+TAC[TAC_ENDBLOCK, , , ]
+TAC[TAC_JMP, label_1, , ]
+TAC[TAC_LABEL, label_0, , ]
+TAC[TAC_PRINT, "OK!\n", , ]
+TAC[TAC_LABEL, label_1, , ]
+TAC[TAC_BEGINBLOCK, , , ]
+TAC[TAC_BEGINBLOCK, , , ]
+TAC[TAC_ENDBLOCK, , , ]
+TAC[TAC_ENDBLOCK, , , ]
+TAC[TAC_BEGINBLOCK, , , ]
+TAC[TAC_ENDBLOCK, , , ]
+TAC[TAC_FUNCTIONEND, main, , ]
+TAC[TAC_FUNCTIONBEGIN, incn, , ]
+TAC[TAC_ADD, temp_0, x, n]
+TAC[TAC_RETURN, temp_0, , ]
+TAC[TAC_FUNCTIONEND, incn, , ]
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_VECDEFBEGIN
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_VECDEFBEGIN
+LOG: t = TAC_FUNCTIONBEGIN
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_MOVE
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_SUB
+LOG: t = TAC_MOVE
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_MOVE
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_VECATT
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_ADD
+LOG: t = TAC_VECACC
+LOG: t = TAC_PRINT
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_PRINT
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_MOVE
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_PRINT
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_READ
+LOG: t = TAC_MOVE
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_PRINT
+LOG: t = TAC_LABEL
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_LT
+LOG: t = TAC_JFALSE
+LOG: t = TAC_BEGINBLOCK
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_FUNCTIONCALLBEGIN
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_FUNCTIONARGUMENT
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_FUNCTIONARGUMENT
+LOG: t = TAC_FUNCTIONCALLEND
+LOG: t = TAC_MOVE
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_FUNCTIONCALLBEGIN
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_FUNCTIONARGUMENT
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_FUNCTIONARGUMENT
+LOG: t = TAC_FUNCTIONCALLEND
+LOG: t = TAC_MOVE
+LOG: t = TAC_ENDBLOCK
+LOG: t = TAC_JMP
+LOG: t = TAC_LABEL
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_PRINT
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_ADD
+LOG: t = TAC_PRINT
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_PRINT
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_PRINT
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_EQ
+LOG: t = TAC_JFALSE
+LOG: t = TAC_BEGINBLOCK
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_ADD
+LOG: t = TAC_MOVE
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_PRINT
+LOG: t = TAC_ENDBLOCK
+LOG: t = TAC_LABEL
+LOG: t = TAC_NOP
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_EQ
+LOG: t = TAC_JFALSE
+LOG: t = TAC_BEGINBLOCK
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_PRINT
+LOG: t = TAC_ENDBLOCK
+LOG: t = TAC_JMP
+LOG: t = TAC_LABEL
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_PRINT
+LOG: t = TAC_LABEL
+LOG: t = TAC_BEGINBLOCK
+LOG: t = TAC_BEGINBLOCK
+LOG: t = TAC_ENDBLOCK
+LOG: t = TAC_ENDBLOCK
+LOG: t = TAC_BEGINBLOCK
+LOG: t = TAC_ENDBLOCK
+LOG: t = TAC_FUNCTIONEND
+LOG: t = TAC_FUNCTIONBEGIN
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_SYMBOL
+LOG: t = TAC_ADD
+LOG: t = TAC_RETURN
+LOG: t = TAC_FUNCTIONEND

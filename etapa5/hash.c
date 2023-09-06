@@ -124,7 +124,7 @@ HashNode*   makeTemp()
     static int temps = 0;
     char buffer[255] = "";
     sprintf(buffer, "@@temp@@%d@@", temps++);
-    hashInsert(buffer, SYMBOL_VARIABLE);
+    return hashInsert(buffer, SYMBOL_VARIABLE);
 }
 
 HashNode*   makeLabel()
@@ -132,5 +132,5 @@ HashNode*   makeLabel()
     static int labels = 0;
     char buffer[255] = "";
     sprintf(buffer, "@@label@@%d@@", labels++);
-    hashInsert(buffer, SYMBOL_LABEL);
+    return hashInsert(buffer, SYMBOL_LABEL);
 }

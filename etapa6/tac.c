@@ -3,6 +3,7 @@
 TAC* tacCreate(int type, HashNode* res, HashNode* o1, HashNode* o2)
 {
     TAC* newTac = (TAC*) calloc(1, sizeof(TAC));
+    newTac->position = DEFAULTPOSITION;
     newTac->type = type;
     newTac->result = res;
     newTac->operator1 = o1;
@@ -12,20 +13,36 @@ TAC* tacCreate(int type, HashNode* res, HashNode* o1, HashNode* o2)
     return newTac;
 }
 
+TAC* tacChangePosition(TAC* tac, int* position)
+{
+    tac->position = *position;
+    (*position)++;
+    return tac;
+}
+
 void tacPrint(TAC* tac)
 {
     if(!tac)
         return;
     if (tac && tac->type == TAC_SYMBOL)
         return;
-    printf("TAC[%s, %s, %s, %s]\n",
-        tacMap[tac->type],
-        (tac->result)? tac->result->text : "",
-        (tac->operator1)? tac->operator1->text : "",
-        (tac->operator2)? tac->operator2->text : ""
-    );
+    if(tac->type == TAC_VECDEF || tac->type == TAC_FUNCTIONARGUMENT)
+        printf("TAC[%s, %s, %s, %d]\n",
+            tacMap[tac->type],
+            (tac->result)? tac->result->text : "",
+            (tac->operator1)? tac->operator1->text : "",
+            tac->position
+        );
+    else
+        printf("TAC[%s, %s, %s, %s]\n",
+            tacMap[tac->type],
+            (tac->result)? tac->result->text : "",
+            (tac->operator1)? tac->operator1->text : "",
+            (tac->operator2)? tac->operator2->text : ""
+        );
 
 }
+
 void tacPrintBackwards(TAC* tac)
 {
     if(!tac)
@@ -162,6 +179,7 @@ TAC* applyOverList(AST* ast, int type, HashNode* operator1, HashNode* operator2,
 {
     TAC* result = NULL;
     AST* aux = ast;
+    int position = 0;
     while(aux)
     {
         TAC* value = generateCode(aux->left);
@@ -170,13 +188,16 @@ TAC* applyOverList(AST* ast, int type, HashNode* operator1, HashNode* operator2,
         {
         case LISTAPPLY_REVERSE_VALUE_OP1:
             code = tacCreate(type, operator1, value? value->result : NULL, operator2);
+            code = tacChangePosition(code, &position);
             break;
         case LISTAPPLY_REVERSE_VALUE_OP2:
             code = tacCreate(type, operator2, operator1, value? value->result : NULL);
+            code = tacChangePosition(code, &position);
             break;
         case LISTAPPLY_DEFAULT:
         default:
             code = tacCreate(type, value? value->result : NULL, operator1, operator2);
+            code = tacChangePosition(code, &position);
             break;
         }
         result = tacJoin(result, tacJoin(value, code));
@@ -184,7 +205,6 @@ TAC* applyOverList(AST* ast, int type, HashNode* operator1, HashNode* operator2,
     }        
     return result;
 }
-
 
 TAC* generateCode(AST* ast)
 {
@@ -222,11 +242,11 @@ TAC* generateCode(AST* ast)
                         tacCreate(TAC_FUNCTIONCALLBEGIN, leftSonCode? leftSonCode->result : NULL, NULL, NULL)),
                     applyOverList(ast->right, TAC_FUNCTIONARGUMENT, leftSonCode? leftSonCode->result : NULL, NULL, LISTAPPLY_REVERSE_VALUE_OP1)
                 ),
-                tacCreate(TAC_FUNCTIONCALLEND, leftSonCode->result, NULL, NULL)
+                tacCreate(TAC_FUNCTIONCALLEND, makeTemp(), NULL, NULL)
             );
         }
         break;
-    case AST_VARDEF:
+    case AST_VARDEF: break;
     case AST_VARATTCMD: 
         result = tacJoin(
             tacJoin(
@@ -366,7 +386,6 @@ TAC* generateCode(AST* ast)
     return result;
 }
 
-
 TAC* tacJoin(TAC* tac1, TAC* tac2)
 {
     if (!tac1)
@@ -378,4 +397,14 @@ TAC* tacJoin(TAC* tac1, TAC* tac2)
         aux = aux->prev;
     aux->prev = tac1;
     return tac2;
+}
+
+TAC* tacReverse(TAC* tac)
+{
+    if(!tac)
+        return NULL;
+    TAC* t;
+    for(t = tac; t->prev; t = t->prev)
+        t->prev->next = t;
+    return t;
 }

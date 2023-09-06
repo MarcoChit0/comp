@@ -1,5 +1,5 @@
-etapa6: main.o y.tab.o lex.yy.o  hash.o ast.o semantic.o tac.o
-	gcc main.o y.tab.o lex.yy.o  hash.o ast.o semantic.o tac.o -o etapa6
+etapa6: main.o y.tab.o lex.yy.o  hash.o ast.o semantic.o tac.o asm.o
+	gcc main.o y.tab.o lex.yy.o  hash.o ast.o semantic.o tac.o asm.o -o etapa6
 
 main.o: main.c
 	gcc -c main.c
@@ -9,6 +9,9 @@ semantic.o: semantic.c
 
 hash.o: hash.c
 	gcc -c hash.c
+
+asm.o: asm.c
+	gcc -c asm.c
 
 tac.o: tac.c
 	gcc -c tac.c
