@@ -94,7 +94,6 @@ void setHashSymbol(AST *node, int symbol)
         if (node->left->right->symbol->type == SYMBOL_VARIABLE && node->right && node->right->symbol)
         {
             node->left->right->symbol->content = node->right->symbol;
-            fprintf(stderr, "LOG: %s <- %s\n", node->left->right->symbol->text, node->left->right->symbol->content->text);
         }
     }
 }

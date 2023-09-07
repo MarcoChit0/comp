@@ -33,3 +33,6 @@ lex.yy.c: scanner.l
 
 clean:
 	rm *.o etapa6 lex.yy.c y.tab.c
+
+run:
+	make && ./etapa6 input.in output.out > printoutput.out && gcc asm.s -o compiled.exe && ./compiled.exe

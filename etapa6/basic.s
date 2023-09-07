@@ -1,22 +1,31 @@
 	.file	"basic.c"
 	.text
-	.globl	a
+	.globl	x
 	.data
 	.align 4
-	.type	a, @object
-	.size	a, 4
-a:
+	.type	x, @object
+	.size	x, 4
+x:
 	.long	1
-	.globl	b
+	.globl	y
 	.align 4
-	.type	b, @object
-	.size	b, 4
-b:
+	.type	y, @object
+	.size	y, 4
+y:
 	.long	2
+	.globl	t
+	.align 4
+	.type	t, @object
+	.size	t, 4
+t:
+	.long	17
+	.section	.rodata
+.LC0:
+	.string	"t = %d\n"
 	.text
-	.globl	soma
-	.type	soma, @function
-soma:
+	.globl	.soma
+	.type	.soma, @function
+.soma:
 .LFB6:
 	.cfi_startproc
 	endbr64
@@ -25,20 +34,31 @@ soma:
 	.cfi_offset 6, -16
 	movq	%rsp, %rbp
 	.cfi_def_cfa_register 6
+	subq	$16, %rsp
 	movl	%edi, -4(%rbp)
 	movl	%esi, -8(%rbp)
-	movl	-8(%rbp), %edx
-	movl	-4(%rbp), %eax
+	movl	-4(%rbp), %edx
+	movl	-8(%rbp), %eax
 	addl	%edx, %eax
-	popq	%rbp
+	movl	%eax, t(%rip)
+	movl	t(%rip), %eax
+	movl	%eax, %esi
+	leaq	.LC0(%rip), %rax
+	movq	%rax, %rdi
+	movl	$0, %eax
+	call	printf@PLT
+	movl	t(%rip), %eax
+	leave
 	.cfi_def_cfa 7, 8
 	ret
 	.cfi_endproc
 .LFE6:
-	.size	soma, .-soma
+	.size	.soma, .-.soma
 	.section	.rodata
-.LC0:
-	.string	"soma de a com b = %d\n"
+.LC1:
+	.string	"x + y = %d\n"
+.LC2:
+	.string	".soma de x com y = %d\n"
 	.text
 	.globl	main
 	.type	main, @function
@@ -51,13 +71,21 @@ main:
 	.cfi_offset 6, -16
 	movq	%rsp, %rbp
 	.cfi_def_cfa_register 6
-	movl	b(%rip), %edx
-	movl	a(%rip), %eax
+	movl	x(%rip), %edx
+	movl	y(%rip), %eax
+	addl	%edx, %eax
+	movl	%eax, %esi
+	leaq	.LC1(%rip), %rax
+	movq	%rax, %rdi
+	movl	$0, %eax
+	call	printf@PLT
+	movl	y(%rip), %edx
+	movl	x(%rip), %eax
 	movl	%edx, %esi
 	movl	%eax, %edi
-	call	soma
+	call	.soma
 	movl	%eax, %esi
-	leaq	.LC0(%rip), %rax
+	leaq	.LC2(%rip), %rax
 	movq	%rax, %rdi
 	movl	$0, %eax
 	call	printf@PLT

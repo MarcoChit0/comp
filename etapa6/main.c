@@ -41,7 +41,7 @@ int main(int argc, char** argv){
     // check if there is no semantic errors
     if(getSemanticErrors())
     {
-        printf("\n\nWARNING: %d semantic errors found!!!\n\n", getSemanticErrors());
+        fprintf(stderr, "\n\nWARNING: %d semantic errors found!!!\n\n", getSemanticErrors());
         exit(4);
     }
 

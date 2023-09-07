@@ -172,10 +172,18 @@ char *strRemove(char *str, const char *sub) {
 
 char* getLabel(char* str)
 {
-    char *label = (char*) calloc(sizeof(char*), strlen(str) + 1);
-    label = strcpy(label, str);
-    label = strRemove(label, "\\n");
-    return label;
+    int hashValue = hashAddress(str);
+    int pos = 0;
+    for(HashNode* h = Table[hashValue]; h; h = h->next)
+    {   
+        if(strcmp(str, h->text) == 0)
+            break;
+        else
+            pos ++;
+    }
+    char* buffer = (char*) calloc(256, sizeof(char*));
+    sprintf(buffer, "label_%d_%d", hashValue, pos);
+    return buffer;
 }
 
 

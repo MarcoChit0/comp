@@ -2,14 +2,18 @@
 #include <string.h>
 #include <stdlib.h>
 
-int a=1;
-int b=2;
-int soma(int n, int m)
+int x = 1;
+int y = 2;
+int t = 17; 
+int soma(int a, int b)
 {
-    return m + n;
+    t = a + b;
+    printf("t = %d\n", t);
+    return t;
 }
 int main()
 {
-    printf("soma de a com b = %d\n", soma(a,b));
+    printf("x + y = %d\n", x + y);
+    printf("soma de x com y = %d\n", soma(x,y));
     return 0;
 }

@@ -5,11 +5,11 @@ static int labelCounter = 0;
 void tacIntCompToASM(FILE *fptr, char *title, char *operation, TAC *tac)
 {
     fprintf(fptr,
-            ".%s\n"
+            "%s\n"
             "\tmovl	.%s(%%rip), %%edx\n"
             "\tmovl	.%s(%%rip), %%eax\n"
             "\tcmpl	%%eax, %%edx\n"
-            "\t.%s	%%al\n"
+            "\t%s	%%al\n"
             "\tmovzbl	%%al, %%eax\n"
             "\tmovl	%%eax, .%s(%%rip)\n\n",
             title,
@@ -89,29 +89,29 @@ void tacJumpFalseToASM(FILE *fptr, TAC *tac)
 
 void tacAndtoASM(FILE *fptr, TAC *tac)
 {
-    int labelTrue = labelCounter++;
-    int labelFalse = labelCounter++;
+    int L0 = labelCounter++;
+    int L1 = labelCounter++;
     fprintf(fptr,
             "## TAC AND: ##\n"
-            "\tmovl	.%s(%%rip), %%eax\n"
-            "\ttestl	%%eax, %%eax\n"
-            "\tje	.L%d\n"
-            "\tmovl	.%s(%%rip), %%eax\n"
-            "\ttestl	%%eax, %%eax\n"
-            "\tje	.L%d\n"
-            "\tmovl	$1, %%eax\n"
-            "\tjmp	.L%d\n"
-            ".L%d:\n"
-            "\tmovl	$0, %%eax\n"
-            ".L%d:\n"
-            "\tmovl	%%eax, .%s(%%rip)\n\n",
+            "\tmovl   .%s(%%rip), %%eax\n"
+            "\ttestl  %%eax, %%eax\n"
+            "\tje     LAND%d\n"
+            "\tmovl   .%s(%%rip), %%eax\n"
+            "\ttestl  %%eax, %%eax\n"
+            "\tje     LAND%d\n"
+            "\tmovl   $1, %%eax\n"
+            "\tjmp    LAND%d\n"
+            "\tLAND%d:\n"
+            "\tmovl   $0, %%eax\n"
+            "\tLAND%d:\n"
+            "\tmovl   %%eax, .%s(%%rip)\n\n",
             tac->operator1->text,
-            labelTrue,
+            L0,
             tac->operator2->text,
-            labelTrue,
-            labelFalse,
-            labelTrue,
-            labelFalse,
+            L0,
+            L1,
+            L0,
+            L1,
             tac->result->text);
 }
 
@@ -121,20 +121,20 @@ void tacOrToASM(FILE *fptr, TAC *tac)
     int L1 = labelCounter++;
     int L2 = labelCounter++;
     fprintf(fptr,
-            "## TAC OR: ##"
+            "## TAC OR: ##\n"
             "\tmovl	.%s(%%rip), %%eax\n"
             "\ttestl	%%eax, %%eax\n"
-            "\tjne	.L%d\n"
+            "\tjne	LOR%d\n"
             "\tmovl	.%s(%%rip), %%eax\n"
             "\ttestl	%%eax, %%eax\n"
-            "\tje	.L%d\n"
-            ".L%d:\n"
+            "\tje	LOR%d\n"
+            "\tLOR%d:\n"
             "\tmovl	$1, %%eax\n"
-            "\tjmp	.L%d\n"
-            ".L%d:\n"
+            "\tjmp	LOR%d\n"
+            "\tLOR%d:\n"
             "\tmovl	$0, %%eax\n"
-            ".L%d:\n"
-            "\tmovl	%%eax, .%s(%%rip)\n\n",
+            "\tLOR%d:\n"
+            "\tmovl   %%eax, .%s(%%rip)\n\n",
             tac->operator1->text,
             L0,
             tac->operator2->text,
@@ -149,7 +149,8 @@ void tacOrToASM(FILE *fptr, TAC *tac)
 void tacNotToASM(FILE *fptr, TAC *tac)
 {
     fprintf(fptr,
-            "## TAC NOT: ##"
+            "## TAC NOT: ##\n"
+            "\tmovq	%%rsp, %%rbp\n"
             "\tmovl	.%s(%%rip), %%eax\n"
             "\ttestl	%%eax, %%eax\n"
             "\tsete	%%al\n"
@@ -161,7 +162,7 @@ void tacNotToASM(FILE *fptr, TAC *tac)
 
 void tacFunctionBeginToASM(FILE *fptr, TAC *tac)
 {
-    if(strcmp(tac->result->text, "main") == 0)
+    if (strcmp(tac->result->text, "main") == 0)
         fprintf(fptr,
                 "## TAC FUNCTION BEGIN: ##\n"
                 "\t.globl	%s\n"
@@ -197,6 +198,7 @@ void tacPrintToASM(FILE *fptr, TAC *tac)
 {
     if (tac->result->datatype == DATATYPE_STRING)
     {
+        char *label = getLabel(tac->result->text);
         fprintf(fptr,
                 "## TAC PRINT STRING: ##\n"
                 "\tleaq	.%s(%%rip), %%rax\n"
@@ -205,7 +207,7 @@ void tacPrintToASM(FILE *fptr, TAC *tac)
                 "\tmovq	%%rax, %%rdi\n"
                 "\tmovl	$0, %%eax\n"
                 "\tcall	printf@PLT\n\n",
-                getLabel(tac->result->text));
+                label);
     }
     else
         fprintf(fptr,
@@ -285,21 +287,40 @@ void tacVecAccToASM(FILE *fptr, TAC *tac)
             tac->result->text);
 }
 
-void tacReadToASM(FILE* fptr, TAC* tac)
+void tacReadToASM(FILE *fptr, TAC *tac)
 {
-    fprintf(
-        fptr,
-        "## TAC READ: ##\n"
-        "\tleaq	.%s(%%rip), %%rax\n"
-	    "\tmovq	%%rax, %%rsi\n"
-	    "\tleaq	.LINT(%%rip), %%rax\n"
-	    "\tmovq	%%rax, %%rdi\n"
-	    "\tmovl	$0, %%eax\n"
-	    "\tcall	__isoc99_scanf@PLT\n\n",
-        tac->result->text);
+    switch (tac->result->datatype)
+    {
+    case DATATYPE_CHAR:
+        fprintf(
+            fptr,
+            "## TAC READ: ##\n"
+            "\tleaq	.%s(%%rip), %%rax\n"
+            "\tmovq	%%rax, %%rsi\n"
+            "\tleaq	.LCHAR(%%rip), %%rax\n"
+            "\tmovq	%%rax, %%rdi\n"
+            "\tmovl	$0, %%eax\n"
+            "\tcall	__isoc99_scanf@PLT\n\n",
+            tac->result->text);
+        break;
+    case DATATYPE_REAL:
+    case DATATYPE_INT:
+    default:
+        fprintf(
+            fptr,
+            "## TAC READ: ##\n"
+            "\tleaq	.%s(%%rip), %%rax\n"
+            "\tmovq	%%rax, %%rsi\n"
+            "\tleaq	.LINT(%%rip), %%rax\n"
+            "\tmovq	%%rax, %%rdi\n"
+            "\tmovl	$0, %%eax\n"
+            "\tcall	__isoc99_scanf@PLT\n\n",
+            tac->result->text);
+        break;
+    }
 }
 
-void tacFunctionCallToASM(FILE* fptr, TAC* tac)
+void tacFunctionCallToASM(FILE *fptr, TAC *tac)
 {
     fprintf(
         fptr,
@@ -410,6 +431,12 @@ void generateASM(TAC *tac)
             break;
         case TAC_VECACC:
             tacVecAccToASM(fp, t);
+            break;
+        case TAC_FUNCTIONCALL:
+            tacFunctionCallToASM(fp, t);
+            break;
+        case TAC_READ:
+            tacReadToASM(fp, t);
             break;
         case TAC_VECDEFBEGIN:
         {

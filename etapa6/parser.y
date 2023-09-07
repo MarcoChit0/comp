@@ -75,12 +75,23 @@
 %%
 programa: listaDeclaracoes {
         AST* root = $1;  
+        astToFile(root);    
         checkAndSetDeclarations(root, NULL); 
         checkUndeclared(); 
         checkOperands(root);
-        TAC* tac = generateCode(root);
-        generateASM(tac);
-        astToFile(root);
+        if(!getSemanticErrors())
+        {
+                fprintf(stderr, "LOG: no semantic erros...\n" "LOG: generating TACs...\n");
+                TAC* tac = generateCode(root);
+                fprintf(stderr, "LOG: TACs generated...\n" "LOG: generating ASM...\n");
+                generateASM(tac);
+                fprintf(stderr, "LOG: ASM generated...\n" "LOG: program can be found at ams.s...\n");
+        }
+        else
+        {
+                fprintf(stderr, "LOG: semantic erros found!!! Exiting...\n");
+        } 
+        
         $$ = root;}
         ;
 

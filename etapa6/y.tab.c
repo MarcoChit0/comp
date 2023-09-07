@@ -659,14 +659,14 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    76,    76,    87,    88,    91,    92,    95,   101,   105,
-     113,   114,   115,   116,   119,   120,   124,   125,   126,   127,
-     133,   136,   142,   148,   149,   152,   153,   156,   159,   160,
-     163,   164,   165,   166,   167,   168,   171,   173,   179,   180,
-     184,   190,   192,   195,   196,   201,   202,   205,   206,   207,
-     208,   209,   210,   211,   212,   213,   214,   215,   216,   217,
-     218,   219,   220,   221,   222,   224,   227,   228,   232,   235,
-     236,   239,   240
+       0,    76,    76,    98,    99,   102,   103,   106,   112,   116,
+     124,   125,   126,   127,   130,   131,   135,   136,   137,   138,
+     144,   147,   153,   159,   160,   163,   164,   167,   170,   171,
+     174,   175,   176,   177,   178,   179,   182,   184,   190,   191,
+     195,   201,   203,   206,   207,   212,   213,   216,   217,   218,
+     219,   220,   221,   222,   223,   224,   225,   226,   227,   228,
+     229,   230,   231,   232,   233,   235,   238,   239,   243,   246,
+     247,   250,   251
 };
 #endif
 
@@ -1354,463 +1354,474 @@ yyreduce:
 #line 76 "parser.y"
                            {
         AST* root = (yyvsp[0].ast);  
+        astToFile(root);    
         checkAndSetDeclarations(root, NULL); 
         checkUndeclared(); 
         checkOperands(root);
-        TAC* tac = generateCode(root);
-        generateASM(tac);
-        astToFile(root);
+        if(!getSemanticErrors())
+        {
+                fprintf(stderr, "LOG: no semantic erros...\n" "LOG: generating TACs...\n");
+                TAC* tac = generateCode(root);
+                fprintf(stderr, "LOG: TACs generated...\n" "LOG: generating ASM...\n");
+                generateASM(tac);
+                fprintf(stderr, "LOG: ASM generated...\n" "LOG: program can be found at ams.s...\n");
+        }
+        else
+        {
+                fprintf(stderr, "LOG: semantic erros found!!! Exiting...\n");
+        } 
+        
         (yyval.ast) = root;}
-#line 1365 "y.tab.c"
+#line 1376 "y.tab.c"
     break;
 
   case 3: /* listaDeclaracoes: declaracao listaDeclaracoes  */
-#line 87 "parser.y"
+#line 98 "parser.y"
                                                 {(yyval.ast) = astCreate(AST_DECLIST, NULL, (yyvsp[-1].ast), (yyvsp[0].ast), getLineNumber());}
-#line 1371 "y.tab.c"
+#line 1382 "y.tab.c"
     break;
 
   case 4: /* listaDeclaracoes: %empty  */
-#line 88 "parser.y"
+#line 99 "parser.y"
                                                 {(yyval.ast) = NULL;}
-#line 1377 "y.tab.c"
+#line 1388 "y.tab.c"
     break;
 
   case 5: /* declaracao: variavel  */
-#line 91 "parser.y"
+#line 102 "parser.y"
                            {(yyval.ast) = (yyvsp[0].ast);}
-#line 1383 "y.tab.c"
+#line 1394 "y.tab.c"
     break;
 
   case 6: /* declaracao: funcao  */
-#line 92 "parser.y"
+#line 103 "parser.y"
                            {(yyval.ast) = (yyvsp[0].ast);}
-#line 1389 "y.tab.c"
+#line 1400 "y.tab.c"
     break;
 
   case 7: /* nome: TK_IDENTIFIER  */
-#line 95 "parser.y"
+#line 106 "parser.y"
                         {(yyval.ast) = astCreate(AST_SYMBOL, (yyvsp[0].symbol), NULL, NULL, getLineNumber());}
-#line 1395 "y.tab.c"
+#line 1406 "y.tab.c"
     break;
 
   case 8: /* variavel: tipo nome '=' literal ';'  */
-#line 101 "parser.y"
+#line 112 "parser.y"
                                     {
         AST* typename = astCreate(AST_TYPENAME, NULL, (yyvsp[-4].ast), (yyvsp[-3].ast), getLineNumber());
         (yyval.ast) = astCreate(AST_VARDEF, NULL, typename, (yyvsp[-1].ast), getLineNumber());
 }
-#line 1404 "y.tab.c"
+#line 1415 "y.tab.c"
     break;
 
   case 9: /* variavel: tipo nome '[' LIT_INT ']' literais ';'  */
-#line 105 "parser.y"
+#line 116 "parser.y"
                                                  {
         AST* typename = astCreate(AST_TYPENAME, NULL, (yyvsp[-6].ast), (yyvsp[-5].ast), getLineNumber());
         AST* size = astCreate(AST_SYMBOL, (yyvsp[-3].symbol), NULL, NULL, getLineNumber());
         AST* vecsizevalue = astCreate(AST_VECSIZEVALUE, NULL, size, (yyvsp[-1].ast), getLineNumber());
         (yyval.ast) = astCreate(AST_VECDEF, NULL, typename, vecsizevalue, getLineNumber());
 }
-#line 1415 "y.tab.c"
+#line 1426 "y.tab.c"
     break;
 
   case 10: /* literal: LIT_INT  */
-#line 113 "parser.y"
+#line 124 "parser.y"
                         {(yyval.ast) = astCreate(AST_SYMBOL, (yyvsp[0].symbol), NULL, NULL, getLineNumber());}
-#line 1421 "y.tab.c"
+#line 1432 "y.tab.c"
     break;
 
   case 11: /* literal: LIT_REAL  */
-#line 114 "parser.y"
+#line 125 "parser.y"
                         {(yyval.ast) = astCreate(AST_SYMBOL, (yyvsp[0].symbol), NULL, NULL, getLineNumber());}
-#line 1427 "y.tab.c"
+#line 1438 "y.tab.c"
     break;
 
   case 12: /* literal: LIT_CHAR  */
-#line 115 "parser.y"
+#line 126 "parser.y"
                         {(yyval.ast) = astCreate(AST_SYMBOL, (yyvsp[0].symbol), NULL, NULL, getLineNumber());}
-#line 1433 "y.tab.c"
+#line 1444 "y.tab.c"
     break;
 
   case 13: /* literal: LIT_STRING  */
-#line 116 "parser.y"
+#line 127 "parser.y"
                         {(yyval.ast) = astCreate(AST_SYMBOL, (yyvsp[0].symbol), NULL, NULL, getLineNumber());}
-#line 1439 "y.tab.c"
+#line 1450 "y.tab.c"
     break;
 
   case 14: /* literais: literal literais  */
-#line 119 "parser.y"
+#line 130 "parser.y"
                                 {(yyval.ast) = astCreate(AST_LITERAIS, NULL, (yyvsp[-1].ast), (yyvsp[0].ast), getLineNumber());}
-#line 1445 "y.tab.c"
+#line 1456 "y.tab.c"
     break;
 
   case 15: /* literais: %empty  */
-#line 120 "parser.y"
+#line 131 "parser.y"
                                 {(yyval.ast) = NULL;}
-#line 1451 "y.tab.c"
+#line 1462 "y.tab.c"
     break;
 
   case 16: /* tipo: KW_BOOL  */
-#line 124 "parser.y"
+#line 135 "parser.y"
               {(yyval.ast) = astCreate(AST_BOOL, NULL, NULL, NULL, getLineNumber());}
-#line 1457 "y.tab.c"
+#line 1468 "y.tab.c"
     break;
 
   case 17: /* tipo: KW_CHAR  */
-#line 125 "parser.y"
+#line 136 "parser.y"
               {(yyval.ast) = astCreate(AST_CHAR, NULL, NULL, NULL, getLineNumber());}
-#line 1463 "y.tab.c"
+#line 1474 "y.tab.c"
     break;
 
   case 18: /* tipo: KW_INT  */
-#line 126 "parser.y"
+#line 137 "parser.y"
               {(yyval.ast) = astCreate(AST_INT, NULL, NULL, NULL, getLineNumber());}
-#line 1469 "y.tab.c"
+#line 1480 "y.tab.c"
     break;
 
   case 19: /* tipo: KW_REAL  */
-#line 127 "parser.y"
+#line 138 "parser.y"
               {(yyval.ast) = astCreate(AST_REAL, NULL, NULL, NULL, getLineNumber());}
-#line 1475 "y.tab.c"
+#line 1486 "y.tab.c"
     break;
 
   case 20: /* funcao: cabecalho bloco  */
-#line 133 "parser.y"
+#line 144 "parser.y"
                           {(yyval.ast) = astCreate(AST_FUNCDEF, NULL, (yyvsp[-1].ast), (yyvsp[0].ast), getLineNumber());}
-#line 1481 "y.tab.c"
+#line 1492 "y.tab.c"
     break;
 
   case 21: /* cabecalho: tipo nome '(' definicaoListaParametros ')'  */
-#line 136 "parser.y"
+#line 147 "parser.y"
                                                          {
         AST* typename = astCreate(AST_TYPENAME, NULL, (yyvsp[-4].ast), (yyvsp[-3].ast), getLineNumber());
         (yyval.ast) = astCreate(AST_HEADER, NULL, typename, (yyvsp[-1].ast), getLineNumber());
 }
-#line 1490 "y.tab.c"
+#line 1501 "y.tab.c"
     break;
 
   case 22: /* definicaoParametros: tipo nome virgulaDefinicaoParametrosOuVazio  */
-#line 142 "parser.y"
+#line 153 "parser.y"
                                                                   {
         AST* typename = astCreate(AST_TYPENAME, NULL, (yyvsp[-2].ast), (yyvsp[-1].ast), getLineNumber());
         (yyval.ast) = astCreate(AST_LIST, NULL, typename, (yyvsp[0].ast), getLineNumber());
 }
-#line 1499 "y.tab.c"
+#line 1510 "y.tab.c"
     break;
 
   case 23: /* virgulaDefinicaoParametrosOuVazio: ',' definicaoParametros  */
-#line 148 "parser.y"
+#line 159 "parser.y"
                                                                 {(yyval.ast) = (yyvsp[0].ast);}
-#line 1505 "y.tab.c"
+#line 1516 "y.tab.c"
     break;
 
   case 24: /* virgulaDefinicaoParametrosOuVazio: %empty  */
-#line 149 "parser.y"
+#line 160 "parser.y"
                                                                 {(yyval.ast) = NULL;}
-#line 1511 "y.tab.c"
+#line 1522 "y.tab.c"
     break;
 
   case 25: /* definicaoListaParametros: definicaoParametros  */
-#line 152 "parser.y"
+#line 163 "parser.y"
                                                 {(yyval.ast) = (yyvsp[0].ast);}
-#line 1517 "y.tab.c"
+#line 1528 "y.tab.c"
     break;
 
   case 26: /* definicaoListaParametros: %empty  */
-#line 153 "parser.y"
+#line 164 "parser.y"
                                                 {(yyval.ast) = NULL;}
-#line 1523 "y.tab.c"
+#line 1534 "y.tab.c"
     break;
 
   case 27: /* bloco: '{' comandos '}'  */
-#line 156 "parser.y"
+#line 167 "parser.y"
                                 {(yyval.ast) = astCreate(AST_BLOCKCMD, NULL, (yyvsp[-1].ast), NULL, getLineNumber());}
-#line 1529 "y.tab.c"
+#line 1540 "y.tab.c"
     break;
 
   case 28: /* comandos: comando comandos  */
-#line 159 "parser.y"
+#line 170 "parser.y"
                                 {(yyval.ast) = astCreate(AST_COMMANDS, NULL, (yyvsp[-1].ast), (yyvsp[0].ast), getLineNumber());}
-#line 1535 "y.tab.c"
+#line 1546 "y.tab.c"
     break;
 
   case 29: /* comandos: %empty  */
-#line 160 "parser.y"
+#line 171 "parser.y"
                                 {(yyval.ast) = NULL;}
-#line 1541 "y.tab.c"
+#line 1552 "y.tab.c"
     break;
 
   case 30: /* comando: ';'  */
-#line 163 "parser.y"
+#line 174 "parser.y"
                         {(yyval.ast) = astCreate(AST_EMPTYCMD, NULL, NULL, NULL, getLineNumber());}
-#line 1547 "y.tab.c"
+#line 1558 "y.tab.c"
     break;
 
   case 31: /* comando: bloco  */
-#line 164 "parser.y"
+#line 175 "parser.y"
                         {(yyval.ast) = (yyvsp[0].ast);}
-#line 1553 "y.tab.c"
+#line 1564 "y.tab.c"
     break;
 
   case 32: /* comando: atribuicao  */
-#line 165 "parser.y"
+#line 176 "parser.y"
                         {(yyval.ast) = (yyvsp[0].ast);}
-#line 1559 "y.tab.c"
+#line 1570 "y.tab.c"
     break;
 
   case 33: /* comando: controleFluxo  */
-#line 166 "parser.y"
+#line 177 "parser.y"
                         {(yyval.ast) = (yyvsp[0].ast);}
-#line 1565 "y.tab.c"
+#line 1576 "y.tab.c"
     break;
 
   case 34: /* comando: outputComando  */
-#line 167 "parser.y"
+#line 178 "parser.y"
                         {(yyval.ast) = (yyvsp[0].ast);}
-#line 1571 "y.tab.c"
+#line 1582 "y.tab.c"
     break;
 
   case 35: /* comando: returnComando  */
-#line 168 "parser.y"
+#line 179 "parser.y"
                         {(yyval.ast) = (yyvsp[0].ast);}
-#line 1577 "y.tab.c"
+#line 1588 "y.tab.c"
     break;
 
   case 36: /* atribuicao: nome '=' expressao ';'  */
-#line 171 "parser.y"
+#line 182 "parser.y"
                                      {(yyval.ast) = astCreate(AST_VARATTCMD, NULL, (yyvsp[-3].ast), (yyvsp[-1].ast), getLineNumber());}
-#line 1583 "y.tab.c"
+#line 1594 "y.tab.c"
     break;
 
   case 37: /* atribuicao: nome '[' expressao ']' '=' expressao ';'  */
-#line 173 "parser.y"
+#line 184 "parser.y"
                                                        {
                 AST* index = astCreate(AST_VECATTCMD, NULL, (yyvsp[-4].ast), (yyvsp[-1].ast), getLineNumber()); 
                 (yyval.ast) = astCreate(AST_VECACC, NULL, (yyvsp[-6].ast), index, getLineNumber());
                 }
-#line 1592 "y.tab.c"
+#line 1603 "y.tab.c"
     break;
 
   case 38: /* controleFluxo: KW_IF '(' expressao ')' comando  */
-#line 179 "parser.y"
+#line 190 "parser.y"
                                                   {(yyval.ast) = astCreate(AST_IF, NULL, (yyvsp[-2].ast), (yyvsp[0].ast), getLineNumber());}
-#line 1598 "y.tab.c"
+#line 1609 "y.tab.c"
     break;
 
   case 39: /* controleFluxo: KW_IF '(' expressao ')' comando KW_ELSE comando  */
-#line 180 "parser.y"
+#line 191 "parser.y"
                                                                   {
                         AST* thenElse = astCreate(AST_THENELSE, NULL, (yyvsp[-2].ast), (yyvsp[0].ast), getLineNumber());
                         (yyval.ast) = astCreate(AST_IF, NULL, (yyvsp[-4].ast), thenElse, getLineNumber());
                 }
-#line 1607 "y.tab.c"
+#line 1618 "y.tab.c"
     break;
 
   case 40: /* controleFluxo: KW_IF '(' expressao ')' KW_LOOP comando  */
-#line 184 "parser.y"
+#line 195 "parser.y"
                                                            {
                         AST* loop = astCreate(AST_LOOP, NULL, (yyvsp[0].ast), NULL, getLineNumber());
                         (yyval.ast) = astCreate(AST_IF, NULL, (yyvsp[-3].ast), loop, getLineNumber());
                 }
-#line 1616 "y.tab.c"
+#line 1627 "y.tab.c"
     break;
 
   case 41: /* outputComando: KW_OUTPUT outputElementos ';'  */
-#line 190 "parser.y"
+#line 201 "parser.y"
                                                 {(yyval.ast) = astCreate(AST_OUTPUTCMD, NULL, (yyvsp[-1].ast), NULL, getLineNumber());}
-#line 1622 "y.tab.c"
+#line 1633 "y.tab.c"
     break;
 
   case 42: /* returnComando: KW_RETURN expressao ';'  */
-#line 192 "parser.y"
+#line 203 "parser.y"
                                           {(yyval.ast) = astCreate(AST_RETURNCMD, NULL, (yyvsp[-1].ast), NULL, getLineNumber());}
-#line 1628 "y.tab.c"
+#line 1639 "y.tab.c"
     break;
 
   case 43: /* outputElementos: expressao virgulaOutputElementosOuVazio  */
-#line 195 "parser.y"
+#line 206 "parser.y"
                                                                 {(yyval.ast) = astCreate(AST_LIST, NULL, (yyvsp[-1].ast), (yyvsp[0].ast), getLineNumber());}
-#line 1634 "y.tab.c"
+#line 1645 "y.tab.c"
     break;
 
   case 44: /* outputElementos: LIT_STRING virgulaOutputElementosOuVazio  */
-#line 196 "parser.y"
+#line 207 "parser.y"
                                                                 {
                         AST* stringNode = astCreate(AST_SYMBOL, (yyvsp[-1].symbol), NULL, NULL, getLineNumber());
                         (yyval.ast) = astCreate(AST_LIST, NULL, stringNode, (yyvsp[0].ast), getLineNumber());}
-#line 1642 "y.tab.c"
+#line 1653 "y.tab.c"
     break;
 
   case 45: /* virgulaOutputElementosOuVazio: ',' outputElementos  */
-#line 201 "parser.y"
+#line 212 "parser.y"
                                                         {(yyval.ast) = (yyvsp[0].ast);}
-#line 1648 "y.tab.c"
+#line 1659 "y.tab.c"
     break;
 
   case 46: /* virgulaOutputElementosOuVazio: %empty  */
-#line 202 "parser.y"
+#line 213 "parser.y"
                                                         {(yyval.ast) = NULL;}
-#line 1654 "y.tab.c"
+#line 1665 "y.tab.c"
     break;
 
   case 47: /* expressao: expressao '+' expressao  */
-#line 205 "parser.y"
+#line 216 "parser.y"
                                       {(yyval.ast) = astCreate(AST_ADD, NULL, (yyvsp[-2].ast), (yyvsp[0].ast), getLineNumber());}
-#line 1660 "y.tab.c"
+#line 1671 "y.tab.c"
     break;
 
   case 48: /* expressao: expressao '-' expressao  */
-#line 206 "parser.y"
+#line 217 "parser.y"
                                       {(yyval.ast) = astCreate(AST_SUB, NULL, (yyvsp[-2].ast), (yyvsp[0].ast), getLineNumber());}
-#line 1666 "y.tab.c"
+#line 1677 "y.tab.c"
     break;
 
   case 49: /* expressao: expressao '*' expressao  */
-#line 207 "parser.y"
+#line 218 "parser.y"
                                       {(yyval.ast) = astCreate(AST_MUL, NULL, (yyvsp[-2].ast), (yyvsp[0].ast), getLineNumber());}
-#line 1672 "y.tab.c"
+#line 1683 "y.tab.c"
     break;
 
   case 50: /* expressao: expressao '/' expressao  */
-#line 208 "parser.y"
+#line 219 "parser.y"
                                       {(yyval.ast) = astCreate(AST_DIV, NULL, (yyvsp[-2].ast), (yyvsp[0].ast), getLineNumber());}
-#line 1678 "y.tab.c"
+#line 1689 "y.tab.c"
     break;
 
   case 51: /* expressao: expressao '<' expressao  */
-#line 209 "parser.y"
+#line 220 "parser.y"
                                       {(yyval.ast) = astCreate(AST_LT,  NULL, (yyvsp[-2].ast), (yyvsp[0].ast), getLineNumber());}
-#line 1684 "y.tab.c"
+#line 1695 "y.tab.c"
     break;
 
   case 52: /* expressao: expressao '>' expressao  */
-#line 210 "parser.y"
+#line 221 "parser.y"
                                       {(yyval.ast) = astCreate(AST_GT,  NULL, (yyvsp[-2].ast), (yyvsp[0].ast), getLineNumber());}
-#line 1690 "y.tab.c"
+#line 1701 "y.tab.c"
     break;
 
   case 53: /* expressao: expressao '&' expressao  */
-#line 211 "parser.y"
+#line 222 "parser.y"
                                       {(yyval.ast) = astCreate(AST_AND, NULL, (yyvsp[-2].ast), (yyvsp[0].ast), getLineNumber());}
-#line 1696 "y.tab.c"
+#line 1707 "y.tab.c"
     break;
 
   case 54: /* expressao: expressao '|' expressao  */
-#line 212 "parser.y"
+#line 223 "parser.y"
                                       {(yyval.ast) = astCreate(AST_OR,  NULL, (yyvsp[-2].ast), (yyvsp[0].ast), getLineNumber());}
-#line 1702 "y.tab.c"
+#line 1713 "y.tab.c"
     break;
 
   case 55: /* expressao: '~' expressao  */
-#line 213 "parser.y"
+#line 224 "parser.y"
                             {(yyval.ast) = astCreate(AST_NOT, NULL, (yyvsp[0].ast), NULL, getLineNumber());}
-#line 1708 "y.tab.c"
+#line 1719 "y.tab.c"
     break;
 
   case 56: /* expressao: expressao OPERATOR_GE expressao  */
-#line 214 "parser.y"
+#line 225 "parser.y"
                                                 {(yyval.ast) = astCreate(AST_GE,  NULL, (yyvsp[-2].ast), (yyvsp[0].ast), getLineNumber());}
-#line 1714 "y.tab.c"
+#line 1725 "y.tab.c"
     break;
 
   case 57: /* expressao: expressao OPERATOR_LE expressao  */
-#line 215 "parser.y"
+#line 226 "parser.y"
                                                 {(yyval.ast) = astCreate(AST_LE,  NULL, (yyvsp[-2].ast), (yyvsp[0].ast), getLineNumber());}
-#line 1720 "y.tab.c"
+#line 1731 "y.tab.c"
     break;
 
   case 58: /* expressao: expressao OPERATOR_EQ expressao  */
-#line 216 "parser.y"
+#line 227 "parser.y"
                                                 {(yyval.ast) = astCreate(AST_EQ,  NULL, (yyvsp[-2].ast), (yyvsp[0].ast), getLineNumber());}
-#line 1726 "y.tab.c"
+#line 1737 "y.tab.c"
     break;
 
   case 59: /* expressao: expressao OPERATOR_DIF expressao  */
-#line 217 "parser.y"
+#line 228 "parser.y"
                                                 {(yyval.ast) = astCreate(AST_DIF, NULL, (yyvsp[-2].ast), (yyvsp[0].ast), getLineNumber());}
-#line 1732 "y.tab.c"
+#line 1743 "y.tab.c"
     break;
 
   case 60: /* expressao: '(' expressao ')'  */
-#line 218 "parser.y"
+#line 229 "parser.y"
                                 {(yyval.ast) = astCreate(AST_PARENTHESIS, NULL, (yyvsp[-1].ast), NULL, getLineNumber());}
-#line 1738 "y.tab.c"
+#line 1749 "y.tab.c"
     break;
 
   case 61: /* expressao: nome  */
-#line 219 "parser.y"
+#line 230 "parser.y"
                                 {(yyval.ast) = (yyvsp[0].ast);}
-#line 1744 "y.tab.c"
+#line 1755 "y.tab.c"
     break;
 
   case 62: /* expressao: LIT_INT  */
-#line 220 "parser.y"
+#line 231 "parser.y"
                                 {(yyval.ast) = astCreate(AST_SYMBOL, (yyvsp[0].symbol), NULL, NULL, getLineNumber());}
-#line 1750 "y.tab.c"
+#line 1761 "y.tab.c"
     break;
 
   case 63: /* expressao: LIT_CHAR  */
-#line 221 "parser.y"
+#line 232 "parser.y"
                                 {(yyval.ast) = astCreate(AST_SYMBOL, (yyvsp[0].symbol), NULL, NULL, getLineNumber());}
-#line 1756 "y.tab.c"
+#line 1767 "y.tab.c"
     break;
 
   case 64: /* expressao: LIT_REAL  */
-#line 222 "parser.y"
+#line 233 "parser.y"
                                 {(yyval.ast) = astCreate(AST_SYMBOL, (yyvsp[0].symbol), NULL, NULL, getLineNumber());}
-#line 1762 "y.tab.c"
+#line 1773 "y.tab.c"
     break;
 
   case 65: /* expressao: nome '(' passagemListaParametros ')'  */
-#line 224 "parser.y"
+#line 235 "parser.y"
                                                    {(yyval.ast) = astCreate(AST_FUNCAPP, NULL, (yyvsp[-3].ast), (yyvsp[-1].ast), getLineNumber());}
-#line 1768 "y.tab.c"
+#line 1779 "y.tab.c"
     break;
 
   case 66: /* expressao: KW_INPUT '(' tipo ')'  */
-#line 227 "parser.y"
+#line 238 "parser.y"
                                       {(yyval.ast) = astCreate(AST_INPUT, NULL, (yyvsp[-1].ast), NULL, getLineNumber());}
-#line 1774 "y.tab.c"
+#line 1785 "y.tab.c"
     break;
 
   case 67: /* expressao: nome '[' expressao ']'  */
-#line 228 "parser.y"
+#line 239 "parser.y"
                                      { (yyval.ast) = astCreate(AST_VECACC, NULL, (yyvsp[-3].ast), (yyvsp[-1].ast), getLineNumber());}
-#line 1780 "y.tab.c"
+#line 1791 "y.tab.c"
     break;
 
   case 68: /* passagemParametros: expressao virgulaPassagemParametrosOuVazio  */
-#line 232 "parser.y"
+#line 243 "parser.y"
                                                                      {(yyval.ast) = astCreate(AST_LIST, NULL, (yyvsp[-1].ast), (yyvsp[0].ast), getLineNumber());}
-#line 1786 "y.tab.c"
+#line 1797 "y.tab.c"
     break;
 
   case 69: /* virgulaPassagemParametrosOuVazio: ',' passagemParametros  */
-#line 235 "parser.y"
+#line 246 "parser.y"
                                                                 {(yyval.ast) = (yyvsp[0].ast);}
-#line 1792 "y.tab.c"
+#line 1803 "y.tab.c"
     break;
 
   case 70: /* virgulaPassagemParametrosOuVazio: %empty  */
-#line 236 "parser.y"
+#line 247 "parser.y"
                                                                 {(yyval.ast) = NULL;}
-#line 1798 "y.tab.c"
+#line 1809 "y.tab.c"
     break;
 
   case 71: /* passagemListaParametros: passagemParametros  */
-#line 239 "parser.y"
+#line 250 "parser.y"
                                                 {(yyval.ast) = (yyvsp[0].ast);}
-#line 1804 "y.tab.c"
+#line 1815 "y.tab.c"
     break;
 
   case 72: /* passagemListaParametros: %empty  */
-#line 240 "parser.y"
+#line 251 "parser.y"
                                                 {(yyval.ast) = NULL;}
-#line 1810 "y.tab.c"
+#line 1821 "y.tab.c"
     break;
 
 
-#line 1814 "y.tab.c"
+#line 1825 "y.tab.c"
 
       default: break;
     }
@@ -2003,7 +2014,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 243 "parser.y"
+#line 254 "parser.y"
 
 
 int yyerror(char *msg){

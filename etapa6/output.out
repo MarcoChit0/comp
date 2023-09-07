@@ -1,0 +1,60 @@
+int x = 0;
+int y = 0;
+int z = 0;
+bool xx = 0;
+bool yy = 0;
+bool xxyy = 0;
+bool cond = 0;
+real f = 2.76;
+char d = 'a';
+char g = 75;
+int soma ( int a, int b ) {
+return a + b;
+
+}
+int main (  ) {
+output "Entre com um valor para x:\n";
+x = input(int);
+output "Entre com um valor para y:\n";
+y = input(int);
+output "Valor real que vai virar inteiro:\n";
+f = input(real);
+output "Como inteiro: ", f, "\n";
+f = f + x;
+z = soma(x, y);
+output "soma(x, y) = ", soma(x, y), "\n";
+if ( x == y ) output "x == y", "\n";
+
+else output "not x == y", "\n";
+if ( x >= y ) output "x >= y", "\n";
+
+else output "not x >= y", "\n";
+if ( x <= y ) output "x <= y", "\n";
+
+else output "not x <= y", "\n";
+if ( x > y ) output "x > y", "\n";
+
+else output "not x > y", "\n";
+if ( x < y ) output "x < y", "\n";
+
+else output "not x < y", "\n";
+if ( x != y ) output "x != y", "\n";
+
+else output "not x != y", "\n";
+xx =  (x == 7) ;
+output "xx = ", xx, "\n";
+yy =  (y == 3) ;
+output "yy = ", yy, "\n";
+xxyy = xx | yy;
+output "xx v yy = ", xxyy, "\n";
+cond =  ~ xxyy;
+output "cond = ", cond, "\n";
+if ( x < y & cond ) loop {
+output "inc ", x;
+x = x + 1;
+output " -> ", x, "\n";
+
+}
+return 0;
+
+}
