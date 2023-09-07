@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "ast.h": "c",
+        "unordered_map": "c",
+        "sstream": "c",
+        "typeinfo": "c",
+        "stdlib.h": "c",
+        "cctype": "c",
+        "random": "c"
+    }
+}

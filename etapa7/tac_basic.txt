@@ -1,0 +1,33 @@
+int n = 3;
+int m = 6;
+int vector[4] 1 2 3 4;
+int main()
+{
+    output "m = ", m, "\n";
+    output "n = ", n, "\n";
+    output "soma: ", n+m, "\n";
+    output "subtracao: ", m-n, "\n";
+    output "multiplicacao: ", n*m, "\n";
+    output "divisao: ", m/n, "\n";
+    output "gt: ", m>n, "\n";
+    output "gte: ", m>=n, "\n";
+    output "lt: ", m<n, "\n";
+    output "lte: ", m<=n, "\n";
+    output "eq: ", m==n, "\n";
+    output "dif: ", m!=n, "\n";
+    \\output "and: ", m & n, "\n";
+    \\output "or: ", m | n, "\n";
+    \\output "not: ", ~m, "\n";
+    n = m;
+    output "n = ", n, "\n";
+    n = m + n * n;
+    output "n = ", n, "\n";
+    if (n > m)
+        output "n maior que m\n";
+    else
+        output "m maior ou igual que n\n";
+    output vector[1], "\n";
+    vector[1] = vector[2] + vector[3];
+    output vector[1], "\n";
+    return n;
+}
