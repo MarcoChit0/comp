@@ -1,0 +1,10 @@
+int x = 1;
+int y = 2;
+int soma(int a, int b)
+{
+    return a + b;
+}
+int main()
+{
+    output soma(x, y);
+}   

@@ -1,0 +1,13 @@
+int a = 1;
+int b = 2;
+int soma(int n, int m)
+{
+    return n + m;
+}
+
+int main()
+{
+    a = soma(a, b);
+    output "soma de a com b = ", a, "\n";
+    return 0;
+}

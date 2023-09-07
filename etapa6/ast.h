@@ -177,7 +177,7 @@ enum asttype{
     AST_PARENTHESIS     = 40,
 };
 
-static char map[41][256] = {
+static char astMap[41][256] = {
     "AST_SYMBOL",
     "AST_ADD",
     "AST_SUB",

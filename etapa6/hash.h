@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 #define HASHSIZE 997
 #define NODATATYPE -1
 
@@ -26,6 +27,7 @@ enum symbolsEnum
     SYMBOL_FUNCTION=2,
     SYMBOL_TEMP=3,
     SYMBOL_LABEL=4,
+    SYMBOL_CONST=5,
 };
 
 typedef struct hashnode
@@ -34,7 +36,7 @@ typedef struct hashnode
     struct hashnode* next;
     int type;
     int datatype;
-    struct hashnode* variableContent;
+    struct hashnode* content;
 } HashNode;
 
 void        hashInit();

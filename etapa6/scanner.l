@@ -16,8 +16,8 @@ STRING  [-,;\(\)\[\]\{\}=+*/%<>&|~a-zA-Z0-9\!\?\@\#\%\&\*\\\/: \.]
 
 
 %%
-{DIGIT}+                    {yylval.symbol = hashInsertWithDataType(yytext, LIT_INT, DATATYPE_INT); return LIT_INT;}
-{DIGIT}+[.]{DIGIT}+         {yylval.symbol = hashInsertWithDataType(yytext, LIT_REAL, DATATYPE_REAL); return LIT_REAL;}
+{DIGIT}+                    {yylval.symbol = hashInsertWithDataType(yytext, SYMBOL_CONST, DATATYPE_INT); return LIT_INT;}
+{DIGIT}+[.]{DIGIT}+         {yylval.symbol = hashInsertWithDataType(yytext, SYMBOL_CONST, DATATYPE_REAL); return LIT_REAL;}
 {SYMBOLS}                   {return yytext[0];}
 "int"                       {return KW_INT;}
 "real"                      {return KW_REAL;}
@@ -37,9 +37,9 @@ STRING  [-,;\(\)\[\]\{\}=+*/%<>&|~a-zA-Z0-9\!\?\@\#\%\&\*\\\/: \.]
 "!="                        {return OPERATOR_DIF;}
 "\n"                        {++lineNumber;} 
 [ \t]                       {}
-(\')(.)(\')                 {yylval.symbol = hashInsertWithDataType(yytext, LIT_CHAR, DATATYPE_CHAR); return LIT_CHAR;}
-(\')(\\)[ tn\"](\')         {yylval.symbol = hashInsertWithDataType(yytext, LIT_CHAR, DATATYPE_CHAR); return LIT_CHAR;}
-(\"){STRING}*(\")           {yylval.symbol = hashInsertWithDataType(yytext, LIT_STRING, DATATYPE_STRING); return LIT_STRING;}
+(\')(.)(\')                 {yylval.symbol = hashInsertWithDataType(yytext, SYMBOL_CONST, DATATYPE_CHAR); return LIT_CHAR;}
+(\')(\\)[ tn\"](\')         {yylval.symbol = hashInsertWithDataType(yytext, SYMBOL_CONST, DATATYPE_CHAR); return LIT_CHAR;}
+(\"){STRING}*(\")           {yylval.symbol = hashInsertWithDataType(yytext, SYMBOL_CONST, DATATYPE_STRING); return LIT_STRING;}
 (\\\\\\)(.)*                {BEGIN(COMMENT);}
 (\\\\)(.)*                  {}
 .                           {return TOKEN_ERROR;}

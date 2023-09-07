@@ -316,5 +316,5 @@ void astTopMatch(AST* node, AST* top)
 
 char* astTypeToString(int type)
 {   
-    return map[type];
+    return astMap[type];
 }

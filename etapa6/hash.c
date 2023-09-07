@@ -23,7 +23,7 @@ HashNode *hashInsert(char *text, int type)
     newnode->type = type;
     newnode->datatype = NODATATYPE;
     newnode->text = (char *)calloc(strlen(text) + 1, sizeof(char));
-    newnode->variableContent = NULL;
+    newnode->content = NULL;
     strcpy(newnode->text, text);
     newnode->next = Table[address];
     Table[address] = newnode;
@@ -42,7 +42,7 @@ HashNode *hashInsertWithDataType(char *text, int type, int datatype)
     int address = hashAddress(text);
     newnode->type = type;
     newnode->datatype = datatype;
-    newnode->variableContent = NULL;
+    newnode->content = NULL;
     newnode->text = (char *)calloc(strlen(text) + 1, sizeof(char));
     strcpy(newnode->text, text);
     newnode->next = Table[address];
@@ -192,23 +192,23 @@ void hashToASM(FILE *fp)
             if (node->type == SYMBOL_TEMP)
                 fprintf(
                     fp,
-                    "%s:\n"
+                    ".%s:\n"
                     "\t.long\t0\n",
                     node->text);
-            if (node->type == SYMBOL_VARIABLE)
+            else if (node->type == SYMBOL_VARIABLE)
             {
-                fprintf(fp, "%s:\n", node->text);
+                fprintf(fp, ".%s:\n", node->text);
                 switch (node->datatype)
                 {
                 case DATATYPE_INT:
                 case DATATYPE_BOOL:
                 case DATATYPE_CHAR:
-                    if (!node->variableContent)
+                    if (!node->content)
                         // int, char, bool <- undefined
                         fprintf(fp, "\t.long\t0\n");
                     else
                     {
-                        char *string = node->variableContent->text;
+                        char *string = node->content->text;
                         if ((int)string[0] - '\'' == 0)
                         {
                             // int, char, bool <- char
@@ -216,26 +216,68 @@ void hashToASM(FILE *fp)
                             fprintf(fp, "\t.long\t%d\n", string[0]);
                         }
                         else
+                        {
                             // int, char, bool <- int
                             fprintf(fp, "\t.long\t%d\n", atoi(string));
+                        }
                     }
                     break;
                 case DATATYPE_REAL:
-                    fprintf(fp, "\t.long\t%d\n", node->variableContent ? (int)atof(node->variableContent->text) : 0);
+                    fprintf(fp, "\t.long\t%d\n", node->content ? (int)atof(node->content->text) : 0);
                     break;
                 default:
                     break;
                 }
             }
-            if (node->datatype == DATATYPE_STRING)
+            else if (node->datatype == DATATYPE_STRING)
             {
                 char *label = getLabel(node->text);
                 fprintf(
                     fp,
-                    "%s:\n"
+                    ".%s:\n"
                     "\t.string\t%s\n",
                     label,
                     node->text);
+            }
+            else if (node->type == SYMBOL_CONST && node->datatype == DATATYPE_INT)
+            {
+                fprintf(
+                    fp,
+                    ".%s:\n"
+                    "\t.long\t%d\n",
+                    node->text,
+                    atoi(node->text)
+                );
+            }
+            else if(node->type == SYMBOL_CONST && node->type == DATATYPE_CHAR)
+            {
+                char* string =  node->text;
+                // int, char, bool <- char
+                removeChar(string, '\'');
+                fprintf(
+                    fp,
+                    ".%d:\n" 
+                    "\t.long\t%d\n",
+                    string[0], 
+                    string[0]
+                );
+            }
+            else if(node->type == SYMBOL_CONST && node->type == DATATYPE_REAL)
+            {
+                int ireal = (int) atof(node->text);
+                char str[256];
+                sprintf(str, "%d", ireal);
+                HashNode* f = hashFind(str);
+                if(!f)
+                {
+                    fprintf(
+                        fp,
+                        ".%d:\n" 
+                        "\t.long\t%d\n",
+                        ireal, 
+                        ireal
+                    );
+                }
             }
         }
     }

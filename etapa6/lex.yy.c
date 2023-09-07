@@ -791,12 +791,12 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 19 "scanner.l"
-{yylval.symbol = hashInsertWithDataType(yytext, LIT_INT, DATATYPE_INT); return LIT_INT;}
+{yylval.symbol = hashInsertWithDataType(yytext, SYMBOL_CONST, DATATYPE_INT); return LIT_INT;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 20 "scanner.l"
-{yylval.symbol = hashInsertWithDataType(yytext, LIT_REAL, DATATYPE_REAL); return LIT_REAL;}
+{yylval.symbol = hashInsertWithDataType(yytext, SYMBOL_CONST, DATATYPE_REAL); return LIT_REAL;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
@@ -897,17 +897,17 @@ YY_RULE_SETUP
 case 22:
 YY_RULE_SETUP
 #line 40 "scanner.l"
-{yylval.symbol = hashInsertWithDataType(yytext, LIT_CHAR, DATATYPE_CHAR); return LIT_CHAR;}
+{yylval.symbol = hashInsertWithDataType(yytext, SYMBOL_CONST, DATATYPE_CHAR); return LIT_CHAR;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 41 "scanner.l"
-{yylval.symbol = hashInsertWithDataType(yytext, LIT_CHAR, DATATYPE_CHAR); return LIT_CHAR;}
+{yylval.symbol = hashInsertWithDataType(yytext, SYMBOL_CONST, DATATYPE_CHAR); return LIT_CHAR;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 42 "scanner.l"
-{yylval.symbol = hashInsertWithDataType(yytext, LIT_STRING, DATATYPE_STRING); return LIT_STRING;}
+{yylval.symbol = hashInsertWithDataType(yytext, SYMBOL_CONST, DATATYPE_STRING); return LIT_STRING;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP

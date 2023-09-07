@@ -5,13 +5,13 @@ static int labelCounter = 0;
 void tacIntCompToASM(FILE *fptr, char *title, char *operation, TAC *tac)
 {
     fprintf(fptr,
-            "%s\n"
-            "\tmovl	%s(%%rip), %%edx\n"
-            "\tmovl	%s(%%rip), %%eax\n"
+            ".%s\n"
+            "\tmovl	.%s(%%rip), %%edx\n"
+            "\tmovl	.%s(%%rip), %%eax\n"
             "\tcmpl	%%eax, %%edx\n"
-            "\t%s	%%al\n"
+            "\t.%s	%%al\n"
             "\tmovzbl	%%al, %%eax\n"
-            "\tmovl	%%eax, %s(%%rip)\n\n",
+            "\tmovl	%%eax, .%s(%%rip)\n\n",
             title,
             tac->operator1->text,
             tac->operator2->text,
@@ -23,10 +23,10 @@ void tacIntAritExpToASM(FILE *fptr, char *title, char *operation, TAC *tac)
 {
     fprintf(fptr,
             "%s\n"
-            "\tmovl	%s(%%rip), %%edx\n"
-            "\tmovl	%s(%%rip), %%eax\n"
+            "\tmovl	.%s(%%rip), %%edx\n"
+            "\tmovl	.%s(%%rip), %%eax\n"
             "\t%s	%%edx, %%eax\n"
-            "\tmovl	%%eax, %s(%%rip)\n\n",
+            "\tmovl	%%eax, .%s(%%rip)\n\n",
             title,
             tac->operator1->text,
             tac->operator2->text,
@@ -38,11 +38,11 @@ void tacDivToASM(FILE *fptr, TAC *tac)
 {
     fprintf(fptr,
             "## TAC_DIV: ##\n"
-            "\tmovl %s(%%rip), %%eax\n"
-            "\tmovl	%s(%%rip), %%ecx\n"
+            "\tmovl .%s(%%rip), %%eax\n"
+            "\tmovl	.%s(%%rip), %%ecx\n"
             "\tcltd\n"
             "\tidivl %%ecx\n"
-            "\tmovl	%%eax, %s(%%rip)\n\n",
+            "\tmovl	%%eax, .%s(%%rip)\n\n",
             tac->operator1->text, tac->operator2->text, tac->result->text);
 }
 
@@ -50,11 +50,11 @@ void tacSubToASM(FILE *fptr, TAC *tac)
 {
     fprintf(fptr,
             "## TAC SUB: ##\n"
-            "\tmovl %s(%%rip), %%edx\n"
-            "\tmovl	%s(%%rip), %%eax\n"
+            "\tmovl .%s(%%rip), %%edx\n"
+            "\tmovl	.%s(%%rip), %%eax\n"
             "\tsubl	%%eax, %%edx\n"
             "\tmovl	%%edx, %%eax\n"
-            "\tmovl	%%edx, %s(%%rip)\n\n",
+            "\tmovl	%%edx, .%s(%%rip)\n\n",
             tac->operator1->text, tac->operator2->text, tac->result->text);
 }
 
@@ -63,7 +63,7 @@ void tacLabelToASM(FILE *fptr, TAC *tac)
     fprintf(
         fptr,
         "## TAC LABEL: ##\n"
-        "%s:\n\n",
+        ".%s:\n\n",
         tac->result->text);
 }
 
@@ -72,7 +72,7 @@ void tacJumpToASM(FILE *fptr, TAC *tac)
     fprintf(
         fptr,
         "## TAC JUMP: ##\n"
-        "\tjmp	%s\n\n",
+        "\tjmp	.%s\n\n",
         tac->result->text);
 }
 
@@ -81,9 +81,9 @@ void tacJumpFalseToASM(FILE *fptr, TAC *tac)
     fprintf(
         fptr,
         "## TAC JUMP FALSE: ##\n"
-        "\tmovl %s(%%rip), %%eax\n"
+        "\tmovl .%s(%%rip), %%eax\n"
         "\tcmpl $1, %%eax\n"
-        "\tjne %s\n\n",
+        "\tjne .%s\n\n",
         tac->operator1->text, tac->result->text);
 }
 
@@ -93,10 +93,10 @@ void tacAndtoASM(FILE *fptr, TAC *tac)
     int labelFalse = labelCounter++;
     fprintf(fptr,
             "## TAC AND: ##\n"
-            "\tmovl	%s(%%rip), %%eax\n"
+            "\tmovl	.%s(%%rip), %%eax\n"
             "\ttestl	%%eax, %%eax\n"
             "\tje	.L%d\n"
-            "\tmovl	%s(%%rip), %%eax\n"
+            "\tmovl	.%s(%%rip), %%eax\n"
             "\ttestl	%%eax, %%eax\n"
             "\tje	.L%d\n"
             "\tmovl	$1, %%eax\n"
@@ -104,7 +104,7 @@ void tacAndtoASM(FILE *fptr, TAC *tac)
             ".L%d:\n"
             "\tmovl	$0, %%eax\n"
             ".L%d:\n"
-            "\tmovl	%%eax, %s(%%rip)\n\n",
+            "\tmovl	%%eax, .%s(%%rip)\n\n",
             tac->operator1->text,
             labelTrue,
             tac->operator2->text,
@@ -122,10 +122,10 @@ void tacOrToASM(FILE *fptr, TAC *tac)
     int L2 = labelCounter++;
     fprintf(fptr,
             "## TAC OR: ##"
-            "\tmovl	%s(%%rip), %%eax\n"
+            "\tmovl	.%s(%%rip), %%eax\n"
             "\ttestl	%%eax, %%eax\n"
             "\tjne	.L%d\n"
-            "\tmovl	%s(%%rip), %%eax\n"
+            "\tmovl	.%s(%%rip), %%eax\n"
             "\ttestl	%%eax, %%eax\n"
             "\tje	.L%d\n"
             ".L%d:\n"
@@ -134,7 +134,7 @@ void tacOrToASM(FILE *fptr, TAC *tac)
             ".L%d:\n"
             "\tmovl	$0, %%eax\n"
             ".L%d:\n"
-            "\tmovl	%%eax, %s(%%rip)\n\n",
+            "\tmovl	%%eax, .%s(%%rip)\n\n",
             tac->operator1->text,
             L0,
             tac->operator2->text,
@@ -150,27 +150,39 @@ void tacNotToASM(FILE *fptr, TAC *tac)
 {
     fprintf(fptr,
             "## TAC NOT: ##"
-            "\tmovl	%s(%%rip), %%eax\n"
+            "\tmovl	.%s(%%rip), %%eax\n"
             "\ttestl	%%eax, %%eax\n"
             "\tsete	%%al\n"
             "\tmovzbl	%%al, %%eax\n"
-            "\tmovl	%%eax, %s(%%rip)\n\n",
+            "\tmovl	%%eax, .%s(%%rip)\n\n",
             tac->operator1->text,
             tac->result->text);
 }
 
 void tacFunctionBeginToASM(FILE *fptr, TAC *tac)
 {
-    fprintf(fptr,
-            "## TAC FUNCTION BEGIN: ##\n"
-            "\t.globl	%s\n"
-            "\t.type	%s, @function\n"
-            "%s:\n"
-            "\tpushq	%%rbp\n"
-            "\tmovq	%%rsp, %%rbp\n\n",
-            tac->result->text,
-            tac->result->text,
-            tac->result->text);
+    if(strcmp(tac->result->text, "main") == 0)
+        fprintf(fptr,
+                "## TAC FUNCTION BEGIN: ##\n"
+                "\t.globl	%s\n"
+                "\t.type	%s, @function\n"
+                "%s:\n"
+                "\tpushq	%%rbp\n"
+                "\tmovq	%%rsp, %%rbp\n\n",
+                tac->result->text,
+                tac->result->text,
+                tac->result->text);
+    else
+        fprintf(fptr,
+                "## TAC FUNCTION BEGIN: ##\n"
+                "\t.globl	.%s\n"
+                "\t.type	.%s, @function\n"
+                ".%s:\n"
+                "\tpushq	%%rbp\n"
+                "\tmovq	%%rsp, %%rbp\n\n",
+                tac->result->text,
+                tac->result->text,
+                tac->result->text);
 }
 
 void tacFunctionEndToASM(FILE *fptr)
@@ -187,9 +199,9 @@ void tacPrintToASM(FILE *fptr, TAC *tac)
     {
         fprintf(fptr,
                 "## TAC PRINT STRING: ##\n"
-                "\tleaq	%s(%%rip), %%rax\n"
+                "\tleaq	.%s(%%rip), %%rax\n"
                 "\tmovq	%%rax, %%rsi\n"
-                "\tleaq	.PRINTSTRING(%%rip), %%rax\n"
+                "\tleaq	.LSTRING(%%rip), %%rax\n"
                 "\tmovq	%%rax, %%rdi\n"
                 "\tmovl	$0, %%eax\n"
                 "\tcall	printf@PLT\n\n",
@@ -198,9 +210,9 @@ void tacPrintToASM(FILE *fptr, TAC *tac)
     else
         fprintf(fptr,
                 "## TAC PRINT INT: ##\n"
-                "\tmovl	%s(%%rip), %%eax\n"
+                "\tmovl	.%s(%%rip), %%eax\n"
                 "\tmovl	%%eax, %%esi\n"
-                "\tleaq	.PRINTINT(%%rip), %%rax\n"
+                "\tleaq	.LINT(%%rip), %%rax\n"
                 "\tmovq	%%rax, %%rdi\n"
                 "\tmovl	$0, %%eax\n"
                 "\tcall	printf@PLT\n\n",
@@ -212,8 +224,8 @@ void tacMoveToASM(FILE *fptr, TAC *tac)
     fprintf(
         fptr,
         "## TAC MOVE: ##\n"
-        "\tmovl	%s(%%rip), %%eax\n"
-        "\tmovl	%%eax, %s(%%rip)\n\n",
+        "\tmovl	.%s(%%rip), %%eax\n"
+        "\tmovl	%%eax, .%s(%%rip)\n\n",
         tac->operator1->text, tac->result->text);
 }
 
@@ -222,9 +234,7 @@ void tacReturnToASM(FILE *fptr, TAC *tac)
     fprintf(
         fptr,
         "## TAC RETURN: ##\n"
-        "\tmovl	%s(%%rip), %%eax\n"
-        "\tpopq	%%rbp\n"
-        "\tret\n\n",
+        "\tmovl	.%s(%%rip), %%eax\n\n",
         tac->result->text);
 }
 
@@ -242,8 +252,8 @@ void tacVecAttToASM(FILE *fptr, TAC *tac)
     fprintf(
         fptr,
         "## TAC VEC ATT: ##\n"
-        "\tmovl	%s(%%rip), %%eax\n"
-        "\tmovl	%%eax, %d+%s(%%rip)\n\n",
+        "\tmovl	.%s(%%rip), %%eax\n"
+        "\tmovl	%%eax, %d+.%s(%%rip)\n\n",
         tac->operator2->text,
         4 * digit,
         tac->result->text);
@@ -255,8 +265,8 @@ void tacVecAccToASM(FILE *fptr, TAC *tac)
         fprintf(
             fptr,
             "## TAC VEC ACC: ##\n"
-            "\tmovl	%d+%s(%%rip), %%eax\n"
-            "\tmovl	%%eax, %s(%%rip)\n\n",
+            "\tmovl	%d+.%s(%%rip), %%eax\n"
+            "\tmovl	%%eax, .%s(%%rip)\n\n",
             4 * atoi(tac->operator2->text),
             tac->operator1->text,
             tac->result->text);
@@ -264,20 +274,45 @@ void tacVecAccToASM(FILE *fptr, TAC *tac)
         fprintf(
             fptr,
             "## TAC VEC ACC: ##\n"
-            "\tmovl	%s(%%rip), %%eax\n"
+            "\tmovl	.%s(%%rip), %%eax\n"
             "\tcltq\n"
             "\tleaq	0(,%%rax,4), %%rdx\n"
-            "\tleaq	%s(%%rip), %%rax\n"
+            "\tleaq	.%s(%%rip), %%rax\n"
             "\tmovl	(%%rdx,%%rax), %%eax\n"
-            "\tmovl	%%eax, %s(%%rip)\n\n",
+            "\tmovl	%%eax, .%s(%%rip)\n\n",
             tac->operator2->text,
             tac->operator1->text,
             tac->result->text);
 }
 
+void tacReadToASM(FILE* fptr, TAC* tac)
+{
+    fprintf(
+        fptr,
+        "## TAC READ: ##\n"
+        "\tleaq	.%s(%%rip), %%rax\n"
+	    "\tmovq	%%rax, %%rsi\n"
+	    "\tleaq	.LINT(%%rip), %%rax\n"
+	    "\tmovq	%%rax, %%rdi\n"
+	    "\tmovl	$0, %%eax\n"
+	    "\tcall	__isoc99_scanf@PLT\n\n",
+        tac->result->text);
+}
+
+void tacFunctionCallToASM(FILE* fptr, TAC* tac)
+{
+    fprintf(
+        fptr,
+        "## TAC CALL: ##\n"
+        "\tmovl $0, %%eax\n"
+        "\tcall .%s\n"
+        "\tmovl	%%eax, .%s(%%rip)\n\n",
+        tac->operator1->text,
+        tac->result->text);
+}
+
 void generateASM(TAC *tac)
 {
-    hashPrint();
     tacPrintBackwards(tac);
     FILE *fp = fopen("asm.s", "w");
     if (!fp)
@@ -291,15 +326,15 @@ void generateASM(TAC *tac)
         fp,
         "## ASM CODE: ##\n\n"
         "## PRINT FUNCTIONS: ##\n"
-        ".PRINTINT:\n"
+        ".LINT:\n"
         "\t.string\t\"%%d\"\n"
-        ".PRINTSTRING:\n"
-        "\t.string\t\"%%s\"\n\n"
-        ".PRINTFLOAT:\n"
-        "\t.string\t\"%%f\"\n\n");
+        ".LSTRING:\n"
+        "\t.string\t\"%%s\"\n"
+        ".LCHAR:\n"
+        "\t.string\t\"%%c\"\n\n");
     while (t)
     {
-        printf("LOG: t = %s\n", tacMap[t->type]);
+        printf("LOG: t = .%s\n", tacMap[t->type]);
         switch (t->type)
         {
         case TAC_SYMBOL:
@@ -412,7 +447,7 @@ void generateASM(TAC *tac)
     for (TAC *t = dataSection; t; t = t->next)
     {
         if (t->type == TAC_VECDEFBEGIN)
-            fprintf(fp, "%s:\n", t->result->text);
+            fprintf(fp, ".%s:\n", t->result->text);
         if (t->type == TAC_VECDEF && t->operator1)
         {
             if (t->operator1->datatype == DATATYPE_REAL)
