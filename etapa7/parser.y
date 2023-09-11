@@ -8,6 +8,7 @@
     #include "asm.h"
     int yyerror(char *);
     int yylex();
+    static int syntaxErrorCounter = 0; 
 %}
 
 %union
@@ -74,7 +75,11 @@
 
 %%
 programa: listaDeclaracoes {
-        AST* root = $1;  
+        AST* root = $1;
+        if(syntaxErrorCounter)
+        {
+                exit(3);
+        }
         astToFile(root);    
         checkAndSetDeclarations(root, NULL); 
         checkUndeclared(); 
@@ -119,6 +124,9 @@ variavel: tipo nome '=' literal ';' {
         AST* vecsizevalue = astCreate(AST_VECSIZEVALUE, NULL, size, $6, getLineNumber());
         $$ = astCreate(AST_VECDEF, NULL, typename, vecsizevalue, getLineNumber());
 }
+        | tipo nome '[' LIT_INT ']' error {fprintf(stderr, "LOG [SYNTAX ERROR FOUND]: wrong vector definition \']\'\n"); $$ = 0; }
+        | tipo nome '[' LIT_INT error {fprintf(stderr, "LOG [SYNTAX ERROR FOUND]: missing \']\'\n"); $$ = 0; }
+        | tipo nome '=' error {fprintf(stderr, "LOG [SYNTAX ERROR FOUND]: wrong variable definition\n"); $$ = 0; }
         ;
 
 literal : LIT_INT       {$$ = astCreate(AST_SYMBOL, $1, NULL, NULL, getLineNumber());}
@@ -136,18 +144,21 @@ tipo: KW_BOOL {$$ = astCreate(AST_BOOL, NULL, NULL, NULL, getLineNumber());}
     | KW_CHAR {$$ = astCreate(AST_CHAR, NULL, NULL, NULL, getLineNumber());}
     | KW_INT  {$$ = astCreate(AST_INT, NULL, NULL, NULL, getLineNumber());}
     | KW_REAL {$$ = astCreate(AST_REAL, NULL, NULL, NULL, getLineNumber());} 
+    | error {fprintf(stderr, "LOG [SYNTAX ERROR FOUND]: type error\n"); $$ = 0; }
     ;
 
 // função = cabeçalho corpo
 // cabeçalho = tipo TK_IDENTIFIER (lista de parametros)
 // corpo = bloco de comandos 
 funcao  : cabecalho bloco {$$ = astCreate(AST_FUNCDEF, NULL, $1, $2, getLineNumber());}
+        | error {fprintf(stderr, "LOG [SYNTAX ERROR FOUND]: function definition error\n"); $$ = 0; }
         ;
 
 cabecalho   : tipo nome '(' definicaoListaParametros ')' {
         AST* typename = astCreate(AST_TYPENAME, NULL, $1, $2, getLineNumber());
         $$ = astCreate(AST_HEADER, NULL, typename, $4, getLineNumber());
 }
+        | tipo nome '(' definicaoListaParametros error {fprintf(stderr, "LOG [SYNTAX ERROR FOUND]: missing ')' on function header\n"); $$ = 0; }
             ;
 
 definicaoParametros : tipo nome virgulaDefinicaoParametrosOuVazio {
@@ -158,6 +169,7 @@ definicaoParametros : tipo nome virgulaDefinicaoParametrosOuVazio {
 
 virgulaDefinicaoParametrosOuVazio   : ',' definicaoParametros   {$$ = $2;}
                                     |                           {$$ = NULL;}
+                                    | error {fprintf(stderr, "LOG [SYNTAX ERROR FOUND]: missing \',\'\n"); $$ = 0; }
                                     ;
 
 definicaoListaParametros: definicaoParametros   {$$ = $1;}
@@ -165,6 +177,7 @@ definicaoListaParametros: definicaoParametros   {$$ = $1;}
                         ;
 
 bloco   : '{' comandos '}'      {$$ = astCreate(AST_BLOCKCMD, NULL, $2, NULL, getLineNumber());}
+        | '{' comandos error {fprintf(stderr, "LOG [SYNTAX ERROR FOUND]: block missing \'}\'\n"); $$ = 0; }
         ;
 
 comandos: comando comandos      {$$ = astCreate(AST_COMMANDS, NULL, $1, $2, getLineNumber());}
@@ -177,6 +190,7 @@ comando : ';'           {$$ = astCreate(AST_EMPTYCMD, NULL, NULL, NULL, getLineN
         | controleFluxo {$$ = $1;}
         | outputComando {$$ = $1;}
         | returnComando {$$ = $1;}
+        | error         {fprintf(stderr, "LOG [SYNTAX ERROR FOUND]: command error\n"); $$ = 0; }
         ;
                 // atribuição de variável
 atribuicao  : nome '=' expressao ';' {$$ = astCreate(AST_VARATTCMD, NULL, $1, $3, getLineNumber());}
@@ -185,6 +199,12 @@ atribuicao  : nome '=' expressao ';' {$$ = astCreate(AST_VARATTCMD, NULL, $1, $3
                 AST* index = astCreate(AST_VECATTCMD, NULL, $3, $6, getLineNumber()); 
                 $$ = astCreate(AST_VECACC, NULL, $1, index, getLineNumber());
                 }
+                | nome '[' expressao ']' '=' expressao error  {fprintf(stderr, "LOG [SYNTAX ERROR FOUND]: missing ';'\n"); $$ = 0; }
+                | nome '[' expressao ']' error  {fprintf(stderr, "LOG [SYNTAX ERROR FOUND]: wrong vector assignment\n"); $$ = 0; }
+                | nome '[' expressao error  {fprintf(stderr, "LOG [SYNTAX ERROR FOUND]: missing ']'\n"); $$ = 0; }
+                | nome '=' expressao error {fprintf(stderr, "LOG [SYNTAX ERROR FOUND]: missing ';'\n"); $$ = 0; }
+                | nome '=' error  {fprintf(stderr, "LOG [SYNTAX ERROR FOUND]: wrong variable assignment \n"); $$ = 0; }
+                | nome error  {fprintf(stderr, "LOG [SYNTAX ERROR FOUND]: wrong  assignment\n"); $$ = 0; }
             ;
 
 controleFluxo   : KW_IF '(' expressao ')' comando {$$ = astCreate(AST_IF, NULL, $3, $5, getLineNumber());}
@@ -196,11 +216,17 @@ controleFluxo   : KW_IF '(' expressao ')' comando {$$ = astCreate(AST_IF, NULL, 
                         AST* loop = astCreate(AST_LOOP, NULL, $6, NULL, getLineNumber());
                         $$ = astCreate(AST_IF, NULL, $3, loop, getLineNumber());
                 }
+                | KW_IF '(' expressao error {fprintf(stderr, "LOG [SYNTAX ERROR FOUND]: missign ')'\n"); $$ = 0; }
+                | KW_IF error {fprintf(stderr, "LOG [SYNTAX ERROR FOUND]: 'if' expression not well writen\n"); $$ = 0; }
                 ;
 
 outputComando   : KW_OUTPUT outputElementos ';' {$$ = astCreate(AST_OUTPUTCMD, NULL, $2, NULL, getLineNumber());}
+                | KW_OUTPUT outputElementos error {fprintf(stderr, "LOG [SYNTAX ERROR FOUND]: missing ';'\n"); $$ = 0; }
+                ;
 
 returnComando   : KW_RETURN expressao ';' {$$ = astCreate(AST_RETURNCMD, NULL, $2, NULL, getLineNumber());}
+                | KW_RETURN expressao error {fprintf(stderr, "LOG [SYNTAX ERROR FOUND]: missing ';'\n"); $$ = 0; }
+                ;
 
 
 outputElementos : expressao virgulaOutputElementosOuVazio       {$$ = astCreate(AST_LIST, NULL, $1, $2, getLineNumber());}
@@ -211,6 +237,7 @@ outputElementos : expressao virgulaOutputElementosOuVazio       {$$ = astCreate(
 
 virgulaOutputElementosOuVazio   : ',' outputElementos   {$$ = $2;}
                                 |                       {$$ = NULL;}
+                                | error {fprintf(stderr, "LOG [SYNTAX ERROR FOUND]: missing ','\n"); $$ = 0; }
                                 ;
 
 expressao   : expressao '+' expressao {$$ = astCreate(AST_ADD, NULL, $1, $3, getLineNumber());}
@@ -234,16 +261,19 @@ expressao   : expressao '+' expressao {$$ = astCreate(AST_ADD, NULL, $1, $3, get
             // function(params)
             | nome '(' passagemListaParametros ')' {$$ = astCreate(AST_FUNCAPP, NULL, $1, $3, getLineNumber());} 
             // input(type)
-            // TODO: perguntar como fazer
             | KW_INPUT '(' tipo ')'   {$$ = astCreate(AST_INPUT, NULL, $3, NULL, getLineNumber());}  
             | nome '[' expressao ']' { $$ = astCreate(AST_VECACC, NULL, $1, $3, getLineNumber());}
-            // TODO: perguntar se adiciono real e string 
+            | KW_INPUT '(' tipo error {fprintf(stderr, "LOG [SYNTAX ERROR FOUND]: missing ')'\n"); $$ = 0; }
+            | nome '[' expressao error {fprintf(stderr, "LOG [SYNTAX ERROR FOUND]: missing ']'\n"); $$ = 0; }
+            | nome '(' passagemListaParametros error {fprintf(stderr, "LOG [SYNTAX ERROR FOUND]: missing ')'\n"); $$ = 0; }
+            | error {fprintf(stderr, "LOG [SYNTAX ERROR FOUND]: expression not well writen\n"); $$ = 0; }
             ;
 
 passagemParametros      : expressao virgulaPassagemParametrosOuVazio {$$ = astCreate(AST_LIST, NULL, $1, $2, getLineNumber());}
                         ;
 
 virgulaPassagemParametrosOuVazio: ',' passagemParametros        {$$ = $2;}
+                                | error {fprintf(stderr, "LOG [SYNTAX ERROR FOUND]: missing ','\n"); $$ = 0; }
                                 |                               {$$ = NULL;}
                                 ;
 
@@ -254,6 +284,7 @@ passagemListaParametros : passagemParametros    {$$ = $1;}
 %%
 
 int yyerror(char *msg){
-    fprintf(stderr, "\n\nSyntax error at line %d!!!\n\n", getLineNumber());
-    exit(3);
+        fprintf(stderr, "\n\nSyntax error at line %d!!!\n\n", getLineNumber());
+        fprintf(stderr, "\n\nSo far, were found %d syntax errors in your code!\n\n", ++syntaxErrorCounter);
+        return syntaxErrorCounter;
 }

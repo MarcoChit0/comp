@@ -1,5 +1,5 @@
-etapa6: main.o y.tab.o lex.yy.o  hash.o ast.o semantic.o tac.o asm.o
-	gcc main.o y.tab.o lex.yy.o  hash.o ast.o semantic.o tac.o asm.o -o etapa6
+etapa7: main.o y.tab.o lex.yy.o  hash.o ast.o semantic.o tac.o asm.o
+	gcc main.o y.tab.o lex.yy.o  hash.o ast.o semantic.o tac.o asm.o -o etapa7
 
 main.o: main.c
 	gcc -c main.c
@@ -32,7 +32,7 @@ lex.yy.c: scanner.l
 	lex scanner.l
 
 clean:
-	rm *.o etapa6 lex.yy.c y.tab.c
+	rm *.o etapa7 lex.yy.c y.tab.c
 
 run:
-	make && ./etapa6 input.in output.out > printoutput.out && gcc asm.s -o compiled.exe && ./compiled.exe
+	make && ./etapa7 input.in output.out > printoutput.out && gcc asm.s -o compiled.exe && ./compiled.exe

@@ -43,6 +43,8 @@ enum tacEnum
     TAC_VECDEFBEGIN,
     TAC_VECDEF,
     TAC_VECDEFEND,
+    TAC_SET_TRUE,
+    TAC_SET_FALSE,
 };
 
 static char tacMap[100][256] = {
@@ -78,6 +80,8 @@ static char tacMap[100][256] = {
     "TAC_VECDEFBEGIN",
     "TAC_VECDEF",
     "TAC_VECDEFEND",
+    "TAC_SET_TRUE",
+    "TAC_SET_fALSE",
 };
 
 

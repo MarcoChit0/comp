@@ -19,10 +19,10 @@
 	movl	.a.(%rip), %edx
 	movl	.b.(%rip), %eax
 	addl	%edx, %eax
-	movl	%eax, .temp_117(%rip)
+	movl	%eax, .temp_119(%rip)
 
 ## TAC RETURN: ##
-	movl	.temp_117(%rip), %eax
+	movl	.temp_119(%rip), %eax
 
 ## TAC FUNCTION END: ##
 	popq	%rbp
@@ -40,10 +40,10 @@
 	movl	.b..(%rip), %eax
 	subl	%eax, %edx
 	movl	%edx, %eax
-	movl	%edx, .temp_116(%rip)
+	movl	%edx, .temp_118(%rip)
 
 ## TAC RETURN: ##
-	movl	.temp_116(%rip), %eax
+	movl	.temp_118(%rip), %eax
 
 ## TAC FUNCTION END: ##
 	popq	%rbp
@@ -60,10 +60,10 @@
 	movl	.a...(%rip), %edx
 	movl	.b...(%rip), %eax
 	imull	%edx, %eax
-	movl	%eax, .temp_115(%rip)
+	movl	%eax, .temp_117(%rip)
 
 ## TAC RETURN: ##
-	movl	.temp_115(%rip), %eax
+	movl	.temp_117(%rip), %eax
 
 ## TAC FUNCTION END: ##
 	popq	%rbp
@@ -81,10 +81,10 @@
 	movl	.b....(%rip), %ecx
 	cltd
 	idivl %ecx
-	movl	%eax, .temp_114(%rip)
+	movl	%eax, .temp_116(%rip)
 
 ## TAC RETURN: ##
-	movl	.temp_114(%rip), %eax
+	movl	.temp_116(%rip), %eax
 
 ## TAC FUNCTION END: ##
 	popq	%rbp
@@ -107,10 +107,10 @@
 
 ## TAC VEC ACC: ##
 	movl	0+.vector(%rip), %eax
-	movl	%eax, .temp_113(%rip)
+	movl	%eax, .temp_115(%rip)
 
 ## TAC PRINT INT: ##
-	movl	.temp_113(%rip), %eax
+	movl	.temp_115(%rip), %eax
 	movl	%eax, %esi
 	leaq	.LINT(%rip), %rax
 	movq	%rax, %rdi
@@ -135,10 +135,10 @@
 
 ## TAC VEC ACC: ##
 	movl	4+.vector(%rip), %eax
-	movl	%eax, .temp_111(%rip)
+	movl	%eax, .temp_113(%rip)
 
 ## TAC PRINT INT: ##
-	movl	.temp_111(%rip), %eax
+	movl	.temp_113(%rip), %eax
 	movl	%eax, %esi
 	leaq	.LINT(%rip), %rax
 	movq	%rax, %rdi
@@ -163,10 +163,10 @@
 
 ## TAC VEC ACC: ##
 	movl	8+.vector(%rip), %eax
-	movl	%eax, .temp_109(%rip)
+	movl	%eax, .temp_111(%rip)
 
 ## TAC PRINT INT: ##
-	movl	.temp_109(%rip), %eax
+	movl	.temp_111(%rip), %eax
 	movl	%eax, %esi
 	leaq	.LINT(%rip), %rax
 	movq	%rax, %rdi
@@ -191,10 +191,10 @@
 
 ## TAC VEC ACC: ##
 	movl	12+.vector(%rip), %eax
-	movl	%eax, .temp_107(%rip)
+	movl	%eax, .temp_109(%rip)
 
 ## TAC PRINT INT: ##
-	movl	.temp_107(%rip), %eax
+	movl	.temp_109(%rip), %eax
 	movl	%eax, %esi
 	leaq	.LINT(%rip), %rax
 	movq	%rax, %rdi
@@ -219,27 +219,27 @@
 
 ## TAC VEC ACC: ##
 	movl	0+.vector(%rip), %eax
-	movl	%eax, .temp_104(%rip)
+	movl	%eax, .temp_106(%rip)
 
 ## TAC MOVE: ##
-	movl	.temp_104(%rip), %eax
+	movl	.temp_106(%rip), %eax
 	movl	%eax, .a.(%rip)
 
 ## TAC VEC ACC: ##
 	movl	4+.vector(%rip), %eax
-	movl	%eax, .temp_105(%rip)
+	movl	%eax, .temp_107(%rip)
 
 ## TAC MOVE: ##
-	movl	.temp_105(%rip), %eax
+	movl	.temp_107(%rip), %eax
 	movl	%eax, .b.(%rip)
 
 ## TAC CALL: ##
 	movl $0, %eax
 	call .soma
-	movl	%eax, .temp_103(%rip)
+	movl	%eax, .temp_105(%rip)
 
 ## TAC PRINT INT: ##
-	movl	.temp_103(%rip), %eax
+	movl	.temp_105(%rip), %eax
 	movl	%eax, %esi
 	leaq	.LINT(%rip), %rax
 	movq	%rax, %rdi
@@ -256,27 +256,27 @@
 
 ## TAC VEC ACC: ##
 	movl	0+.vector(%rip), %eax
-	movl	%eax, .temp_94(%rip)
+	movl	%eax, .temp_96(%rip)
 
 ## TAC MOVE: ##
-	movl	.temp_94(%rip), %eax
+	movl	.temp_96(%rip), %eax
 	movl	%eax, .a.(%rip)
 
 ## TAC VEC ACC: ##
 	movl	4+.vector(%rip), %eax
-	movl	%eax, .temp_95(%rip)
+	movl	%eax, .temp_97(%rip)
 
 ## TAC MOVE: ##
-	movl	.temp_95(%rip), %eax
+	movl	.temp_97(%rip), %eax
 	movl	%eax, .b.(%rip)
 
 ## TAC CALL: ##
 	movl $0, %eax
 	call .soma
-	movl	%eax, .temp_93(%rip)
+	movl	%eax, .temp_95(%rip)
 
 ## TAC VEC ATT: ##
-	movl	.temp_93(%rip), %eax
+	movl	.temp_95(%rip), %eax
 	movl	%eax, 0+.vector(%rip)
 
 ## TAC PRINT STRING: ##
@@ -289,27 +289,27 @@
 
 ## TAC VEC ACC: ##
 	movl	4+.vector(%rip), %eax
-	movl	%eax, .temp_89(%rip)
+	movl	%eax, .temp_91(%rip)
 
 ## TAC MOVE: ##
-	movl	.temp_89(%rip), %eax
+	movl	.temp_91(%rip), %eax
 	movl	%eax, .a..(%rip)
 
 ## TAC VEC ACC: ##
 	movl	8+.vector(%rip), %eax
-	movl	%eax, .temp_90(%rip)
+	movl	%eax, .temp_92(%rip)
 
 ## TAC MOVE: ##
-	movl	.temp_90(%rip), %eax
+	movl	.temp_92(%rip), %eax
 	movl	%eax, .b..(%rip)
 
 ## TAC CALL: ##
 	movl $0, %eax
 	call .subtracao
-	movl	%eax, .temp_88(%rip)
+	movl	%eax, .temp_90(%rip)
 
 ## TAC PRINT INT: ##
-	movl	.temp_88(%rip), %eax
+	movl	.temp_90(%rip), %eax
 	movl	%eax, %esi
 	leaq	.LINT(%rip), %rax
 	movq	%rax, %rdi
@@ -326,27 +326,27 @@
 
 ## TAC VEC ACC: ##
 	movl	4+.vector(%rip), %eax
-	movl	%eax, .temp_79(%rip)
+	movl	%eax, .temp_81(%rip)
 
 ## TAC MOVE: ##
-	movl	.temp_79(%rip), %eax
+	movl	.temp_81(%rip), %eax
 	movl	%eax, .a..(%rip)
 
 ## TAC VEC ACC: ##
 	movl	8+.vector(%rip), %eax
-	movl	%eax, .temp_80(%rip)
+	movl	%eax, .temp_82(%rip)
 
 ## TAC MOVE: ##
-	movl	.temp_80(%rip), %eax
+	movl	.temp_82(%rip), %eax
 	movl	%eax, .b..(%rip)
 
 ## TAC CALL: ##
 	movl $0, %eax
 	call .subtracao
-	movl	%eax, .temp_78(%rip)
+	movl	%eax, .temp_80(%rip)
 
 ## TAC VEC ATT: ##
-	movl	.temp_78(%rip), %eax
+	movl	.temp_80(%rip), %eax
 	movl	%eax, 4+.vector(%rip)
 
 ## TAC PRINT STRING: ##
@@ -359,27 +359,27 @@
 
 ## TAC VEC ACC: ##
 	movl	8+.vector(%rip), %eax
-	movl	%eax, .temp_74(%rip)
+	movl	%eax, .temp_76(%rip)
 
 ## TAC MOVE: ##
-	movl	.temp_74(%rip), %eax
+	movl	.temp_76(%rip), %eax
 	movl	%eax, .a...(%rip)
 
 ## TAC VEC ACC: ##
 	movl	12+.vector(%rip), %eax
-	movl	%eax, .temp_75(%rip)
+	movl	%eax, .temp_77(%rip)
 
 ## TAC MOVE: ##
-	movl	.temp_75(%rip), %eax
+	movl	.temp_77(%rip), %eax
 	movl	%eax, .b...(%rip)
 
 ## TAC CALL: ##
 	movl $0, %eax
 	call .multiplicacao
-	movl	%eax, .temp_73(%rip)
+	movl	%eax, .temp_75(%rip)
 
 ## TAC PRINT INT: ##
-	movl	.temp_73(%rip), %eax
+	movl	.temp_75(%rip), %eax
 	movl	%eax, %esi
 	leaq	.LINT(%rip), %rax
 	movq	%rax, %rdi
@@ -396,27 +396,27 @@
 
 ## TAC VEC ACC: ##
 	movl	8+.vector(%rip), %eax
-	movl	%eax, .temp_64(%rip)
+	movl	%eax, .temp_66(%rip)
 
 ## TAC MOVE: ##
-	movl	.temp_64(%rip), %eax
+	movl	.temp_66(%rip), %eax
 	movl	%eax, .a...(%rip)
 
 ## TAC VEC ACC: ##
 	movl	12+.vector(%rip), %eax
-	movl	%eax, .temp_65(%rip)
+	movl	%eax, .temp_67(%rip)
 
 ## TAC MOVE: ##
-	movl	.temp_65(%rip), %eax
+	movl	.temp_67(%rip), %eax
 	movl	%eax, .b...(%rip)
 
 ## TAC CALL: ##
 	movl $0, %eax
 	call .multiplicacao
-	movl	%eax, .temp_63(%rip)
+	movl	%eax, .temp_65(%rip)
 
 ## TAC VEC ATT: ##
-	movl	.temp_63(%rip), %eax
+	movl	.temp_65(%rip), %eax
 	movl	%eax, 8+.vector(%rip)
 
 ## TAC PRINT STRING: ##
@@ -429,27 +429,27 @@
 
 ## TAC VEC ACC: ##
 	movl	12+.vector(%rip), %eax
-	movl	%eax, .temp_59(%rip)
+	movl	%eax, .temp_61(%rip)
 
 ## TAC MOVE: ##
-	movl	.temp_59(%rip), %eax
+	movl	.temp_61(%rip), %eax
 	movl	%eax, .a....(%rip)
 
 ## TAC VEC ACC: ##
 	movl	0+.vector(%rip), %eax
-	movl	%eax, .temp_60(%rip)
+	movl	%eax, .temp_62(%rip)
 
 ## TAC MOVE: ##
-	movl	.temp_60(%rip), %eax
+	movl	.temp_62(%rip), %eax
 	movl	%eax, .b....(%rip)
 
 ## TAC CALL: ##
 	movl $0, %eax
 	call .divisao
-	movl	%eax, .temp_58(%rip)
+	movl	%eax, .temp_60(%rip)
 
 ## TAC PRINT INT: ##
-	movl	.temp_58(%rip), %eax
+	movl	.temp_60(%rip), %eax
 	movl	%eax, %esi
 	leaq	.LINT(%rip), %rax
 	movq	%rax, %rdi
@@ -466,27 +466,27 @@
 
 ## TAC VEC ACC: ##
 	movl	12+.vector(%rip), %eax
-	movl	%eax, .temp_49(%rip)
+	movl	%eax, .temp_51(%rip)
 
 ## TAC MOVE: ##
-	movl	.temp_49(%rip), %eax
+	movl	.temp_51(%rip), %eax
 	movl	%eax, .a....(%rip)
 
 ## TAC VEC ACC: ##
 	movl	0+.vector(%rip), %eax
-	movl	%eax, .temp_50(%rip)
+	movl	%eax, .temp_52(%rip)
 
 ## TAC MOVE: ##
-	movl	.temp_50(%rip), %eax
+	movl	.temp_52(%rip), %eax
 	movl	%eax, .b....(%rip)
 
 ## TAC CALL: ##
 	movl $0, %eax
 	call .divisao
-	movl	%eax, .temp_48(%rip)
+	movl	%eax, .temp_50(%rip)
 
 ## TAC VEC ATT: ##
-	movl	.temp_48(%rip), %eax
+	movl	.temp_50(%rip), %eax
 	movl	%eax, 12+.vector(%rip)
 
 ## TAC PRINT STRING: ##
@@ -499,10 +499,10 @@
 
 ## TAC VEC ACC: ##
 	movl	0+.vector(%rip), %eax
-	movl	%eax, .temp_45(%rip)
+	movl	%eax, .temp_47(%rip)
 
 ## TAC PRINT INT: ##
-	movl	.temp_45(%rip), %eax
+	movl	.temp_47(%rip), %eax
 	movl	%eax, %esi
 	leaq	.LINT(%rip), %rax
 	movq	%rax, %rdi
@@ -527,10 +527,10 @@
 
 ## TAC VEC ACC: ##
 	movl	4+.vector(%rip), %eax
-	movl	%eax, .temp_43(%rip)
+	movl	%eax, .temp_45(%rip)
 
 ## TAC PRINT INT: ##
-	movl	.temp_43(%rip), %eax
+	movl	.temp_45(%rip), %eax
 	movl	%eax, %esi
 	leaq	.LINT(%rip), %rax
 	movq	%rax, %rdi
@@ -555,10 +555,10 @@
 
 ## TAC VEC ACC: ##
 	movl	8+.vector(%rip), %eax
-	movl	%eax, .temp_41(%rip)
+	movl	%eax, .temp_43(%rip)
 
 ## TAC PRINT INT: ##
-	movl	.temp_41(%rip), %eax
+	movl	.temp_43(%rip), %eax
 	movl	%eax, %esi
 	leaq	.LINT(%rip), %rax
 	movq	%rax, %rdi
@@ -583,10 +583,10 @@
 
 ## TAC VEC ACC: ##
 	movl	12+.vector(%rip), %eax
-	movl	%eax, .temp_39(%rip)
+	movl	%eax, .temp_41(%rip)
 
 ## TAC PRINT INT: ##
-	movl	.temp_39(%rip), %eax
+	movl	.temp_41(%rip), %eax
 	movl	%eax, %esi
 	leaq	.LINT(%rip), %rax
 	movq	%rax, %rdi
@@ -624,7 +624,7 @@
 	call	printf@PLT
 
 ## TAC READ: ##
-	leaq	.temp_37(%rip), %rax
+	leaq	.temp_39(%rip), %rax
 	movq	%rax, %rsi
 	leaq	.LINT(%rip), %rax
 	movq	%rax, %rdi
@@ -632,7 +632,7 @@
 	call	__isoc99_scanf@PLT
 
 ## TAC MOVE: ##
-	movl	.temp_37(%rip), %eax
+	movl	.temp_39(%rip), %eax
 	movl	%eax, .x(%rip)
 
 ## TAC PRINT STRING: ##
@@ -644,7 +644,7 @@
 	call	printf@PLT
 
 ## TAC READ: ##
-	leaq	.temp_36(%rip), %rax
+	leaq	.temp_38(%rip), %rax
 	movq	%rax, %rsi
 	leaq	.LINT(%rip), %rax
 	movq	%rax, %rdi
@@ -652,7 +652,7 @@
 	call	__isoc99_scanf@PLT
 
 ## TAC MOVE: ##
-	movl	.temp_36(%rip), %eax
+	movl	.temp_38(%rip), %eax
 	movl	%eax, .y(%rip)
 
 ## TAC PRINT STRING: ##
@@ -664,7 +664,7 @@
 	call	printf@PLT
 
 ## TAC READ: ##
-	leaq	.temp_35(%rip), %rax
+	leaq	.temp_37(%rip), %rax
 	movq	%rax, %rsi
 	leaq	.LINT(%rip), %rax
 	movq	%rax, %rdi
@@ -672,7 +672,7 @@
 	call	__isoc99_scanf@PLT
 
 ## TAC MOVE: ##
-	movl	.temp_35(%rip), %eax
+	movl	.temp_37(%rip), %eax
 	movl	%eax, .f(%rip)
 
 ## TAC PRINT STRING: ##
@@ -710,10 +710,10 @@
 ## TAC CALL: ##
 	movl $0, %eax
 	call .soma
-	movl	%eax, .temp_34(%rip)
+	movl	%eax, .temp_36(%rip)
 
 ## TAC MOVE: ##
-	movl	.temp_34(%rip), %eax
+	movl	.temp_36(%rip), %eax
 	movl	%eax, .z(%rip)
 
 ## TAC PRINT STRING: ##
@@ -735,10 +735,10 @@
 ## TAC CALL: ##
 	movl $0, %eax
 	call .soma
-	movl	%eax, .temp_33(%rip)
+	movl	%eax, .temp_35(%rip)
 
 ## TAC PRINT INT: ##
-	movl	.temp_33(%rip), %eax
+	movl	.temp_35(%rip), %eax
 	movl	%eax, %esi
 	leaq	.LINT(%rip), %rax
 	movq	%rax, %rdi
@@ -770,10 +770,10 @@
 	cmpl	%eax, %edx
 	sete	%al
 	movzbl	%al, %eax
-	movl	%eax, .temp_31(%rip)
+	movl	%eax, .temp_33(%rip)
 
 ## TAC JUMP FALSE: ##
-	movl .temp_31(%rip), %eax
+	movl .temp_33(%rip), %eax
 	cmpl $1, %eax
 	jne .label_12
 
@@ -824,10 +824,10 @@
 	cmpl	%eax, %edx
 	setge	%al
 	movzbl	%al, %eax
-	movl	%eax, .temp_29(%rip)
+	movl	%eax, .temp_31(%rip)
 
 ## TAC JUMP FALSE: ##
-	movl .temp_29(%rip), %eax
+	movl .temp_31(%rip), %eax
 	cmpl $1, %eax
 	jne .label_10
 
@@ -878,10 +878,10 @@
 	cmpl	%eax, %edx
 	setle	%al
 	movzbl	%al, %eax
-	movl	%eax, .temp_27(%rip)
+	movl	%eax, .temp_29(%rip)
 
 ## TAC JUMP FALSE: ##
-	movl .temp_27(%rip), %eax
+	movl .temp_29(%rip), %eax
 	cmpl $1, %eax
 	jne .label_8
 
@@ -932,10 +932,10 @@
 	cmpl	%eax, %edx
 	setg	%al
 	movzbl	%al, %eax
-	movl	%eax, .temp_25(%rip)
+	movl	%eax, .temp_27(%rip)
 
 ## TAC JUMP FALSE: ##
-	movl .temp_25(%rip), %eax
+	movl .temp_27(%rip), %eax
 	cmpl $1, %eax
 	jne .label_6
 
@@ -986,10 +986,10 @@
 	cmpl	%eax, %edx
 	setl	%al
 	movzbl	%al, %eax
-	movl	%eax, .temp_23(%rip)
+	movl	%eax, .temp_25(%rip)
 
 ## TAC JUMP FALSE: ##
-	movl .temp_23(%rip), %eax
+	movl .temp_25(%rip), %eax
 	cmpl $1, %eax
 	jne .label_4
 
@@ -1040,10 +1040,10 @@
 	cmpl	%eax, %edx
 	setne	%al
 	movzbl	%al, %eax
-	movl	%eax, .temp_21(%rip)
+	movl	%eax, .temp_23(%rip)
 
 ## TAC JUMP FALSE: ##
-	movl .temp_21(%rip), %eax
+	movl .temp_23(%rip), %eax
 	cmpl $1, %eax
 	jne .label_2
 
@@ -1108,7 +1108,7 @@
 	cmpl	%eax, %edx
 	setl	%al
 	movzbl	%al, %eax
-	movl	%eax, .temp_17(%rip)
+	movl	%eax, .temp_19(%rip)
 
 ## TAC EQ: ##
 	movl	.x(%rip), %edx
@@ -1116,7 +1116,7 @@
 	cmpl	%eax, %edx
 	sete	%al
 	movzbl	%al, %eax
-	movl	%eax, .temp_14(%rip)
+	movl	%eax, .temp_16(%rip)
 
 ## TAC EQ: ##
 	movl	.y(%rip), %edx
@@ -1124,13 +1124,13 @@
 	cmpl	%eax, %edx
 	sete	%al
 	movzbl	%al, %eax
-	movl	%eax, .temp_13(%rip)
+	movl	%eax, .temp_15(%rip)
 
 ## TAC OR: ##
-	movl	.temp_14(%rip), %eax
+	movl	.temp_16(%rip), %eax
 	testl	%eax, %eax
 	jne	LOR0
-	movl	.temp_13(%rip), %eax
+	movl	.temp_15(%rip), %eax
 	testl	%eax, %eax
 	je	LOR1
 	LOR0:
@@ -1139,21 +1139,21 @@
 	LOR1:
 	movl	$0, %eax
 	LOR2:
-	movl   %eax, .temp_15(%rip)
+	movl   %eax, .temp_17(%rip)
 
 ## TAC NOT: ##
 	movq	%rsp, %rbp
-	movl	.temp_15(%rip), %eax
+	movl	.temp_17(%rip), %eax
 	testl	%eax, %eax
 	sete	%al
 	movzbl	%al, %eax
-	movl	%eax, .temp_16(%rip)
+	movl	%eax, .temp_18(%rip)
 
 ## TAC AND: ##
-	movl   .temp_17(%rip), %eax
+	movl   .temp_19(%rip), %eax
 	testl  %eax, %eax
 	je     LAND3
-	movl   .temp_16(%rip), %eax
+	movl   .temp_18(%rip), %eax
 	testl  %eax, %eax
 	je     LAND3
 	movl   $1, %eax
@@ -1161,10 +1161,10 @@
 	LAND3:
 	movl   $0, %eax
 	LAND4:
-	movl   %eax, .temp_18(%rip)
+	movl   %eax, .temp_20(%rip)
 
 ## TAC JUMP FALSE: ##
-	movl .temp_18(%rip), %eax
+	movl .temp_20(%rip), %eax
 	cmpl $1, %eax
 	jne .label_0
 
@@ -1188,10 +1188,10 @@
 	movl	.x(%rip), %edx
 	movl	.1(%rip), %eax
 	addl	%edx, %eax
-	movl	%eax, .temp_19(%rip)
+	movl	%eax, .temp_21(%rip)
 
 ## TAC MOVE: ##
-	movl	.temp_19(%rip), %eax
+	movl	.temp_21(%rip), %eax
 	movl	%eax, .x(%rip)
 
 ## TAC PRINT STRING: ##
@@ -1240,10 +1240,10 @@
 	movl	.0(%rip), %ecx
 	cltd
 	idivl %ecx
-	movl	%eax, .temp_5(%rip)
+	movl	%eax, .temp_7(%rip)
 
 ## TAC RETURN: ##
-	movl	.temp_5(%rip), %eax
+	movl	.temp_7(%rip), %eax
 
 ## TAC FUNCTION END: ##
 	popq	%rbp
@@ -1256,40 +1256,46 @@ main:
 	pushq	%rbp
 	movq	%rsp, %rbp
 
-## TAC VEC ACC: ##
-	movl	12+.vector(%rip), %eax
+## TAC MOVE: ##
+	movl	.1(%rip), %eax
+	movl	%eax, .x(%rip)
+
+## TAC MOVE: ##
+	movl	.20(%rip), %eax
+	movl	%eax, .y(%rip)
+
+## TAC ADD: ##
+	movl	.x(%rip), %edx
+	movl	.177(%rip), %eax
+	addl	%edx, %eax
+	movl	%eax, .temp_5(%rip)
+
+## TAC MOVE: ##
+	movl	.temp_5(%rip), %eax
+	movl	%eax, .a.(%rip)
+
+## TAC_DIV: ##
+	movl .y(%rip), %eax
+	movl	.4(%rip), %ecx
+	cltd
+	idivl %ecx
+	movl	%eax, .temp_6(%rip)
+
+## TAC MOVE: ##
+	movl	.temp_6(%rip), %eax
+	movl	%eax, .b.(%rip)
+
+## TAC CALL: ##
+	movl $0, %eax
+	call .soma
 	movl	%eax, .temp_4(%rip)
 
-## TAC PRINT INT: ##
-	movl	.temp_4(%rip), %eax
-	movl	%eax, %esi
-	leaq	.LINT(%rip), %rax
-	movq	%rax, %rdi
-	movl	$0, %eax
-	call	printf@PLT
-
-## TAC PRINT STRING: ##
-	leaq	.label_820_0(%rip), %rax
-	movq	%rax, %rsi
-	leaq	.LSTRING(%rip), %rax
-	movq	%rax, %rdi
-	movl	$0, %eax
-	call	printf@PLT
-
-## TAC READ: ##
-	leaq	.temp_2(%rip), %rax
-	movq	%rax, %rsi
-	leaq	.LINT(%rip), %rax
-	movq	%rax, %rdi
-	movl	$0, %eax
-	call	__isoc99_scanf@PLT
-
 ## TAC VEC ATT: ##
-	movl	.temp_2(%rip), %eax
-	movl	%eax, 12+.vector(%rip)
+	movl	.temp_4(%rip), %eax
+	movl	%eax, 0+.vector(%rip)
 
 ## TAC VEC ACC: ##
-	movl	12+.vector(%rip), %eax
+	movl	0+.vector(%rip), %eax
 	movl	%eax, .temp_1(%rip)
 
 ## TAC PRINT INT: ##
@@ -1477,6 +1483,8 @@ main:
 	.string	"not x < y"
 .temp_77:
 	.long	0
+.temp_118:
+	.long	0
 .label_427_0:
 	.string	"vector[2] = multiplicacao(vector[2], vector[3]): "
 .b...:
@@ -1489,6 +1497,8 @@ main:
 	.long	0
 .label_450_0:
 	.string	"Como inteiro: "
+.20:
+	.long	20
 .temp_6:
 	.long	0
 .temp_107:
@@ -1520,6 +1530,8 @@ main:
 .b.:
 	.long	0
 .temp_27:
+	.long	0
+.temp_119:
 	.long	0
 .temp_96:
 	.long	0
@@ -1569,6 +1581,8 @@ main:
 	.long	0
 .temp_50:
 	.long	0
+.177:
+	.long	177
 .label_765_0:
 	.string	"soma(x, y) = "
 .temp_7:

@@ -1,102 +1,49 @@
-int x = 0;
-int y = 0;
-int z = 0;
-bool xx = 0;
-bool yy = 0;
-bool xxyy = 0;
-bool cond = 0;
-real f = 2.76;
-char d = 'a';
-char g = 75;
-char veeeetor [10] ;
-int vector [4] 'a' 'b' 'c' 'd' ;
-char var = 'x';
-int soma ( int a., int b. ) {
-return a. + b.;
+int a = 0;
+int b = 0;
+int c = 0;
+int d = 0;
+int e = 0;
+int f = 0;
+int teste_ ( int t_., int t_.. ) {
+output "teste 1\n";
+if ( t_. > t_.. ) return 1;
+
+else return 0;
 
 }
-int subtracao ( int a.., int b.. ) {
-return a.. - b..;
+int teste__ ( int t__., int t__.. ) {
+output "teste 2\n";
+if ( t__. < t__.. ) return 1;
+
+else return 0;
 
 }
-int multiplicacao ( int a..., int b... ) {
-return a... * b...;
+int teste___ ( int t___., int t___.. ) {
+output "teste 3\n";
+if ( t___. == t___.. ) return 1;
 
-}
-int divisao ( int a...., int b.... ) {
-return a.... / b....;
-
-}
-int testaVetor (  ) {
-output "vector[0]: ", vector[0] , "\n";
-output "vector[1]: ", vector[1] , "\n";
-output "vector[2]: ", vector[2] , "\n";
-output "vector[3]: ", vector[3] , "\n";
-output "vector[0] = soma(vector[0], vector[1]): ", soma(vector[0] , vector[1] ), "\n";
-vector[0] = soma(vector[0] , vector[1] );
-output "vector[1] = subtracao(vector[1], vector[2]): ", subtracao(vector[1] , vector[2] ), "\n";
-vector[1] = subtracao(vector[1] , vector[2] );
-output "vector[2] = multiplicacao(vector[2], vector[3]): ", multiplicacao(vector[2] , vector[3] ), "\n";
-vector[2] = multiplicacao(vector[2] , vector[3] );
-output "vector[3] = divisao(vector[3], vector[0]): ", divisao(vector[3] , vector[0] ), "\n";
-vector[3] = divisao(vector[3] , vector[0] );
-output "vector[0]: ", vector[0] , "\n";
-output "vector[1]: ", vector[1] , "\n";
-output "vector[2]: ", vector[2] , "\n";
-output "vector[3]: ", vector[3] , "\n";
-return 0;
-
-}
-int recebeEntradaETestaSoma (  ) {
-output "Entre com um valor para x:\n";
-x = input(int);
-output "Entre com um valor para y:\n";
-y = input(int);
-output "Valor real que vai virar inteiro:\n";
-f = input(real);
-output "Como inteiro: ", f, "\n";
-z = soma(x, y);
-output "soma(x, y) = ", soma(x, y), "\n";
-
-}
-int comparaXeY (  ) {
-if ( x == y ) output "x == y", "\n";
-
-else output "not x == y", "\n";
-if ( x >= y ) output "x >= y", "\n";
-
-else output "not x >= y", "\n";
-if ( x <= y ) output "x <= y", "\n";
-
-else output "not x <= y", "\n";
-if ( x > y ) output "x > y", "\n";
-
-else output "not x > y", "\n";
-if ( x < y ) output "x < y", "\n";
-
-else output "not x < y", "\n";
-if ( x != y ) output "x != y", "\n";
-
-else output "not x != y", "\n";
-
-}
-int testeLoop (  ) {
-if ( x < y &  ~  ( (x == 7)  |  (y == 5) )  ) loop {
-output "inc ", x;
-x = x + 1;
-output " -> ", x, "\n";
-
-}
-
-}
-int divisaoImpossivel ( int numeradorDivisaoImpossivel ) {
-return numeradorDivisaoImpossivel / 0;
+else return 0;
 
 }
 int main (  ) {
-output vector[3] , "\n";
-vector[3] = input(int);
-output vector[3] , "\n";
+output "Entre com um valor para a:\n";
+a = input(int);
+output "Entre com um valor para b:\n";
+b = input(int);
+output "Entre com um valor para c:\n";
+c = input(int);
+output "Entre com um valor para d:\n";
+d = input(int);
+output "Entre com um valor para e:\n";
+e = input(int);
+output "Entre com um valor para f:\n";
+f = input(int);
+output "teste1: ", teste_(a, b), "\n";
+output "teste2: ", teste__(c, d), "\n";
+output "teste3: ", teste___(e, f), "\n";
+if ( teste_(a, b) == 1 &  (teste__(c, d) == 1 | teste___(e, f) == 1)  ) output "TRUE\n";
+
+else output "FALSE\n";
 return 0;
 
 }

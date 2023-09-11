@@ -67,6 +67,7 @@ TAC *makeIfOperations(AST *ast)
     HashNode *jumpFalseLabel = makeLabel();
     TAC *tacLabelElse = tacCreate(TAC_LABEL, jumpFalseLabel, NULL, NULL);
     TAC *expression = generateCode(ast->left);
+
     if (ast->right)
         switch (ast->right->type)
         {
@@ -229,6 +230,137 @@ TAC *tacFunctionCall(AST *ast)
     return result;
 }
 
+TAC *shortCircuitAND(AST *ast, TAC *leftSonCode, TAC *rightSonCode)
+{
+    // testar esquerda.
+    // se falso, ir para label de falso.
+    // senão, testar direita.
+    // se falso, ir para label de falso.
+    // se verdadeiro, ir para label de verdadeiro.
+    if (!ast)
+        return NULL;
+
+    TAC *result = NULL;
+
+    // labels
+    TAC *falseLabel = tacCreate(TAC_LABEL, makeLabel(), NULL, NULL);
+    TAC *trueLabel = tacCreate(TAC_LABEL, makeLabel(), NULL, NULL);
+    TAC *returnLabel = tacCreate(TAC_LABEL, makeLabel(), NULL, NULL);
+    // temp
+    TAC *returnTemp = tacCreate(TAC_SYMBOL, makeTemp(), NULL, NULL);
+
+    TAC *testarFilhoDaEsquerdaFalso = tacCreate(
+        TAC_JFALSE,
+        falseLabel ? falseLabel->result : NULL,
+        leftSonCode ? leftSonCode->result : NULL,
+        NULL);
+    result = tacJoin(leftSonCode, testarFilhoDaEsquerdaFalso);
+    TAC *testarFilhoDaDireitaFalso = tacCreate(
+        TAC_JFALSE,
+        falseLabel ? falseLabel->result : NULL,
+        rightSonCode ? rightSonCode->result : NULL,
+        NULL);
+    TAC *filhoDaDireitaVerdadeiro = tacCreate(
+        TAC_JMP,
+        trueLabel ? trueLabel->result : NULL,
+        NULL,
+        NULL);
+    result = tacJoin(
+        result,
+        tacJoin(
+            rightSonCode,
+            tacJoin(
+                testarFilhoDaDireitaFalso,
+                filhoDaDireitaVerdadeiro)));
+    falseLabel = tacJoin(returnTemp, falseLabel);
+    falseLabel = tacJoin(
+        falseLabel,
+        tacCreate(TAC_SET_FALSE, returnTemp ? returnTemp->result : NULL, NULL, NULL));
+    falseLabel = tacJoin(
+        falseLabel,
+        tacCreate(TAC_JMP, returnLabel ? returnLabel->result : NULL, NULL, NULL));
+    trueLabel = tacJoin(
+        trueLabel,
+        tacCreate(TAC_SET_TRUE, returnTemp ? returnTemp->result : NULL, NULL, NULL));
+    trueLabel = tacJoin(
+        trueLabel,
+        tacCreate(TAC_JMP, returnLabel ? returnLabel->result : NULL, NULL, NULL));
+    returnLabel = tacJoin(
+        returnLabel,
+        tacCreate(TAC_MOVE, makeTemp(), returnTemp ? returnTemp->result : NULL, NULL));
+    trueLabel = tacJoin(trueLabel, returnLabel);
+    result = tacJoin(result, tacJoin(falseLabel, trueLabel));
+
+    return result;
+}
+
+TAC *shortCircuitOR(AST *ast, TAC *leftSonCode, TAC *rightSonCode)
+{
+    // testar esquerda.
+    // se falso, ir para label de falso.
+    // senão, testar direita.
+    // se falso, ir para label de falso.
+    // se verdadeiro, ir para label de verdadeiro.
+    if (!ast)
+        return NULL;
+
+    TAC *result = NULL;
+
+    // labels
+    TAC *falseLabel = tacCreate(TAC_LABEL, makeLabel(), NULL, NULL);
+    TAC *trueLabel = tacCreate(TAC_LABEL, makeLabel(), NULL, NULL);
+    TAC *returnLabel = tacCreate(TAC_LABEL, makeLabel(), NULL, NULL);
+    // temp
+    TAC *returnTemp = tacCreate(TAC_SYMBOL, makeTemp(), NULL, NULL);
+    TAC *testarFilhoDaEsquerdaVerdadeiro = tacCreate(
+        TAC_NOT,
+        makeTemp(),
+        leftSonCode ? leftSonCode->result : NULL,
+        NULL);
+    TAC *testarFilhoDaEsquerdaFalso = tacCreate(
+        TAC_JFALSE,
+        trueLabel ? trueLabel->result : NULL,
+        testarFilhoDaEsquerdaVerdadeiro ? testarFilhoDaEsquerdaVerdadeiro->result : NULL,
+        NULL);
+    testarFilhoDaEsquerdaFalso = tacJoin(testarFilhoDaEsquerdaVerdadeiro, testarFilhoDaEsquerdaFalso);
+    result = tacJoin(leftSonCode, testarFilhoDaEsquerdaFalso);
+    TAC *testarFilhoDaDireitaFalso = tacCreate(
+        TAC_JFALSE,
+        falseLabel ? falseLabel->result : NULL,
+        rightSonCode ? rightSonCode->result : NULL,
+        NULL);
+    TAC *filhoDaDireitaVerdadeiro = tacCreate(
+        TAC_JMP,
+        trueLabel ? trueLabel->result : NULL,
+        NULL,
+        NULL);
+    result = tacJoin(
+        result,
+        tacJoin(
+            rightSonCode,
+            tacJoin(
+                testarFilhoDaDireitaFalso,
+                filhoDaDireitaVerdadeiro)));
+    falseLabel = tacJoin(returnTemp, falseLabel);
+    falseLabel = tacJoin(
+        falseLabel,
+        tacCreate(TAC_SET_FALSE, returnTemp ? returnTemp->result : NULL, NULL, NULL));
+    falseLabel = tacJoin(
+        falseLabel,
+        tacCreate(TAC_JMP, returnLabel ? returnLabel->result : NULL, NULL, NULL));
+    trueLabel = tacJoin(
+        trueLabel,
+        tacCreate(TAC_SET_TRUE, returnTemp ? returnTemp->result : NULL, NULL, NULL));
+    trueLabel = tacJoin(
+        trueLabel,
+        tacCreate(TAC_JMP, returnLabel ? returnLabel->result : NULL, NULL, NULL));
+    returnLabel = tacJoin(
+        returnLabel,
+        tacCreate(TAC_MOVE, makeTemp(), returnTemp ? returnTemp->result : NULL, NULL));
+    trueLabel = tacJoin(trueLabel, returnLabel);
+    result = tacJoin(result, tacJoin(falseLabel, trueLabel));
+}
+
 TAC *generateCode(AST *ast)
 {
 
@@ -263,13 +395,13 @@ TAC *generateCode(AST *ast)
         result = makeBinaryOperation(TAC_GT, leftSonCode, rightSonCode);
         break;
     case AST_AND:
-        result = makeBinaryOperation(TAC_AND, leftSonCode, rightSonCode);
+        result = shortCircuitAND(ast, leftSonCode, rightSonCode);
         break;
     case AST_NOT:
         result = makeBinaryOperation(TAC_NOT, leftSonCode, rightSonCode);
         break;
     case AST_OR:
-        result = makeBinaryOperation(TAC_OR, leftSonCode, rightSonCode);
+        result = shortCircuitOR(ast, leftSonCode, rightSonCode);
         break;
     case AST_GE:
         result = makeBinaryOperation(TAC_GE, leftSonCode, rightSonCode);
@@ -284,27 +416,36 @@ TAC *generateCode(AST *ast)
         result = makeBinaryOperation(TAC_DIF, leftSonCode, rightSonCode);
         break;
     case AST_INPUT:
+    {
+        HashNode *temp = makeTemp();
+        temp->datatype;
+        if (ast->left)
         {
-            HashNode* temp = makeTemp();
-            temp->datatype;
-            if(ast->left)
+            switch (ast->left->type)
             {
-                switch (ast->left->type)
-                {
-                    case AST_INT: temp->datatype = DATATYPE_INT; break;
-                    case AST_CHAR: temp->datatype = DATATYPE_CHAR; break;
-                    case AST_REAL: temp->datatype = DATATYPE_REAL; break;
-                    case AST_BOOL: temp->datatype = DATATYPE_BOOL; break;
-                    default: temp->datatype = DATATYPE_INT; break;
-                }
+            case AST_INT:
+                temp->datatype = DATATYPE_INT;
+                break;
+            case AST_CHAR:
+                temp->datatype = DATATYPE_CHAR;
+                break;
+            case AST_REAL:
+                temp->datatype = DATATYPE_REAL;
+                break;
+            case AST_BOOL:
+                temp->datatype = DATATYPE_BOOL;
+                break;
+            default:
+                temp->datatype = DATATYPE_INT;
+                break;
             }
-            else
-                temp->datatype = DATATYPE_ERROR;
-            
-            result = tacCreate(TAC_READ, temp, NULL, NULL);                
-
         }
-        break;
+        else
+            temp->datatype = DATATYPE_ERROR;
+
+        result = tacCreate(TAC_READ, temp, NULL, NULL);
+    }
+    break;
     case AST_FUNCAPP:
     {
         result = tacJoin(

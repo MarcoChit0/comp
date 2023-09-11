@@ -94,9 +94,10 @@ return numeradorDivisaoImpossivel / 0;
 
 }
 int main (  ) {
-output vector[3] , "\n";
-vector[3] = input(int);
-output vector[3] , "\n";
+x = 1;
+y = 20;
+vector[0] = soma(x + 177, y / 4);
+output vector[0] , "\n";
 return 0;
 
 }

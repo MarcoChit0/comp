@@ -1,8 +1,0 @@
-int vector [3] ;
-int main (  ) {
-vector[0] = input(char);
-vector[1] = input(int);
-vector[2] = vector[1]  + vector[2] ;
-output vector[0] , vector[1] , vector[2] ;
-
-}

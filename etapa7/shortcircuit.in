@@ -1,0 +1,54 @@
+int a = 0;
+int b = 0;
+int c = 0;
+int d = 0;
+int e = 0;
+int f = 0;
+int teste_(int t_., int t_..)
+{
+    output "teste 1\n"; 
+    if(t_. > t_..)
+        return 1;
+    else
+        return 0;
+}
+int teste__(int t__., int t__..)
+{
+    output "teste 2\n"; 
+    if(t__. < t__..)
+        return 1;
+    else
+        return 0;
+}
+int teste___(int t___., int t___..)
+{
+    output "teste 3\n"; 
+    if(t___. == t___..)
+        return 1;
+    else
+        return 0;
+}
+
+int main()
+{
+    output "Entre com um valor para a:\n";
+    a = input(int);
+    output "Entre com um valor para b:\n";
+    b = input(int);
+    output "Entre com um valor para c:\n";
+    c = input(int);
+    output "Entre com um valor para d:\n";
+    d = input(int);
+    output "Entre com um valor para e:\n";
+    e = input(int);
+    output "Entre com um valor para f:\n";
+    f = input(int);
+    output "teste1: ", teste_(a, b), "\n";
+    output "teste2: ", teste__(c, d), "\n";
+    output "teste3: ", teste___(e, f), "\n";
+    if(teste_(a, b) == 1 & (teste__(c, d) == 1 | teste___(e, f) == 1))
+        output "TRUE\n";
+    else
+        output "FALSE\n";
+    return 0;
+}

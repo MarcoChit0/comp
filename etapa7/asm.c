@@ -438,6 +438,26 @@ void generateASM(TAC *tac)
         case TAC_READ:
             tacReadToASM(fp, t);
             break;
+        case TAC_SET_FALSE:
+        {
+            fprintf(
+                fp,
+                "## TAC SET FALSE: ##\n"
+                "\tmovl   $0, %%eax\n"
+                "\tmovl   %%eax, .%s(%%rip)\n\n",
+                t->result->text);
+        }
+        break;
+        case TAC_SET_TRUE:
+        {
+            fprintf(
+                fp,
+                "## TAC SET TRUE: ##\n"
+                "\tmovl   $1, %%eax\n"
+                "\tmovl   %%eax, .%s(%%rip)\n\n",
+                t->result->text);
+        }
+        break;
         case TAC_VECDEFBEGIN:
         {
             if (!dataSection)
@@ -445,7 +465,7 @@ void generateASM(TAC *tac)
                 dataSection = t;
                 while (dataSection->type != TAC_VECDEFEND)
                     dataSection = dataSection->next;
-                    
+
                 t = dataSection->next;
                 dataSection->next = NULL;
                 goto _skipinc;
@@ -485,11 +505,10 @@ void generateASM(TAC *tac)
         }
         if (t->type == TAC_VECDEF && t->operator1)
         {
-            vectorSize --;
+            vectorSize--;
             if (t->operator1->datatype == DATATYPE_REAL)
                 fprintf(fp, "\t.long\t%d\n", (int)atof(t->operator1->text));
 
-            
             if (t->operator1->datatype == DATATYPE_INT || t->operator1->datatype == DATATYPE_CHAR)
             {
                 char *string = t->operator1->text;
@@ -505,16 +524,15 @@ void generateASM(TAC *tac)
                 }
             }
         }
-        if(t->type == TAC_VECDEFEND && startDefiningVector)
+        if (t->type == TAC_VECDEFEND && startDefiningVector)
         {
             startDefiningVector = 0;
-            while(vectorSize > 0)
+            while (vectorSize > 0)
             {
                 fprintf(fp, "\t.long\t0\n");
                 vectorSize--;
             }
         }
-
     }
     fclose(fp);
 }
